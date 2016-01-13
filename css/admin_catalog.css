@@ -1,0 +1,47 @@
+/*
+CSS AdminStylesheet for Catalog Easy gpEasy Plugin
+Author: a2exfr
+http://my-sitelab.com/
+Date: 2015-11-07
+Version 1.7
+
+*/
+.EC_panel{
+display:none;
+}
+.EC_panel_default{
+display:block;
+}
+
+.EC_admin_header{
+float:left;
+width:100%; 
+ margin-bottom: 10px;
+}
+.tooltip {
+   /* border-bottom: 1px dotted #0077AA;*/
+    cursor: help;
+}
+
+.tooltip::after {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px 8px 8px 0px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    color: #FFF;
+    content: attr(data-tooltip); 
+   margin-top: -24px;
+    opacity: 0; 
+    padding: 3px 7px;
+    position: absolute;
+    visibility: hidden;
+            
+    transition: all 0.4s ease-in-out; 
+}
+        
+.tooltip:hover::after {
+    opacity: 1; 
+    visibility: visible;
+}
+.add_field_button{
+cursor:pointer;
+}
