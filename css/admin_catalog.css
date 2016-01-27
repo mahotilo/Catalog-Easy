@@ -9,14 +9,54 @@ Version 1.7
 .EC_panel{
 display:none;
 }
+.EC_doc{
+	margin-left:10px;
+}
+.EC_panel1{
+width:33%;
+float:left;
+
+margin-left:2px;
+margin-bottom:5px;
+padding-left:10px;
+padding-top:10px;
+ border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.EC_panel_100{
+width:99%;
+float:left;
+ border: 1px solid #ddd;
+  border-radius: 5px;
+padding-left:10px;
+padding-top:10px;
+margin-bottom:5px;  
+}
 .EC_panel_default{
 display:block;
+
 }
+
 
 .EC_admin_header{
 float:left;
 width:100%; 
  margin-bottom: 10px;
+}
+.panel_title{
+margin-top: -10px;
+ margin-left: -10px; 
+ padding-left: 10px;
+ padding-top: 10px;
+ margin-bottom: 10px;
+ padding-bottom: 10px;
+ width: auto; 
+ height: 40px;
+ text-align: center; 
+ background-color: #ddd;	
+}
+a.nodecor {
+	color:rgb(51,51,51)!important;
 }
 .tooltip {
    /* border-bottom: 1px dotted #0077AA;*/
@@ -45,3 +85,62 @@ width:100%;
 .add_field_button{
 cursor:pointer;
 }
+.add_cat_page{
+cursor:pointer;
+}
+.page_table{
+margin-bottom: 5px;
+display:inline-block;	
+width:100%;	
+background:rgb(238, 238, 238);
+}
+.page_table p {
+ float:left;
+ width:132px; 
+font-weight:	700;
+padding-left:2px;
+margin-top: 10px!important;
+margin-left: 10px !important;
+}
+.page_table p:nth-child(3){
+ width:60px;	
+}
+.page_table p:nth-child(4){
+ width:170px;
+padding-left: 40px; 
+}
+.page_table p:nth-child(5){
+ 
+padding-left: 40px; 
+}
+.cp{
+float:left;	
+width:140px!important;
+}
+.cat_lay{
+float:left;	
+width:150px;
+}
+.crop{
+float:left;	
+width:50px!important;
+}
+.input_box{
+	float: left; 
+	width: 100%; 
+	margin-bottom:5px;
+}
+
+.cp:disabled{
+    background: #dddddd!important;	
+} 
+
+.hidei{
+display:none!important;		
+}
+
+.navi{
+float:left;
+width:25px!important;	
+}
+

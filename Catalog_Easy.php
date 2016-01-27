@@ -41,104 +41,97 @@ class Catalog_Easy
         
         
         global $addonRelativeCode, $addonPathData, $ECPColumns, $ECPMinHeight;
-        $configFile = $addonPathData . '/config.php';
-        if (!file_exists($configFile)) {
-            $this->getDefaultConfig();
-        }
         
-        if (file_exists($configFile)) {
-            include $configFile;
-        }
-        
-        if (!isset($config)) {
-            $this->getDefaultConfig();
-            
-        } else {
-            
-            //$this->item_per_page		= $config['item_per_page'];
-            $this->catalog_layout = $config['catalog_layout'];
-            //$this->ShowImage			= $config['ShowImage'];
-            //$this->ShowSorting		= $config['ShowSorting'];
-            $this->ImagesizeW     = $config['ImagesizeW'];
-            $this->ImagesizeH     = $config['ImagesizeH'];
-            //$this->ImageCircle		= $config['ImageCircle'];
-            $this->LinesPages     = $config['LinesPages'];
-            $this->column3Pages   = $config['column3Pages'];
-            $this->column2Pages   = $config['column2Pages'];
-            $this->PGPages        = $config['PGPages'];
-            $ECPColumns           = $config['ECPColumns'];
-            $ECPMinHeight         = $config['ECPMinHeight'];
-            $this->ECrow          = $config['ECrow'];
-            $this->ECheight       = $config['ECheight'];
-			$this->ShortInfo 	  = $config['ShortInfo'];	
-			$this->AbbrevL 		  = $config['AbbrevL'];
-            
-            //list 		
-            $this->item_per_pageL = $config['item_per_pageL'];
-            $this->ImagesizeWL    = $config['ImagesizeWL'];
-            $this->ImagesizeHL    = $config['ImagesizeHL'];
-            $this->ImageCircleL   = $config['ImageCircleL'];
-            $this->ShowImageL     = $config['ShowImageL'];
-            $this->ShowSortingL   = $config['ShowSortingL'];
-            
-            //3c 
-            $this->item_per_page3c = $config['item_per_page3c'];
-            $this->ImagesizeW3c    = $config['ImagesizeW3c'];
-            $this->ImagesizeH3c    = $config['ImagesizeH3c'];
-            $this->ImageCircle3c   = $config['ImageCircle3c'];
-            $this->ShowImage3c     = $config['ShowImage3c'];
-            $this->ShowSorting3c   = $config['ShowSorting3c'];
-            
-            //2c 
-            $this->item_per_page2c = $config['item_per_page2c'];
-            $this->ImagesizeW2c    = $config['ImagesizeW2c'];
-            $this->ImagesizeH2c    = $config['ImagesizeH2c'];
-            $this->ImageCircle2c   = $config['ImageCircle2c'];
-            $this->ShowImage2c     = $config['ShowImage2c'];
-            $this->ShowSorting2c   = $config['ShowSorting2c'];
-            
-            //carousel
-            $this->ImagesizeWcar  = $config['ImagesizeWcar'];
-            $this->ImagesizeHcar  = $config['ImagesizeHcar'];
-            $this->ImageCirclecar = $config['ImageCirclecar'];
-            $this->ShowImagecar   = $config['ShowImagecar'];
-            $this->CarPages       = $config['CarPages'];
-            $this->ShowTitlecar	  = $config['ShowTitlecar'];
-			
-            
-            $this->datafilter  = $config['datafilter'];
-            $this->imagelinked = $config['imagelinked'];
-            $this->Showtitle   = $config['Showtitle'];
-            $this->ItemW       = $config['ItemW'];
-            
-            //spec
-            $this->anotherpage = $config['anotherpage'];
-            $this->netpage     = $config['netpage'];
-            $this->ECthumb     = $config['ECthumb'];
-			$this->ECthumbH	   = $config['ECthumbH'];
-			$this->ECthumbW	   = $config['ECthumbW'];
-            
-        }
+		$this->getConfig();
+
+	//   $configFile = $addonPathData . '/config.php';
+    //    if (!file_exists($configFile)) {
+    //        $this->getDefaultConfig();
+    //    }
+    //    
+    //    if (file_exists($configFile)) {
+    //        include $configFile;
+    //    }
+    //    
+    //    if (!isset($config)) {
+    //        $this->getDefaultConfig();
+    //        
+    //    } else {
+    //        
+    //        //$this->item_per_page		= $config['item_per_page'];
+    //        $this->catalog_layout = $config['catalog_layout'];
+    //        //$this->ShowImage			= $config['ShowImage'];
+    //        //$this->ShowSorting		= $config['ShowSorting'];
+    //        $this->ImagesizeW     = $config['ImagesizeW'];
+    //        $this->ImagesizeH     = $config['ImagesizeH'];
+    //        //$this->ImageCircle		= $config['ImageCircle'];
+    //        $this->LinesPages     = $config['LinesPages'];
+    //        $this->column3Pages   = $config['column3Pages'];
+    //        $this->column2Pages   = $config['column2Pages'];
+    //        $this->PGPages        = $config['PGPages'];
+    //        $ECPColumns           = $config['ECPColumns'];
+    //        $ECPMinHeight         = $config['ECPMinHeight'];
+    //        $this->ECrow          = $config['ECrow'];
+    //        $this->ECheight       = $config['ECheight'];
+	//		$this->ShortInfo 	  = $config['ShortInfo'];	
+	//		$this->AbbrevL 		  = $config['AbbrevL'];
+    //        
+    //        //list 		
+    //        $this->item_per_pageL = $config['item_per_pageL'];
+    //        $this->ImagesizeWL    = $config['ImagesizeWL'];
+    //        $this->ImagesizeHL    = $config['ImagesizeHL'];
+    //        $this->ImageCircleL   = $config['ImageCircleL'];
+    //        $this->ShowImageL     = $config['ShowImageL'];
+    //        $this->ShowSortingL   = $config['ShowSortingL'];
+    //        
+    //        //3c 
+    //        $this->item_per_page3c = $config['item_per_page3c'];
+    //        $this->ImagesizeW3c    = $config['ImagesizeW3c'];
+    //        $this->ImagesizeH3c    = $config['ImagesizeH3c'];
+    //        $this->ImageCircle3c   = $config['ImageCircle3c'];
+    //        $this->ShowImage3c     = $config['ShowImage3c'];
+    //        $this->ShowSorting3c   = $config['ShowSorting3c'];
+    //        
+    //        //2c 
+    //        $this->item_per_page2c = $config['item_per_page2c'];
+    //        $this->ImagesizeW2c    = $config['ImagesizeW2c'];
+    //        $this->ImagesizeH2c    = $config['ImagesizeH2c'];
+    //        $this->ImageCircle2c   = $config['ImageCircle2c'];
+    //        $this->ShowImage2c     = $config['ShowImage2c'];
+    //        $this->ShowSorting2c   = $config['ShowSorting2c'];
+    //        
+    //        //carousel
+    //        $this->ImagesizeWcar  = $config['ImagesizeWcar'];
+    //        $this->ImagesizeHcar  = $config['ImagesizeHcar'];
+    //        $this->ImageCirclecar = $config['ImageCirclecar'];
+    //        $this->ShowImagecar   = $config['ShowImagecar'];
+    //        $this->CarPages       = $config['CarPages'];
+    //        $this->ShowTitlecar	  = $config['ShowTitlecar'];
+	//		
+    //        
+    //        $this->datafilter  = $config['datafilter'];
+    //        $this->imagelinked = $config['imagelinked'];
+    //        $this->Showtitle   = $config['Showtitle'];
+    //        $this->ItemW       = $config['ItemW'];
+    //        
+    //        //spec
+    //        $this->anotherpage = $config['anotherpage'];
+    //        $this->netpage     = $config['netpage'];
+    //        $this->ECthumb     = $config['ECthumb'];
+	//		$this->ECthumbH	   = $config['ECthumbH'];
+	//		$this->ECthumbW	   = $config['ECthumbW'];
+	//		$this->wap	  	   = $config['wap'];
+	//		
+	//		$this->catpages	  = $config['catpages'];
+    //        
+    //    }
         
         
         global $page;
 			
-        if (mb_strtolower($page->label) == mb_strtolower($this->anotherpage)) {
-            
-            if (isset($this->netpage)) {
-                
-                $title = $this->getChildpagefromLabel($this->netpage);
-                
-            } else {
-                
-                $title = $this->getChildpages();
-                
-            }
-            
-        } else {
-            $title = $this->getChildpages();
-        }
-        
+		
+		$title = $this->CheckSource();
+			
         
         if (isset($_REQUEST["pag"])) {
             
@@ -152,22 +145,26 @@ class Catalog_Easy
             $page_number = 1;
         }
         
-        $pages_count = count($title);
+        
         
         $this->Check_layout();
         $this->Check_options();
-        
-        
+        $title = $this->HowtoTake($title); 
+       
+		$pages_count = count($title);
+		
         if (isset($_REQUEST["sort"])) {
             
             $_SESSION["sort"] = $_REQUEST['sort'];
             
         }
         
-        if ($this->getUrl() <> $_SERVER['HTTP_REFERER']) {
-            unset($_SESSION["sort"]);
+		if (array_key_exists('HTTP_REFERER', $_SERVER)){
+			if ($this->getUrl() <> $_SERVER['HTTP_REFERER']) {
+				unset($_SESSION["sort"]);
+			}
         }
-        
+		
         if (isset($_SESSION["sort"])) {
             
             $sort = $_SESSION["sort"];
@@ -180,6 +177,7 @@ class Catalog_Easy
             
         }
         
+				
         if ($this->catalog_layout == 3 or $this->catalog_layout == 4 or $this->catalog_layout == 5) {
             $this->item_per_page = 99999;
         }
@@ -213,14 +211,96 @@ class Catalog_Easy
             $this->ShowCatalog($items);
             
             echo '<div id="clicker" align="center">';
-            echo $this->paginate_function($this->item_per_page, $page_number, $pages_count, $total_pages);
-            echo '</div>';
+            if ($this->wap){
+			echo $this->paginate_function_wa($this->item_per_page, $page_number, $pages_count, $total_pages);
+			} else {
+			echo $this->paginate_function($this->item_per_page, $page_number, $pages_count, $total_pages);	
+			}
+			echo '</div>';
             echo '</div>';
         }
         
     }
     
     
+	function getChildpages()    {
+		
+        global $page, $gp_index, $gp_menu, $dirPrefix;
+        
+        if (!isset($gp_menu[$page->gp_index])) {
+            return;
+        }
+        
+        $titles = common::Descendants($page->gp_index, $gp_menu);
+        $level  = $gp_menu[$page->gp_index]['level'];
+        
+        
+        
+        foreach ($titles as $index) {
+            
+            $child_level = $gp_menu[$index]['level'];
+            if ($child_level != $level + 1) {
+                continue;
+            }
+            
+            $title[] = array_search($index, $gp_index);
+            
+            if (!$title) {
+                continue;
+            }
+            
+        }
+        
+        if (!isset($title)) {
+            return;
+        }
+        
+        
+        return $title;
+        
+    }
+	
+	
+	function getChildpagesfromAnotherMenu($menu_id,$labelset){
+
+		global $gp_titles,$gp_index;
+		
+		$menu = gpOutput::GetMenuArray($menu_id);
+		$index      = $this->array_find_deep($gp_titles, $labelset);
+        $page_index = $index[0];
+		
+		if (!isset($menu[$page_index])) {
+            return;
+        }
+		$titles = common::Descendants($page_index, $menu);
+        $level  = $menu[$page_index]['level'];
+		
+		   foreach ($titles as $index) {
+            
+            $child_level = $menu[$index]['level'];
+            if ($child_level != $level + 1) {
+                continue;
+            }
+            
+            $title[] = array_search($index, $gp_index);
+            
+            if (!$title) {
+                continue;
+            }
+            
+        }
+        
+        if (!isset($title)) {
+            return;
+        }
+        
+        
+        return $title;
+		
+		
+	}
+	
+	
     function getChildpagefromLabel($labelset)
     {
         
@@ -283,44 +363,7 @@ class Catalog_Easy
         return array();
     }
     
-    
-    function getChildpages()
-    {
-        global $page, $gp_index, $gp_menu, $dirPrefix;
-        
-        if (!isset($gp_menu[$page->gp_index])) {
-            return;
-        }
-        
-        $titles = common::Descendants($page->gp_index, $gp_menu);
-        $level  = $gp_menu[$page->gp_index]['level'];
-        
-        
-        
-        foreach ($titles as $index) {
-            
-            $child_level = $gp_menu[$index]['level'];
-            if ($child_level != $level + 1) {
-                continue;
-            }
-            
-            $title[] = array_search($index, $gp_index);
-            
-            if (!$title) {
-                continue;
-            }
-            
-        }
-        
-        if (!isset($title)) {
-            return;
-        }
-        
-        
-        return $title;
-        
-    }
-    
+   
     
     
     function getContent($titles)
@@ -542,7 +585,20 @@ class Catalog_Easy
 		$content = strip_tags($content);
 		$var = 1;
 		
-		$content = str_replace($label,"",$content,$var) ;
+		//$content = str_replace($label,"",$content,$var) ;
+		
+		$haystack = $content;
+		$needle  = $label;
+		$replace = "";
+		
+		$pos = strpos($haystack,$needle);
+		if ($pos !== false) {
+		$newstring = substr_replace($haystack,$replace,$pos,strlen($needle));
+		}
+		
+		if (isset($newstring)){
+		$content = $newstring;
+		}
 		
 		if( mb_strlen($content) < $abrv ){
 			return $content;
@@ -639,18 +695,23 @@ class Catalog_Easy
     
     function jpegImgCrop($target_url)
     {
-        
+        			
+		
         global $dataDir;
         $img_name = str_replace($dataDir . "/data/_uploaded/image/", "", $target_url);
+		
         $parts    = explode("/", $img_name);
         $img_name = array_pop($parts);
         $newname  = $img_name;
         foreach ($parts as $part) {
-            $newname = $part . "_" . $newname;
+        
+		// $part= $this->correct_encoding($part);
+		   $newname = $part . "_" . $newname;
         }
 		
 		$parts = explode('.',$newname);
 		$type = array_pop($parts);
+		
 		$newname = $parts[0] . $this->ECthumbW . $this->ECthumbH . '.' . $type;
 		//$newname = $newname . $this->ImagesizeW . $this->ImagesizeH;
 		
@@ -661,7 +722,9 @@ class Catalog_Easy
         }
         
         
+		//$target_url = urldecode($target_url);
         $image      = imagecreatefromjpeg($target_url);
+
         $filename   = $target_url;
         $width      = imagesx($image);
         $height     = imagesy($image);
@@ -700,9 +763,21 @@ class Catalog_Easy
         
     }
     
-    
-    
-    
+ //   function correct_encoding($text) {
+//	 $text = urldecode($text);	
+//	$text=$this->translit($text);
+ ////  $current_encoding = mb_detect_encoding($text, 'auto');
+//	
+ // //  $text = iconv($current_encoding, '//TRANSLIT//IGNORE', $text);
+ //   return $text;
+//	}
+ //   
+ //    function translit($str) {
+ //   $rus = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я');
+ //   $lat = array('A', 'B', 'V', 'G', 'D', 'E', 'E', 'Gh', 'Z', 'I', 'Y', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', 'C', 'Ch', 'Sh', 'Sch', 'Y', 'Y', 'Y', 'E', 'Yu', 'Ya', 'a', 'b', 'v', 'g', 'd', 'e', 'e', 'gh', 'z', 'i', 'y', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'c', 'ch', 'sh', 'sch', 'y', 'y', 'y', 'e', 'yu', 'ya');
+ //   return str_replace($rus, $lat, $str);
+ // }
+
     
     
     
@@ -936,8 +1011,8 @@ class Catalog_Easy
     {
         
         echo '<ul id="filter-list" class="clearfix">';
-        
-        echo '<li class="filter" data-filter="all">All</li>';
+     
+        echo '<li class="filter" data-filter="all">'.gpOutput::GetAddonText('All').'</li>';
         if (isset($this->datafilter)) {
             $pieces = explode(",", $this->datafilter);
             foreach ($pieces as $piece) {
@@ -1021,13 +1096,209 @@ class Catalog_Easy
         return $pagination;
     }
     
+	
+  function paginate_function_wa($item_per_page, $current_page, $total_records, $total_pages)
+    {
+		global $page;
+		$this->ShopUrl = $page->title;
+        $pagination = '';
+        if ($total_pages > 0 && $total_pages != 1 && $current_page <= $total_pages) {
+            $pagination .= '<ul class="pagination_cat">';
+            
+            $right_links = $current_page + 10;
+            $previous    = $current_page - 10;
+            $next        = $current_page + 1;
+            $back        = $current_page - 1;
+            $first_link  = true;
+            
+            if ($current_page > 1) {
+                //$previous_link = ($previous==0)?1:$back;
+               $linkfirst = common::Link($this->ShopUrl,'&laquo;','pag=1','title="First"');
+			   $linkback = common::Link($this->ShopUrl,'&lt;','pag='.$back,'title="Previous"');
+			   
+
+			   $pagination .= '<li class="first">'. $linkfirst. '</li>';
+                $pagination .= '<li>'. $linkback. '</li>';
+                for ($i = ($current_page - 1); $i < $current_page; $i++) {
+                    if ($i > 0) {
+                        $link_i = common::Link($this->ShopUrl,'' . $i . '','pag='.$i,'title="Page' . $i . '"');
+						$pagination .= '<li>'. $link_i .'</li>';						
+                    }
+                }
+                $first_link = false;
+            }
+            
+						
+            if ($first_link) {
+                $pagination .= '<li class="first active">' . $current_page . '</li>';
+            } elseif ($current_page == $total_pages) {
+                $pagination .= '<li class="last active">' . $current_page . '</li>';
+            } else {
+                $pagination .= '<li class="active">' . $current_page . '</li>';
+            }
+            
+            for ($i = $current_page + 1; $i < $right_links; $i++) {
+                if ($i <= $total_pages) {
+                   $link_i = common::Link($this->ShopUrl,'' . $i . '','pag='.$i,'title="Page' . $i . '"');
+				   $pagination .= '<li>'. $link_i .'</li>';
+                }
+            }
+            if ($current_page < $total_pages) {
+                //$next_link = ($i > $total_pages)? $total_pages : $next;
+				$linknext = common::Link($this->ShopUrl,'&gt;','pag='.$next,'title="Next"');
+				$linklast = common::Link($this->ShopUrl,'&raquo;','pag='.$total_pages,'title="Last"');
+				
+                $pagination .= '<li>'.$linknext.' </li>';
+                $pagination .= '<li class="last">'.$linklast.' </li>';
+            }
+            
+            $pagination .= '</ul>';
+        }
+        return $pagination;
     
+	}
     
+	
+	function CheckSource(){
+		global $page;
+		
+		if(isset($this->catpages) and $this->catpages<>""){
+		
+			foreach ($this->catpages as $catpage ){
+				
+				
+				if (mb_strtolower($page->label) == mb_strtolower($catpage['label'])) {
+					
+					if($catpage['source']== 0 ) {
+						
+						return $this->getChildpages();
+					
+					}
+					if($catpage['source']== 1 and $catpage['sourcepages']<>"" ) {
+						
+						return $this->getChildpagefromLabel($catpage['sourcepages']);
+					
+					}
+				
+					if($catpage['source']== 2 and $catpage['sourcepages']<>"" ) {
+						
+						return $this->getChildpagesfromAnotherMenu($catpage['cat_menu'],$catpage['sourcepages']);
+					
+					}
+				
+				}
+			
+		
+		}
+			
+		
+		
+		}
+		
+	
+	   //   check old options for v.1.7. deprecated in 1.8
+		if (mb_strtolower($page->label) == mb_strtolower($this->anotherpage)) {
+            
+            if (isset($this->netpage) and $this->netpage<>"") {
+                
+                return $this->getChildpagefromLabel($this->netpage);
+                
+            } else {
+                
+                return $this->getChildpages();
+                
+            }
+            
+        } else {
+            return $this->getChildpages();
+        }
+		
+		
+		
+	return $this->getChildpages();	
+		
+	}
+	
+	
+	function HowtoTake($pages){
+		global $page;
+		
+		if(isset($this->catpages) and $this->catpages<>""){
+		
+			foreach ($this->catpages as $catpage ){
+				
+				
+				if (mb_strtolower($page->label) == mb_strtolower($catpage['label'])) {
+					
+					if($catpage['beh']== 0 ) {
+						
+						if($catpage['crop']<>"" and $catpage['crop'] > 0 ){
+						
+							$this->item_per_page = $catpage['crop'];
+							
+							return $pages;
+						}
+						
+					
+					}
+					if($catpage['beh']== 1 ) {
+						
+						if($catpage['crop']<>"" and $catpage['crop'] > 0 ){
+						
+							$pages = array_slice($pages,0, $catpage['crop']); 
+							
+							return $pages;
+						}
+											
+					}
+				
+					if($catpage['beh']== 2) {
+						
+						if($catpage['crop']<>"" and $catpage['crop'] > 0 ){
+						
+							$pages = array_slice($pages, -$catpage['crop']); 
+							
+							return $pages;
+						}
+											
+					}
+					if($catpage['beh']== 3) {
+						
+						if($catpage['crop']<>"" and $catpage['crop'] > 0 ){
+						
+							shuffle($pages);
+							$pages = array_slice($pages,0,$catpage['crop']); 
+							
+							return $pages;
+						}
+											
+					}
+								
+				
+				
+				}
+			
+		
+		}
+			
+		
+		
+		}
+				
+		
+	 return $pages;	
+	}
+	
+	
+	
     function Check_layout()
     {
         global $page;
-        $pagelabel = mb_strtolower($page->label);
+       
+	 
         
+		//deprecated options from 1.7
+		$pagelabel = mb_strtolower($page->label);
         if ($this->LinesPages !== "") {
             $piecesLP = explode(",", $this->LinesPages);
         }
@@ -1096,6 +1367,20 @@ class Catalog_Easy
             }
         }
         
+		//new 1.8 check	
+		if(isset($this->catpages) and $this->catpages<>""){
+		
+			foreach ($this->catpages as $catpage ){
+				
+				
+				if (mb_strtolower($page->label) == mb_strtolower($catpage['label'])) {
+					
+					$this->catalog_layout = $catpage['layout'];
+
+			
+				}
+			}
+		}
         
         return;
         
@@ -1261,7 +1546,101 @@ class Catalog_Easy
     }
     
     
-    
+    function getConfig(){
+		
+		global $addonRelativeCode, $addonPathData, $ECPColumns, $ECPMinHeight;
+        $configFile = $addonPathData . '/config.php';
+        if (!file_exists($configFile)) {
+            $this->getDefaultConfig();
+        }
+        
+        if (file_exists($configFile)) {
+            include $configFile;
+        }
+        
+        if (!isset($config)) {
+            $this->getDefaultConfig();
+            
+        } else {
+            
+            //$this->item_per_page		= $config['item_per_page'];
+            $this->catalog_layout = $config['catalog_layout'];
+            //$this->ShowImage			= $config['ShowImage'];
+            //$this->ShowSorting		= $config['ShowSorting'];
+            $this->ImagesizeW     = $config['ImagesizeW'];
+            $this->ImagesizeH     = $config['ImagesizeH'];
+            //$this->ImageCircle		= $config['ImageCircle'];
+            
+            $ECPColumns           = $config['ECPColumns'];
+            $ECPMinHeight         = $config['ECPMinHeight'];
+            $this->ECrow          = $config['ECrow'];
+            $this->ECheight       = $config['ECheight'];
+			$this->ShortInfo 	  = $config['ShortInfo'];	
+			$this->AbbrevL 		  = $config['AbbrevL'];
+            
+            //list 		
+            $this->item_per_pageL = $config['item_per_pageL'];
+            $this->ImagesizeWL    = $config['ImagesizeWL'];
+            $this->ImagesizeHL    = $config['ImagesizeHL'];
+            $this->ImageCircleL   = $config['ImageCircleL'];
+            $this->ShowImageL     = $config['ShowImageL'];
+            $this->ShowSortingL   = $config['ShowSortingL'];
+            
+            //3c 
+            $this->item_per_page3c = $config['item_per_page3c'];
+            $this->ImagesizeW3c    = $config['ImagesizeW3c'];
+            $this->ImagesizeH3c    = $config['ImagesizeH3c'];
+            $this->ImageCircle3c   = $config['ImageCircle3c'];
+            $this->ShowImage3c     = $config['ShowImage3c'];
+            $this->ShowSorting3c   = $config['ShowSorting3c'];
+            
+            //2c 
+            $this->item_per_page2c = $config['item_per_page2c'];
+            $this->ImagesizeW2c    = $config['ImagesizeW2c'];
+            $this->ImagesizeH2c    = $config['ImagesizeH2c'];
+            $this->ImageCircle2c   = $config['ImageCircle2c'];
+            $this->ShowImage2c     = $config['ShowImage2c'];
+            $this->ShowSorting2c   = $config['ShowSorting2c'];
+            
+            //carousel
+            $this->ImagesizeWcar  = $config['ImagesizeWcar'];
+            $this->ImagesizeHcar  = $config['ImagesizeHcar'];
+            $this->ImageCirclecar = $config['ImageCirclecar'];
+            $this->ShowImagecar   = $config['ShowImagecar'];
+            $this->ShowTitlecar	  = $config['ShowTitlecar'];
+			
+            
+            $this->datafilter  = $config['datafilter'];
+            $this->imagelinked = $config['imagelinked'];
+            $this->Showtitle   = $config['Showtitle'];
+            $this->ItemW       = $config['ItemW'];
+            
+            //spec
+            $this->ECthumb     = $config['ECthumb'];
+			$this->ECthumbH	   = $config['ECthumbH'];
+			$this->ECthumbW	   = $config['ECthumbW'];
+			$this->wap	  	   = $config['wap'];
+			
+			$this->catpages	  = $config['catpages'];
+		
+			//deprecated options
+			$opts = array('LinesPages','column3Pages','column2Pages','PGPages',
+				'CarPages', 'anotherpage','netpage'
+				
+				);
+			foreach($opts as $opt) {
+				if(!array_key_exists ( $opt, $config) ) {
+					$this->$opt    = "";
+				} else {
+					$this->$opt     = $config[$opt];
+				}
+			}
+        
+		
+		
+		}
+		
+	}
     
     function getDefaultConfig()
     {
@@ -1321,7 +1700,11 @@ class Catalog_Easy
         $this->ECthumb     	= false;
         $this->ECthumbH	   	= 200;
 		$this->ECthumbW		= 200;
-        return;
+		$this->wap    	 	= false;
+		
+		$this->catpages	    = "";
+		
+	   return;
     }
     
     

@@ -15,10 +15,6 @@ class Admin_Catalog_Easy{
 	var $catalog_layout	= 0;
 	var $ImagesizeW 	= 200;
 	var $ImagesizeH 	= 200;
-	var $LinesPages 	= "Label1,Label2,Label3";
-	var $column3Pages 	= "Label1,Label2,Label3";
-	var $column2Pages 	= "Label1,Label2,Label3";
-	var $PGPages 		= "Label1,Label2,Label3";
 	var $ECPColumns		= 5;
 	var $ECPMinHeight	= 400;
 	var $ECrow			= 4;
@@ -52,22 +48,34 @@ class Admin_Catalog_Easy{
 	var $ImageCirclecar 	= false;
 	var $ShowImagecar		= true;
 	var $ShowTitlecar		= true;
-	var $CarPages			= "Label1,Label2,Label3";
 	var $ECheight    		= null;
 	var $datafilter			=array();
 	
 	var $imagelinked		= 0;
 	var $Showtitle			= false;
 	var $ItemW				= 30;
-	var $anotherpage		= null;
-	var $netpage			= null;
 	var $ECthumb			= false;
 	var $ECthumbH			= 200;
 	var $ECthumbW			= 200;
+	var $wap				= false;
+	var $catpages			= "";
 	
   
   function Admin_Catalog_Easy()
   {
+	  	$this->var_names= array (
+				'item_per_page',  'catalog_layout',  'ImagesizeW' ,   'ImagesizeH' ,
+				'ECPColumns',  'ECPMinHeight',  'ECrow',  'ECheight',  'ShortInfo' ,
+				'AbbrevL',  
+				'item_per_pageL' ,  'ImagesizeWL',  'ImagesizeHL' ,  'ShowImageL' ,  'ShowSortingL',  'ImageCircleL' ,
+				'item_per_page3c' ,'ShowImage3c',  'ShowSorting3c' ,  'ImageCircle3c', 'ImagesizeW3c','ImagesizeH3c' ,
+				'item_per_page2c','ShowSorting2c',  'ShowImage2c' ,  'ImageCircle2c','ImagesizeW2c','ImagesizeH2c' ,
+				'ShowImagecar',  'ImageCirclecar',  'ShowTitlecar', 'ImagesizeWcar' ,'ImagesizeHcar' ,
+				'Showtitle' ,'datafilter' ,'imagelinked','ItemW',
+				'ECthumb','ECthumbH','ECthumbW', 'wap',
+				'catpages'
+			);
+	  
  	$this->loadConfig();
 
     $cmd = common::GetCommand();
@@ -86,7 +94,7 @@ class Admin_Catalog_Easy{
 
   function showForm()
   {
-    global $langmessage,$addonRelativeCode,$page,$gp_index;
+    global $langmessage,$config,$addonRelativeCode,$page,$gp_index,$addonFolderName;
 	
 	   
      $pageIndexJS = 'var gpE_availablelabels = [';
@@ -99,46 +107,37 @@ class Admin_Catalog_Easy{
       $page->head_script .= "\n" . $pageIndexJS . "\n";
         
 	
+	if(array_key_exists ( "menus", $config) ){
+		
+	$menus = 'var gpE_menus = {';
+	$i = 0;
+	foreach ($config['menus'] as $key => $value) {
+        $i++;
+        $menus  .= '"'.$key.'":"' . $value . '"' . ($i == count($config['menus']) ? '' : ', ');
+      }
+	$menus .= '};';
+	$page->head_script .= "\n" . $menus . "\n";
+	
+	}
 	
 	$page->head_js[] = $addonRelativeCode.'/js/admin_catalog.js';
 	$page->css_admin[] = $addonRelativeCode.'/css/admin_catalog.css';
-	$page->head .='<script>$(document).ready(function() {
-	
-	 //inp
-
-    var max_fields      = 20; //maximum input boxes allowed
-    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
-    var add_button      = $(".add_field_button"); //Add button ID
-   
-    var x = 1; //initlal text box count
-    $(add_button).click(function(e){ //on add input button click
-        e.preventDefault();
-        if(x < max_fields){ //max input box allowed
-            x++; //text box increment
-            $(wrapper).append(\'<div><input type="text" name="datafilter[]"/><a href="#" class="remove_field"><img src="'.$addonRelativeCode.'/img/delete.png'.'" border="0" /></a></div>\'); //add input box
-        }
-    });
-   
-    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parent("div").remove(); x--;
-    })
-	
-	});</script>';
   
 	echo '<div class="EC_admin_header"><img src="'.$addonRelativeCode.'/img/IconCatalog.png'.'" border="0" style="float:left;" />
 	<h2>Easy Catalog</h2>
-	 <h3>1.7.1</h3>
+	 <h3>1.8</h3>
 	</div>';
     
 	echo '<div style="width:100%; float:left;">';//
-echo '<button name="EC_panel1" class="EC_doc" >Defult options</button>';
-echo '<button name="EC_panel2" class="EC_doc"  > List Layout</button>';
-echo '<button name="EC_panel3" class="EC_doc"  > 2 Columns Layout</button>';
-echo '<button name="EC_panel4" class="EC_doc"  >3 Columns Layout</button>';
-echo '<button name="EC_panel5" class="EC_doc"  >Portfolio Gallery</button>';
-echo '<button name="EC_panel6" class="EC_doc"  >Carousel  Layout</button>';
-echo '<button name="EC_panel7" class="EC_doc"  >Sortable Portfolio</button>';
-echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
+echo '<button name="EC_panel1" class="EC_doc gpbutton" >Layouts settings</button>';
+//echo '<button name="EC_panel2" class="EC_doc gpbutton"  > Layouts settings</button>';
+//echo '<button name="EC_panel3" class="EC_doc gpbutton"  > 2 Columns Layout</button>';
+//echo '<button name="EC_panel4" class="EC_doc gpbutton"  >3 Columns Layout</button>';
+//echo '<button name="EC_panel5" class="EC_doc gpbutton"  >Portfolio Gallery</button>';
+//echo '<button name="EC_panel6" class="EC_doc gpbutton"  >Carousel  Layout</button>';
+//echo '<button name="EC_panel7" class="EC_doc gpbutton"  >Sortable Portfolio</button>';
+echo '<button name="EC_panel8" class="EC_doc gpbutton"  >Special Options</button>';
+echo '<button name="EC_panel9" class="EC_doc gpbutton"  >Page Manager</button>';
 //echo '<hr>';
 
     echo '<form action="'.common::GetUrl('Admin_Catalog_Easy').'" method="post">';
@@ -146,26 +145,30 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
    
 //Default option panel		
 	echo '<div id="EC_panel1" class="EC_panel EC_panel_default">'; 
+	
+	echo '<div class="EC_panel_100">'; 
+	
+	echo '<div style="display:none;">'; //hide defaults
 	echo '<p>Items per page</br>';
-    echo '<input type="text" name="item_per_page" value="'.$this->item_per_page .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="item_per_page" value="'.$this->item_per_page .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
 
-	echo '<h5>Image Options:</h5>';
+	echo '<h4>Image Options:</h4>';
 	
 		
 	echo '<p>Width(px) ';
-    echo '<input type="text" name="ImagesizeW" value="'.$this->ImagesizeW .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeW" value="'.$this->ImagesizeW .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p>Height(px) ';
-    echo '<input type="text" name="ImagesizeH" value="'.$this->ImagesizeH .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeH" value="'.$this->ImagesizeH .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-	
+	echo '</div>';
 			
-		
-	echo '<h5>Layout Options:</h5>';
+	echo '<div style="width:30%;float:left;">';	
+	echo '<h4>Layout Options:</h4>';
     echo '<p>Default catalog layout</br>';
-    echo '<select name="catalog_layout">';
+    echo '<select name="catalog_layout" class="gpselect">';
     if( $this->catalog_layout == 1)
     {
       echo '  <option value="0">List</option>';
@@ -215,21 +218,45 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 	}
     echo '</select>';
     echo '</p>';
+	echo '</div>';
 	
-	echo '<h5>Short Info Options:</h5>';
+	echo '<div style="width:40%;float:left;">';		
+	echo '<h4>Short Info Options:</h4>';
 	$rad_1="";$rad_2="";
 	if($this->ShortInfo=="sect") {$rad_1 = 'checked="checked"';} else {$rad_2 = 'checked="checked"';}
-	echo '<input type="radio" name="ShortInfo" value="sect" '.$rad_1.'>From section short_info class<br>';
+	echo '<input type="radio" name="ShortInfo" value="sect" '.$rad_1.'>From section with short_info class<br>';
 	echo '<input type="radio" name="ShortInfo" value="abrev" '.$rad_2.'>From content Abbreviation Length =';
 	 
-	 echo '<input type="text" name="AbbrevL" value="'.$this->AbbrevL .'" class="gpinput" style="width:200px" />';
+	 echo '<input type="text" name="AbbrevL" value="'.$this->AbbrevL .'" class="gpinput" style="width:150px" />';
 	echo '</div>';	
 
 
 	
+	echo '<div style="width:20%;float:left;">';	
+	echo '<br>';
+	echo '<p>Use  pagination without ajax?  ';
+	if( $this->wap  ){
+	echo '<input type="checkbox" name="wap" value="yes" checked="checked" />';
+		}else{
+	echo '<input type="checkbox" name="wap" value="yes" />';
+		}
+	echo '</p>';
+	
+	echo '<p class="gpbutton">';
+	echo common::Link('Admin_Theme_Content',$langmessage['editable_text'],'cmd=addontext&addon='.urlencode($addonFolderName),' title="'.urlencode($langmessage['editable_text']).'" name="gpabox" class="nodecor" ');
+	echo ' &nbsp; &nbsp; ';
+	echo '</p>';
+	
+	echo '</div>';	
+	
+	
+	echo '</div>';	//end panel_100 fullwidth
+	
 //List layout panel
-	echo '<div id="EC_panel2" class="EC_panel">';
-	echo '<h5>List Layout Options:</h5>';
+	echo '<div id="EC_panel2" class="EC_panel1 row1">';
+	
+	$this->Panel_title('List Layout');
+
 	echo '<p>Items per page</br>';
     echo '<input type="text" name="item_per_pageL" value="'.$this->item_per_pageL .'" class="gpinput" />';
     echo '</p>';
@@ -243,7 +270,7 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 		}
 
 
-	echo '<h5>Image Options:</h5>';
+	echo '<h4>Image Options:</h4>';
 	
 	echo '<p>Show image?  ';
 	if( $this->ShowImageL  ){
@@ -260,28 +287,24 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 		}
 	
 	echo '<p>Width(px) ';
-    echo '<input type="text" name="ImagesizeWL" value="'.$this->ImagesizeWL .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeWL" value="'.$this->ImagesizeWL .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p>Height(px) ';
-    echo '<input type="text" name="ImagesizeHL" value="'.$this->ImagesizeHL .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeHL" value="'.$this->ImagesizeHL .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
 			
-		
-		
-	echo '<p class="tooltip" data-tooltip="Type pages names(labels) separeted by coma, to have this layout( if it not set by default)">Pages with Lines layout:</br> ';
-	echo '<textarea rows="5" cols="45" name="LinesPages" >'.$this->LinesPages.' </textarea>';
-	echo '</p>';
-		
 	echo '</div>';
 	
 	
 	
 //3 columns layout panel
-	echo '<div id="EC_panel4" class="EC_panel">';
-	echo '<h5>3 columns Layout Options:</h5>';
+	echo '<div id="EC_panel4" class="EC_panel1 row1">';
+	
+	$this->Panel_title('3 Columns Layout');
+	
 	echo '<p>Items per page</br>';
-    echo '<input type="text" name="item_per_page3c" value="'.$this->item_per_page3c .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="item_per_page3c" value="'.$this->item_per_page3c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
 	
@@ -293,7 +316,7 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 		}
 
 
-	echo '<h5>Image Options:</h5>';
+	echo '<h4>Image Options:</h4>';
 	
 	echo '<p>Show image?  ';
 	if( $this->ShowImage3c  ){
@@ -311,28 +334,24 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 	
 	echo '<div style="display:none;">';
 	echo '<p>Width(px) ';
-    echo '<input type="text" name="ImagesizeW3c" value="'.$this->ImagesizeW3c .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeW3c" value="'.$this->ImagesizeW3c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '</div>';
 	
 	echo '<p>Max-height image(px) ';
-    echo '<input type="text" name="ImagesizeH3c" value="'.$this->ImagesizeH3c .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeH3c" value="'.$this->ImagesizeH3c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-	
-		
-	
-	
-	echo '<p class="tooltip" data-tooltip="Type pages names(labels) separeted by coma, to have this layout( if it not set by default)">Pages with 3 columns layout:</br> ';
-	echo '<textarea rows="5" cols="45" name="column3Pages">'.$this->column3Pages.' </textarea>';
-	echo '</p>';
+			
 	echo '</div>';	
 
 	
 //2 columns layout panel
-	echo '<div id="EC_panel3" class="EC_panel">';
-	echo '<h5>2 columns Layout Options:</h5>';
+	echo '<div id="EC_panel3" class="EC_panel1 row1">';
+	
+	$this->Panel_title('2 Columns Layout');
+
 	echo '<p>Items per page</br>';
-    echo '<input type="text" name="item_per_page2c" value="'.$this->item_per_page2c .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="item_per_page2c" value="'.$this->item_per_page2c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
 	
@@ -344,7 +363,7 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 		}
 
 
-	echo '<h5>Image Options:</h5>';
+	echo '<h4>Image Options:</h4>';
 	
 	echo '<p>Show image?  ';
 	if( $this->ShowImage2c  ){
@@ -361,41 +380,35 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 		}
 	
 	echo '<p>Width(px) ';
-    echo '<input type="text" name="ImagesizeW2c" value="'.$this->ImagesizeW2c .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeW2c" value="'.$this->ImagesizeW2c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p>Height(px) ';
-    echo '<input type="text" name="ImagesizeH2c" value="'.$this->ImagesizeH2c .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeH2c" value="'.$this->ImagesizeH2c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
-			
-	
-		
-	echo '<p class="tooltip" data-tooltip="Type pages names(labels) separeted by coma, to have this layout( if it not set by default)">Pages with 2 columns layout:</br> ';
-	echo '<textarea rows="5" cols="45" name="column2Pages">'.$this->column2Pages.'</textarea>';
-	echo '</p>';
 	echo '</div>';	 
 
 
 
 //Portfolio Gallery panel
-	echo '<div id="EC_panel5" class="EC_panel">';	 
-	echo '<h5>Portfolio Gallery  Layout Options:</h5>';
+	echo '<div id="EC_panel5" class="EC_panel1 row2">';	 
+	
+	$this->Panel_title('Portfolio Gallery Layout');
+	
 	echo '<p>Number of columns<br>';
-    echo '<input type="text" name="ECPColumns" value="'.$this->ECPColumns .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ECPColumns" value="'.$this->ECPColumns .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p>Height of expandable info (px)<br>';
-    echo '<input type="text" name="ECPMinHeight" value="'.$this->ECPMinHeight .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ECPMinHeight" value="'.$this->ECPMinHeight .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-	echo '<p class="tooltip" data-tooltip="Type pages names(labels) separeted by coma, to have this layout( if it not set by default)">Pages with Portfolio Gallery layout:</br> ';
-	echo '<textarea rows="5" cols="45" name="PGPages">'.$this->PGPages.'</textarea>';
-	echo '</p>';
 	echo '</div>';		 
 
 
 //Carousel panel
-	echo '<div id="EC_panel6" class="EC_panel">';	 
-	echo '<h5>Carousel  Layout Options:</h5>';
+	echo '<div id="EC_panel6" class="EC_panel1 row2">';	 
 	
+	$this->Panel_title('Carousel  Layout');
+			
 	echo '<p>Show title?  ';
 	if( $this->ShowTitlecar  ){
 	echo '<input type="checkbox" name="ShowTitlecar" value="true" checked="checked" />';
@@ -403,7 +416,7 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 	echo '<input type="checkbox" name="ShowTitlecar" value="true" />';
 		}
 	
-	echo '<h5>Image Options:</h5>';
+	echo '<h4>Image Options:</h4>';
 	
 	echo '<p>Show image?  ';
 	if( $this->ShowImagecar  ){
@@ -421,29 +434,26 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 	echo '</p>';
 	
 	echo '<p>Width(px) ';
-    echo '<input type="text" name="ImagesizeWcar" value="'.$this->ImagesizeWcar .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeWcar" value="'.$this->ImagesizeWcar .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p>Height(px) ';
-    echo '<input type="text" name="ImagesizeHcar" value="'.$this->ImagesizeHcar .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ImagesizeHcar" value="'.$this->ImagesizeHcar .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
 	echo '<p>Number of items in row<br>';
-	echo '<input type="text" name="ECrow" value="'.$this->ECrow .'" class="gpinput" style="width:200px" />';
+	echo '<input type="text" name="ECrow" value="'.$this->ECrow .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p class="tooltip" data-tooltip="Use it when your items have diferent height(to avoid arrows bouncing)" >Height of carousel (px)<br>';
-    echo '<input type="text" name="ECheight" value="'.$this->ECheight .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ECheight" value="'.$this->ECheight .'" class="gpinput" style="width:150px" />';
     echo '</p>'; 
-	
-	echo '<p class="tooltip" data-tooltip="Type pages names(labels) separeted by coma, to have this layout( if it not set by default)">Pages with Carousel layout:</br> ';
-	echo '<textarea rows="5" cols="45" name="CarPages">'.$this->CarPages.'</textarea>';
-	echo '</p>';
 	
 	echo '</div>';		
 
 //Sortable Portfolio panel	
-		echo '<div id="EC_panel7" class="EC_panel">';	 
-		echo '<h5>Sortable Portfolio  Layout Options:</h5>';
-	
+		echo '<div id="EC_panel7" class="EC_panel1 row2">';	 
+		
+		$this->Panel_title('Sortable Portfolio  Layout');
+			
 		echo '<p>Show title?  ';
 		if( $this->Showtitle  ){
 		echo '<input type="checkbox" name="Showtitle" value="true" checked="checked" />';
@@ -452,12 +462,12 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 		}
 		
 		echo '<p>Width of portfoliio item (%)<br>';
-		echo '<input type="text" name="ItemW" value="'.$this->ItemW.'" class="gpinput" style="width:200px" />';
+		echo '<input type="text" name="ItemW" value="'.$this->ItemW.'" class="gpinput" style="width:150px" />';
 		echo '</p>';
 		
-		echo '<h5>Image Options:</h5>';
+		echo '<h4>Image Options:</h4>';
 		echo '<p>Image is linked to:</br>';
-		echo '<select name="imagelinked">';
+		echo '<select name="imagelinked" class="gpselect">';
 		if( $this->imagelinked == 1)
     {
       echo '  <option value="0">Child page</option>';
@@ -477,30 +487,25 @@ echo '<button name="EC_panel8" class="EC_doc"  >Special Options</button>';
 		echo '<p class="tooltip" data-tooltip="You need to add Attribute data-filter with value name of category( or names separeted by space) to one section on your Child page.">Add Category</p>';
 		echo '<div style="width:100%; float:left;">';
 		if(!$this->datafilter){
-		echo '<div><input type="text" name="datafilter[]"></div>';
+		echo '<div><input class="gpinput" type="text" name="datafilter[]"></div>';
 		}else{
 		$pieces = explode(",", $this->datafilter);
 		 for($i = 0; $i < count($pieces); $i++) {
-		echo '<div><input type="text" value="'.$pieces[$i].'"name="datafilter[]"/><a href="#" class="remove_field"><img src="'.$addonRelativeCode.'/img/delete.png'.'" border="0" /></a></div>';
+		echo '<div><input class="gpinput" type="text" value="'.$pieces[$i].'"name="datafilter[]"/><a href="#" class="remove_field"><img src="'.$addonRelativeCode.'/img/delete.png'.'" border="0" /></a></div>';
 		}
 		  }
 		echo '</div>';
 	
 		echo '</div>';	
 
-echo '</div>';
+echo '</div>';//end sortable portfolio panel
+
+echo '</div>';//end first default panel
 
 //special option panel
-echo '<div id="EC_panel8" class="EC_panel">';
-echo '<p>Use this, if you want to placed gadget on page, that do not have direct child pages</p>';
-echo '<p>Type page name(label), to enable this option on it ';
-    echo '<input type="text" id="anotherpage" name="anotherpage" value="'.$this->anotherpage .'" class="gpinput" style="width:200px" />';
-    echo '</p>';
-echo '<p>Here type page name(label) that have direct child pages. Direct childs from this page will be used as catalog items. ';
-    echo '<input type="text" id="netpage" name="netpage" value="'.$this->netpage .'" class="gpinput" style="width:200px" />';
-    echo '</p>';	
+echo '<div id="EC_panel8" class="EC_panel EC_panel_100">';
 	
-	echo '<hr>';
+	$this->Panel_title('Special options');
 	echo '<p>Use EasyCatalog generated thumbnails for images?  ';
 	if( $this->ECthumb  ){
 	echo '<input type="checkbox" name="ECthumb" value="yes" checked="checked" />';
@@ -511,19 +516,104 @@ echo '<p>Here type page name(label) that have direct child pages. Direct childs 
 	
 	echo 'Thumbnail size:';
 	echo '<p>Width(px) ';
-    echo '<input type="text" name="ECthumbW" value="'.$this->ECthumbW .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ECthumbW" value="'.$this->ECthumbW .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p>Height(px) ';
-    echo '<input type="text" name="ECthumbH" value="'.$this->ECthumbH .'" class="gpinput" style="width:200px" />';
+    echo '<input type="text" name="ECthumbH" value="'.$this->ECthumbH .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-	
+		
 	
 	echo '<input type="button" onClick="location.href=\'' . common::GetUrl('Admin_Catalog_Easy') . '?cmd=del_thumbs\'" name="cmd" ';
     echo 'value="Delete generated thumbnails" class="admin_box_close gpcancel" />';
 	
 	
+
 	
 	
+echo '</div>';
+
+//page manager panel
+echo '<div id="EC_panel9" class="EC_panel EC_panel_100">';
+		
+				if(!array_key_exists ( "menus", $config) ){ $config['menus'] = "";}
+		
+		$select_data=array(0=>'List',1=>'3 columns',2=>'2 columns',3=>'Portfolio Gallery',4=>'Carousel',5=>'Sortable Portfolio');
+		$select_data2=array(0=>'Direct ChildPages',1=>'ChildPages from  another page',2=>'From page in another menu');
+		$select_data3=array(0=>'All, items per page=',1=>'First number =',2=>'Last number =', 3=>'Random number =');	
+		
+		$this->Panel_title('Page manager');
+		
+		//echo '<br>';
+		echo '<div class="cat_pages">';
+		echo '<div class="add_cat_page" style="float:left"><img src="'.$addonRelativeCode.'/img/add_list.png'.'" border="0" /></div>';
+		echo '<p>&nbsp;&nbsp;&nbsp;Add Page to set options</p>';
+		echo  '<br>';
+		echo '<div class="page_table" >';
+		echo  '<p>Page label</p>';
+		echo  '<p>Layout </p>';
+		echo  '<p>Use nav?</p>';
+		echo  '<p>How to take?</p>';
+		echo  '<p>Source</p>';
+		echo '</div>';
+		echo  '<br>';
+		echo  '</hr>';
+	//	echo '<div style="width:100%; float:left;">';
+	
+		if(!$this->catpages){
+		echo '<div class="input_box"><input class="cp gpinput" type="text" name="catpages[0][label]">';
+		echo self::Select('catpages[0][layout]',$select_data, 0,'cat_lay gpselect');
+		echo '<input class="navi" type="checkbox" name="catpages[0][navi]" value="yes"/>';
+		echo self::Select('catpages[0][beh]',$select_data3, 0,'cat_lay gpselect beh');
+		echo '<input class="gpinput crop" type="text" name="catpages[0][crop]"  />';
+		echo self::Select('catpages[0][source]',$select_data2, 0,'source cat_lay gpselect');
+		echo self::Select('catpages[0][cat_menu]',$config['menus'], 0,'menus cat_lay gpselect');
+		echo '<input class="cp gpinput" type="text" name="catpages[0][sourcepages]"  />';
+		
+		echo '</div>';
+		echo '<input type="hidden" name="max_catpage" id="max_catpage" value="0" class="gpinput" style="width:150px" />';
+		}else{
+		
+		 foreach($this->catpages as $key=>$catpage) {
+	
+		echo '<div class="input_box">';
+		echo '<input class="cp gpinput" type="text" value="'.$catpage['label'].'"name="catpages['.$key.'][label]"/>';
+		$b = 'catpages['.$key.'][layout]';
+		$c = 'catpages['.$key.'][source]';
+		$d = 'catpages['.$key.'][cat_menu]';
+		$e = 'catpages['.$key.'][beh]';
+		echo self::Select($b,$select_data, $catpage['layout'],'cat_lay gpselect');
+		
+		if($catpage['navi']){
+		echo '<input class="navi" type="checkbox" name="catpages['.$key.'][navi]" value="yes" checked="checked"/>';
+		} else {
+		echo '<input class="navi" type="checkbox" name="catpages['.$key.'][navi]" value="yes"/>';	
+		}
+		
+		echo self::Select($e,$select_data3, $catpage['beh'],'cat_lay gpselect beh');
+		
+		echo '<input class="gpinput crop" type="text" value="'.$catpage['crop'].'"  name="catpages['.$key.'][crop]"  />';
+		
+		echo self::Select($c,$select_data2, $catpage['source'],'source cat_lay gpselect');	
+		
+		echo self::Select($d,$config['menus'], $catpage['cat_menu'],'menus cat_lay gpselect');
+		
+		echo '<input class="cp gpinput" type="text" value="'.$catpage['sourcepages'].'" name="catpages['.$key.'][sourcepages]"  />';
+		
+		echo '<a href="#" class="remove_cat_page"><img src="'.$addonRelativeCode.'/img/delete.png'.'"  /></a>';
+		echo '</div>';
+		
+		
+		
+		
+		}
+		echo '<input type="hidden" name="max_catpage" id="max_catpage" value="'.max(array_keys($this->catpages)).'" class="gpinput" style="width:150px" />';
+		
+		  }
+	//	echo '</div>';
+	
+		echo '</div>';	
+
+		
 echo '</div>';
 
 	
@@ -561,131 +651,81 @@ echo '<hr>';
     $configFile            		= $addonPathData.'/config.php';
     $config                		= array();
     
-	$config['item_per_page']  	= $_POST['item_per_page'];
-    $config['catalog_layout'] 	= $_POST['catalog_layout'];
-	$config['ImagesizeW'] 		= $_POST['ImagesizeW'];
-	$config['ImagesizeH'] 		= $_POST['ImagesizeH'];
-	$config['LinesPages']		= $_POST['LinesPages'];
-    $config['column3Pages']		= $_POST['column3Pages'];
-	$config['column2Pages']		= $_POST['column2Pages'];
-	$config['PGPages']			= $_POST['PGPages'];
-	$config['ECPColumns']		= $_POST['ECPColumns'];
-	$config['ECPMinHeight']		= $_POST['ECPMinHeight'];
-	$config['ECrow']			= $_POST['ECrow'];	
-	$config['ECheight']			= $_POST['ECheight'];
-	$config['ShortInfo']		= $_POST['ShortInfo'];
-	$config['AbbrevL']			= $_POST['AbbrevL'];
 	
-	//list
-	$config['item_per_pageL']	= $_POST['item_per_pageL'];
-	$config['ImagesizeWL'] 		= $_POST['ImagesizeWL'];
-	$config['ImagesizeHL'] 		= $_POST['ImagesizeHL'];
-	$config['ShowImageL']		= $_POST['ShowImageL'];
+	//options
+	$opts = array('item_per_page','catalog_layout','ImagesizeW','ImagesizeH',
+				'ECPColumns', 'ECPMinHeight',
+				'ECrow','ECheight',
+				'ShortInfo', 'AbbrevL',
+				'item_per_pageL','ImagesizeWL','ImagesizeHL',
+				'item_per_page3c','ImagesizeW3c','ImagesizeH3c',
+				'item_per_page2c','ImagesizeW2c','ImagesizeH2c',
+				'ImagesizeWcar','ImagesizeHcar',
+				'imagelinked','ItemW',
+				'ECthumbH','ECthumbW'
+				
+				);
+				
+	 foreach ($opts as $opt) {
+		 $config[$opt]	= $_POST[$opt];
+		 }
 	
 	
-	$config['ShowSortingL']		= $_POST['ShowSortingL'];
-	$config['ImageCircleL']		= $_POST['ImageCircleL'];
+	//checkboxes
+	$checkboxes = array('ShowImageL','ShowSortingL','ImageCircleL',
+					  'ShowImage3c','ShowSorting3c','ImageCircle3c',
+					  'ShowSorting2c','ShowImage2c','ImageCircle2c',
+					  'ShowImagecar','ImageCirclecar','ShowTitlecar','Showtitle',
+					  'ECthumb','wap');
 	
-	//3c
-	$config['item_per_page3c']	= $_POST['item_per_page3c'];
-	$config['ImagesizeW3c'] 	= $_POST['ImagesizeW3c'];
-	$config['ImagesizeH3c'] 	= $_POST['ImagesizeH3c'];
-	$config['ShowImage3c']		= $_POST['ShowImage3c'];
-	$config['ShowSorting3c']	= $_POST['ShowSorting3c'];
-	$config['ImageCircle3c']	= $_POST['ImageCircle3c'];
+	foreach ($checkboxes as $check){
+			if (isset($_POST[$check])){
+			$config[$check] = $_POST[$check];
+			} else {
+				$config[$check] = '';
+			}
+		
+	}
 	
-	//2c
-	$config['item_per_page2c']	= $_POST['item_per_page2c'];
-	$config['ImagesizeW2c'] 	= $_POST['ImagesizeW2c'];
-	$config['ImagesizeH2c'] 	= $_POST['ImagesizeH2c'];
-	$config['ShowImage2c']		= $_POST['ShowImage2c'];
-	$config['ShowSorting2c']	= $_POST['ShowSorting2c'];
-	$config['ImageCircle2c']	= $_POST['ImageCircle2c'];
-	
-	 //carousel
-	$config['ImagesizeWcar'] 	= $_POST['ImagesizeWcar'];
-	$config['ImagesizeHcar'] 	= $_POST['ImagesizeHcar'];
-	$config['ShowImagecar']		= $_POST['ShowImagecar'];
-	$config['ImageCirclecar']	= $_POST['ImageCirclecar'];
-	$config['CarPages']			= $_POST['CarPages'];
-	$config['ShowTitlecar']		= $_POST['ShowTitlecar'];
-
-	
+	//
 	if($_POST){
 	$_POST["datafilter"] = array_diff($_POST["datafilter"], array(''));
 	$config['datafilter'] = implode(",", $_POST["datafilter"]);
 	
 		}
-	$config['imagelinked']		= $_POST['imagelinked'];
-	$config['Showtitle']		= $_POST['Showtitle'];
-	$config['ItemW']			= $_POST['ItemW'];
 	
-	//special
-	$config['anotherpage']		= $_POST['anotherpage'];
-	$config['netpage']			= $_POST['netpage'];
-	$config['ECthumb']			= $_POST['ECthumb'];
-	$config['ECthumbH']			= $_POST['ECthumbH'];
-	$config['ECthumbW']			= $_POST['ECthumbW'];
+	//pages setings
+	if($_POST){
+		
+	// msg($_POST["catpages"]);
+	$temp_catpages = $_POST["catpages"];
 	
+	foreach($temp_catpages as $key=>$item){
+		
+		if (!array_key_exists ( "navi", $item)){
+			$temp_catpages[$key]['navi']="";				
+		}
+		if (!array_key_exists ( "cat_menu", $item)){
+			$temp_catpages[$key]['cat_menu']="";				
+		}
+		if ($item['label'] ==""){
+			unset($temp_catpages[$key]);
+		}
+		
+		
+	}
+	$config['catpages'] =  array_values($temp_catpages);
 	
-	$this->item_per_page        = $config['item_per_page'];
-    $this->catalog_layout 		= $config['catalog_layout'];
-	$this->ImagesizeW 			= $config['ImagesizeW'];
-	$this->ImagesizeH 			= $config['ImagesizeH'];
-	$this->LinesPages			= $config['LinesPages'];
-	$this->column3Pages			= $config['column3Pages'];
-	$this->column2Pages			= $config['column2Pages'];
-	$this->PGPages				= $config['PGPages'];
-	$this->ECPColumns			= $config['ECPColumns'];
-	$this->ECPMinHeight			= $config['ECPMinHeight'];
-	$this->ECrow				= $config['ECrow'];	
-	$this->ECheight 			= $config['ECheight'];	
-	$this->ShortInfo 			= $config['ShortInfo'];	
-	$this->AbbrevL 				= $config['AbbrevL'];	
+		}
+
 	
-	//list specify		
-	$this->item_per_pageL		= $config['item_per_pageL'];
-	$this->ImagesizeWL 			= $config['ImagesizeWL'];
-	$this->ImagesizeHL 			= $config['ImagesizeHL'];
-	$this->ImageCircleL 		= $config['ImageCircleL'];
-	$this->ShowImageL			= $config['ShowImageL'];
-	$this->ShowSortingL			= $config['ShowSortingL'];	
+	foreach ($this->var_names as $temp)
+	{
+	$this->$temp        = $config[$temp];
+	}
 	
-	 //3c specify
-	 $this->item_per_page3c		= $config['item_per_page3c'];
-	 $this->ImagesizeW3c 	 	= $config['ImagesizeW3c'];
-	 $this->ImagesizeH3c 		= $config['ImagesizeH3c'];
-	 $this->ImageCircle3c 		= $config['ImageCircle3c'];
-	 $this->ShowImage3c	 		= $config['ShowImage3c'];
-	 $this->ShowSorting3c		= $config['ShowSorting3c'];
-	
-	//2c specify
-	 $this->item_per_page2c 	= $config['item_per_page2c'];
-	 $this->ImagesizeW2c 		= $config['ImagesizeW2c'];
-	 $this->ImagesizeH2c 		= $config['ImagesizeH2c'];
-	 $this->ImageCircle2c 		= $config['ImageCircle2c'];
-	 $this->ShowImage2c		 	= $config['ShowImage2c'];
-	 $this->ShowSorting2c		= $config['ShowSorting2c'];
-	 
-	  //carousel
-	  $this->ImagesizeWcar	 	= $config['ImagesizeWcar'];
-	  $this->ImagesizeHcar 	 	= $config['ImagesizeHcar'];
-	  $this->ImageCirclecar  	= $config['ImageCirclecar'];
-	  $this->ShowImagecar	 	= $config['ShowImagecar'];
-	  $this->CarPages			= $config['CarPages'];
-	  $this->ShowTitlecar	 	= $config['ShowTitlecar'];
+
 	  
-	  $this->datafilter	 		= $config['datafilter'];
-	  $this->imagelinked		= $config['imagelinked'];
-	  $this->Showtitle 			= $config['Showtitle'];
-	  $this->ItemW				= $config['ItemW'];
-	  
-	  //special
-	  $this->anotherpage		= $config['anotherpage'];
-	  $this->netpage			= $config['netpage'];
-	  $this->ECthumb			= $config['ECthumb'];
-	  $this->ECthumbH			= $config['ECthumbH'];
-	  $this->ECthumbW			= $config['ECthumbW'];
 	
     if( !gpFiles::SaveArray($configFile,'config',$config) )
     {
@@ -697,6 +737,8 @@ echo '<hr>';
     return true;
   }
 
+  
+  
   function loadConfig()
   {
     global                   $addonPathData;
@@ -708,68 +750,46 @@ echo '<hr>';
 			}
 
     if (isset($config)) {
-      $this->item_per_page  = $config['item_per_page'];
-      $this->catalog_layout = $config['catalog_layout'];
-	  $this->ImagesizeW 	= $config['ImagesizeW'];
-	  $this->ImagesizeH 	= $config['ImagesizeH'];
-	  $this->LinesPages		= $config['LinesPages'];
-	  $this->column3Pages	= $config['column3Pages'];
-	  $this->column2Pages	= $config['column2Pages'];
-	  $this->PGPages		= $config['PGPages'];
-	  $this->ECPColumns		= $config['ECPColumns'];
-      $this->ECPMinHeight	= $config['ECPMinHeight'];
-	  $this->ECrow			= $config['ECrow'];
-	  $this->ECheight 		= $config['ECheight'];
-	  $this->ShortInfo 		= $config['ShortInfo'];	
-	  $this->AbbrevL 		= $config['AbbrevL'];	
-	  
-	  //list specify
-	  $this->item_per_pageL	= $config['item_per_pageL'];
-	  $this->ImagesizeWL 	= $config['ImagesizeWL'];
-	  $this->ImagesizeHL 	= $config['ImagesizeHL'];
-	  $this->ImageCircleL 	= $config['ImageCircleL'];
-	  $this->ShowImageL		= $config['ShowImageL'];
-	  $this->ShowSortingL	= $config['ShowSortingL'];
-	  
-	  //3c specify
-	  $this->item_per_page3c = $config['item_per_page3c'];
-	  $this->ImagesizeW3c 	 = $config['ImagesizeW3c'];
-	  $this->ImagesizeH3c 	 = $config['ImagesizeH3c'];
-	  $this->ImageCircle3c 	 = $config['ImageCircle3c'];
-	  $this->ShowImage3c	 = $config['ShowImage3c'];
-	  $this->ShowSorting3c	 = $config['ShowSorting3c'];
-	  
-	   //2c specify
-	  $this->item_per_page2c = $config['item_per_page2c'];
-	  $this->ImagesizeW2c 	 = $config['ImagesizeW2c'];
-	  $this->ImagesizeH2c 	 = $config['ImagesizeH2c'];
-	  $this->ImageCircle2c 	 = $config['ImageCircle2c'];
-	  $this->ShowImage2c	 = $config['ShowImage2c'];
-	  $this->ShowSorting2c	 = $config['ShowSorting2c'];
-	  
-	  //carousel
-	  $this->ImagesizeWcar 	 = $config['ImagesizeWcar'];
-	  $this->ImagesizeHcar 	 = $config['ImagesizeHcar'];
-	  $this->ImageCirclecar  = $config['ImageCirclecar'];
-	  $this->ShowImagecar	 = $config['ShowImagecar'];
-	  $this->CarPages		 = $config['CarPages'];
-	  $this->ShowTitlecar	 = $config['ShowTitlecar'];
-	  
-	  
-	  $this->datafilter		 = $config['datafilter'];
-	  $this->imagelinked	 = $config['imagelinked'];
-	  $this->Showtitle 		 = $config['Showtitle'];
-	  $this->ItemW			 = $config['ItemW'];
-	  
-	  //spec
-	  $this->anotherpage		= $config['anotherpage'];
-	  $this->netpage			= $config['netpage'];
-	  $this->ECthumb			= $config['ECthumb'];
-	  $this->ECthumbH			= $config['ECthumbH'];
-	  $this->ECthumbW			= $config['ECthumbW'];
+     
+	foreach ($this->var_names as $temp)
+	{
+	$this->$temp        = $config[$temp];
+	}
+
 	  
     }
   }
+
+  
+  		function Select($name,$options,$current,$class){
+		$a =  '<select id="'.$name.'" name="'.$name.'" class="'.$class.'" >';
+		 if (is_array ( $options)){
+				foreach($options as $key=>$value) {
+				
+					$selected = '';
+					if( $current == $key){
+						$selected = ' selected="selected"';
+					}
+					$a .='<option value="'.$key.'"'.$selected.'>'.$value.'</option>';
+				
+				}
+				
+		 } 
+			$a .='</select>';
+		return $a;
+	}
+  
+  
+	function Panel_title($name) {
+	echo '<div class="panel_title">'	;
+	echo '<h4 style="display: inline;font-weight:600;">'.$name.'</h4>';
+	echo '</div>';
+	return;
+		
+	}
+  
+  
+  
 }
 
 ?>
