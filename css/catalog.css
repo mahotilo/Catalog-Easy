@@ -430,3 +430,18 @@ float:right;
 	margin-left: auto;
 	margin-right: auto;
 }
+/*nav*/
+.EC_nav_linkssides {
+  text-align: center;
+}
+.EC_nav_linkssides .EC_newer{
+float:left;	
+}
+.EC_nav_linkssides .EC_older{
+float:right;	
+}
+/*section edit*/
+
+.hidei{
+display:none!important;		
+}

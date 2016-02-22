@@ -59,6 +59,14 @@ class Admin_Catalog_Easy{
 	var $ECthumbW			= 200;
 	var $wap				= false;
 	var $catpages			= "";
+	var $nav_parent			= true;
+	var $nav_style			=0;
+	var $nav_buttons		=0;
+	
+	var $ImagesizeWpg		=200;
+	var $ImagesizeHpg		=200;	
+	var $ImagesizeWsp		=200;
+	var $ImagesizeHsp		=200;
 	
   
   function Admin_Catalog_Easy()
@@ -73,7 +81,8 @@ class Admin_Catalog_Easy{
 				'ShowImagecar',  'ImageCirclecar',  'ShowTitlecar', 'ImagesizeWcar' ,'ImagesizeHcar' ,
 				'Showtitle' ,'datafilter' ,'imagelinked','ItemW',
 				'ECthumb','ECthumbH','ECthumbW', 'wap',
-				'catpages'
+				'catpages','nav_parent','nav_style','nav_buttons',
+				'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp'				
 			);
 	  
  	$this->loadConfig();
@@ -97,28 +106,32 @@ class Admin_Catalog_Easy{
     global $langmessage,$config,$addonRelativeCode,$page,$gp_index,$addonFolderName;
 	
 	   
-     $pageIndexJS = 'var gpE_availablelabels = [';
-      $i = 0;
-      foreach ($gp_index as $key => $value) {
-        $i++;
-        $pageIndexJS .= '"' . common::GetLabelIndex($value) . '"' . ($i == count($gp_index) ? '' : ', ');
-      }
-      $pageIndexJS .= '];';
-      $page->head_script .= "\n" . $pageIndexJS . "\n";
+   //  $pageIndexJS = 'var gpE_availablelabels = [';
+   //   $i = 0;
+   //   foreach ($gp_index as $key => $value) {
+   //     $i++;
+   //     $pageIndexJS .= '"' . common::GetLabelIndex($value) . '"' . ($i == count($gp_index) ? '' : ', ');
+   //   }
+   //   $pageIndexJS .= '];';
+   //   $page->head_script .= "\n" . $pageIndexJS . "\n";
         
 	
-	if(array_key_exists ( "menus", $config) ){
-		
-	$menus = 'var gpE_menus = {';
-	$i = 0;
-	foreach ($config['menus'] as $key => $value) {
-        $i++;
-        $menus  .= '"'.$key.'":"' . $value . '"' . ($i == count($config['menus']) ? '' : ', ');
-      }
-	$menus .= '};';
-	$page->head_script .= "\n" . $menus . "\n";
-	
-	}
+//	if(array_key_exists ( "menus", $config) ){
+//		
+//	$menus = 'var gpE_menus = {';
+//	$i = 0;
+//	foreach ($config['menus'] as $key => $value) {
+//        $i++;
+//        $menus  .= '"'.$key.'":"' . $value . '"' . ($i == count($config['menus']) ? '' : ', ');
+//      }
+//	$menus .= '};';
+//	$page->head_script .= "\n" . $menus . "\n";
+//	
+//	} else {
+//	$menus = 'var gpE_menus = {';
+//	$menus .= '};';
+//	$page->head_script .= "\n" . $menus . "\n";	
+//	}
 	
 	$page->head_js[] = $addonRelativeCode.'/js/admin_catalog.js';
 	$page->css_admin[] = $addonRelativeCode.'/css/admin_catalog.css';
@@ -168,55 +181,12 @@ echo '<button name="EC_panel9" class="EC_doc gpbutton"  >Page Manager</button>';
 	echo '<div style="width:30%;float:left;">';	
 	echo '<h4>Layout Options:</h4>';
     echo '<p>Default catalog layout</br>';
-    echo '<select name="catalog_layout" class="gpselect">';
-    if( $this->catalog_layout == 1)
-    {
-      echo '  <option value="0">List</option>';
-      echo '  <option value="1" selected="selected">3 columns</option>';
-	  echo '  <option value="2">2 columns</option>';
-	  echo '  <option value="3">Portfolio Gallery</option>';
-	  echo '  <option value="4">Carousel</option>';
-	  echo '  <option value="5">Sortable Portfolio</option>';
-    }
-    elseif( $this->catalog_layout == 2)
-    {
-      echo '  <option value="0">List</option>';
-      echo '  <option value="1">3 columns</option>';
-	  echo '  <option value="2" selected="selected">2 columns</option>';
-	  echo '  <option value="3">Portfolio Gallery</option>';
-	  echo '  <option value="4">Carousel</option>';
-	  echo '  <option value="5">Sortable Portfolio</option>';
-    } elseif( $this->catalog_layout == 3) {
-	  echo '  <option value="0">List</option>';
-      echo '  <option value="1">3 columns</option>';
-	  echo '  <option value="2">2 columns</option>';
-	  echo '  <option value="3" selected="selected">Portfolio Gallery</option>';
-	  echo '  <option value="4">Carousel</option>';
-	  echo '  <option value="5">Sortable Portfolio</option>';
-	} elseif( $this->catalog_layout == 4) {
-	  echo '  <option value="0">List</option>';
-      echo '  <option value="1">3 columns</option>';
-	  echo '  <option value="2">2 columns</option>';
-	  echo '  <option value="3">Portfolio Gallery</option>';
-	  echo '  <option value="4" selected="selected">Carousel</option>';
-	  echo '  <option value="5">Sortable Portfolio</option>';
-	} elseif( $this->catalog_layout == 5) {
-	  echo '  <option value="0">List</option>';
-      echo '  <option value="1">3 columns</option>';
-	  echo '  <option value="2">2 columns</option>';
-	  echo '  <option value="3">Portfolio Gallery</option>';
-	  echo '  <option value="4">Carousel</option>';
-	  echo '  <option value="5" selected="selected">Sortable Portfolio</option>';
-		
-	} else{
-	  echo '  <option value="0" selected="selected">List</option>';
-      echo '  <option value="1">3 columns</option>';
-	  echo '  <option value="2">2 columns</option>';
-	  echo '  <option value="3">Portfolio Gallery</option>';
-	  echo '  <option value="4">Carousel</option>';
-	  echo '  <option value="5">Sortable Portfolio</option>';
+  	$select_data=array(0=>'List',1=>'3 columns',2=>'2 columns',3=>'Portfolio Gallery',4=>'Carousel',5=>'Sortable Portfolio');
+	 if( $this->catalog_layout ){
+		echo self::Select('catalog_layout',$select_data, $this->catalog_layout,'gpselect');	
+		} else {
+		echo self::Select('catalog_layout',$select_data, 0,'gpselect');
 	}
-    echo '</select>';
     echo '</p>';
 	echo '</div>';
 	
@@ -332,11 +302,11 @@ echo '<button name="EC_panel9" class="EC_doc gpbutton"  >Page Manager</button>';
 	echo '<input type="checkbox" name="ImageCircle3c" value="circle" />';
 		}
 	
-	echo '<div style="display:none;">';
+	
 	echo '<p>Width(px) ';
     echo '<input type="text" name="ImagesizeW3c" value="'.$this->ImagesizeW3c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-	echo '</div>';
+	
 	
 	echo '<p>Max-height image(px) ';
     echo '<input type="text" name="ImagesizeH3c" value="'.$this->ImagesizeH3c .'" class="gpinput" style="width:150px" />';
@@ -382,7 +352,7 @@ echo '<button name="EC_panel9" class="EC_doc gpbutton"  >Page Manager</button>';
 	echo '<p>Width(px) ';
     echo '<input type="text" name="ImagesizeW2c" value="'.$this->ImagesizeW2c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-	echo '<p>Height(px) ';
+	echo '<p>Max-height image(px)';
     echo '<input type="text" name="ImagesizeH2c" value="'.$this->ImagesizeH2c .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
@@ -401,6 +371,17 @@ echo '<button name="EC_panel9" class="EC_doc gpbutton"  >Page Manager</button>';
 	echo '<p>Height of expandable info (px)<br>';
     echo '<input type="text" name="ECPMinHeight" value="'.$this->ECPMinHeight .'" class="gpinput" style="width:150px" />';
     echo '</p>';
+	
+	echo '<h4>Image Options:</h4>';
+	
+		
+	echo '<p>Width(px) ';
+    echo '<input type="text" name="ImagesizeWpg" value="'.$this->ImagesizeWpg .'" class="gpinput" style="width:150px" />';
+    echo '</p>';
+	echo '<p>Height(px) ';
+    echo '<input type="text" name="ImagesizeHpg" value="'.$this->ImagesizeHpg .'" class="gpinput" style="width:150px" />';
+    echo '</p>';
+	
 	echo '</div>';		 
 
 
@@ -433,10 +414,12 @@ echo '<button name="EC_panel9" class="EC_doc gpbutton"  >Page Manager</button>';
 		}
 	echo '</p>';
 	
+	
 	echo '<p>Width(px) ';
     echo '<input type="text" name="ImagesizeWcar" value="'.$this->ImagesizeWcar .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-	echo '<p>Height(px) ';
+	
+	echo '<p>Max-height image(px)';
     echo '<input type="text" name="ImagesizeHcar" value="'.$this->ImagesizeHcar .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	
@@ -466,6 +449,13 @@ echo '<button name="EC_panel9" class="EC_doc gpbutton"  >Page Manager</button>';
 		echo '</p>';
 		
 		echo '<h4>Image Options:</h4>';
+				
+		echo '<p>Width(px) ';
+		echo '<input type="text" name="ImagesizeWsp" value="'.$this->ImagesizeWsp .'" class="gpinput" style="width:150px" />';
+		echo '</p>';
+		echo '<p>Height(px) ';
+		echo '<input type="text" name="ImagesizeHsp" value="'.$this->ImagesizeHsp .'" class="gpinput" style="width:150px" />';
+		echo '</p>';
 		echo '<p>Image is linked to:</br>';
 		echo '<select name="imagelinked" class="gpselect">';
 		if( $this->imagelinked == 1)
@@ -503,9 +493,10 @@ echo '</div>';//end sortable portfolio panel
 echo '</div>';//end first default panel
 
 //special option panel
-echo '<div id="EC_panel8" class="EC_panel EC_panel_100">';
+echo '<div id="EC_panel8" class="EC_panel ">';
 	
-	$this->Panel_title('Special options');
+	echo '<div class="EC_panel1 row1">';
+	$this->Panel_title('Thumbnails ');
 	echo '<p>Use EasyCatalog generated thumbnails for images?  ';
 	if( $this->ECthumb  ){
 	echo '<input type="checkbox" name="ECthumb" value="yes" checked="checked" />';
@@ -514,21 +505,57 @@ echo '<div id="EC_panel8" class="EC_panel EC_panel_100">';
 		}
 	  echo '</p>';
 	
-	echo 'Thumbnail size:';
+	echo '<p>Thumbnail size will be taken from layout image settings</p>';
+	echo '<br>';
+	echo '<div style="display:none">';
 	echo '<p>Width(px) ';
     echo '<input type="text" name="ECthumbW" value="'.$this->ECthumbW .'" class="gpinput" style="width:150px" />';
     echo '</p>';
 	echo '<p>Height(px) ';
     echo '<input type="text" name="ECthumbH" value="'.$this->ECthumbH .'" class="gpinput" style="width:150px" />';
     echo '</p>';
-		
+	echo '</div>';	
 	
 	echo '<input type="button" onClick="location.href=\'' . common::GetUrl('Admin_Catalog_Easy') . '?cmd=del_thumbs\'" name="cmd" ';
     echo 'value="Delete generated thumbnails" class="admin_box_close gpcancel" />';
+	echo '</div>';
 	
 	
+	echo '<div class="EC_panel1 row1">';
+	$this->Panel_title('Navigation');
+	echo '<p>Show Parent page link?  ';
+		if( $this->nav_parent ){
+		echo '<input type="checkbox" name="nav_parent" value="true" checked="checked" />';
+		}else{
+		echo '<input type="checkbox" name="nav_parent" value="true" />';
+		}
+	echo '</p>';
+	$select_data_style=array(0=>'Links',1=>'Arrows',2=>'Arrows2',3=>'Arrows3');
+	echo '<p>Navigation buttons:';
+	if( $this->nav_style ){
+	echo self::Select('nav_style',$select_data_style, $this->nav_style,'gpselect');	
+	} else {
+	echo self::Select('nav_style',$select_data_style, 0,'gpselect');
+	}
+	echo'</p>';
+	$select_data_style2=array(0=>'Buttons in line',1=>'Buttons on both sides');
+	echo '<p>Navigation style:';
+	if( $this->nav_buttons ){
+	echo self::Select('nav_buttons',$select_data_style2, $this->nav_buttons,'gpselect');	
+	} else {
+	echo self::Select('nav_buttons',$select_data_style2, 0,'gpselect');
+	}
+	echo'</p>';
+	
+	echo '</div>';
+	
+	
+	
+	
+	echo '<div class="EC_panel1 row1">';
+	$this->Panel_title('');
+	echo '</div>';
 
-	
 	
 echo '</div>';
 
@@ -662,8 +689,9 @@ echo '<hr>';
 				'item_per_page2c','ImagesizeW2c','ImagesizeH2c',
 				'ImagesizeWcar','ImagesizeHcar',
 				'imagelinked','ItemW',
-				'ECthumbH','ECthumbW'
-				
+				'ECthumbH','ECthumbW',
+				'nav_style','nav_buttons',
+				'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp'	
 				);
 				
 	 foreach ($opts as $opt) {
@@ -676,7 +704,7 @@ echo '<hr>';
 					  'ShowImage3c','ShowSorting3c','ImageCircle3c',
 					  'ShowSorting2c','ShowImage2c','ImageCircle2c',
 					  'ShowImagecar','ImageCirclecar','ShowTitlecar','Showtitle',
-					  'ECthumb','wap');
+					  'ECthumb','wap','nav_parent');
 	
 	foreach ($checkboxes as $check){
 			if (isset($_POST[$check])){
@@ -753,7 +781,11 @@ echo '<hr>';
      
 	foreach ($this->var_names as $temp)
 	{
-	$this->$temp        = $config[$temp];
+		if (array_key_exists ( $temp, $config)){
+			
+		$this->$temp        = $config[$temp];
+		}
+	
 	}
 
 	  
@@ -782,7 +814,7 @@ echo '<hr>';
   
 	function Panel_title($name) {
 	echo '<div class="panel_title">'	;
-	echo '<h4 style="display: inline;font-weight:600;">'.$name.'</h4>';
+	echo '<h4 style="display: inline;font-weight:500;">'.$name.'</h4>';
 	echo '</div>';
 	return;
 		

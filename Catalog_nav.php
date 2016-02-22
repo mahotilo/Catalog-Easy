@@ -1,5 +1,9 @@
 <?php
-
+/*
+Catalog Easy Plugin
+Author: a2exfr
+http://my-sitelab.com/
+Version 1.8*/
 
 
 defined('is_running') or die('Not an entry point...');
@@ -41,21 +45,40 @@ class Catalog_nav extends Catalog_Easy{
 	
 	
  function Show($indexofparent){	
-	  $pl=common::GetLabelIndex($indexofparent);
-	  $pt=common::IndexToTitle($indexofparent);
+	  		
+		global $addonRelativeCode;
 		
-		
-		echo '<p class="blog_nav_links">';
-
-			echo '<a href="'.common::GetUrl($pt).'">'.$pl.'</a>';
-			echo '&nbsp;';
+		if($this->nav_style == 0 ) {
+			$next = gpOutput::SelectText('Next');
+			$back = gpOutput::SelectText('Previous');
+		} elseif ($this->nav_style == 1){
+			$back  = '<img src="' . $addonRelativeCode . '/img/arrow1-back.png' . '" />';
+			$next  = '<img src="' . $addonRelativeCode . '/img/arrow1-next.png ' . '" />';
 			
+		} elseif ($this->nav_style == 2){
+			$back  = '<img src="' . $addonRelativeCode . '/img/arrow2-back.png' . '" />';
+			$next  = '<img src="' . $addonRelativeCode . '/img/arrow2-next.png ' . '" />';
+		} elseif ($this->nav_style == 3){ 
+			$back  = '<img src="' . $addonRelativeCode . '/img/arrow3-back.png' . '" />';
+			$next  = '<img src="' . $addonRelativeCode . '/img/arrow3-next.png ' . '" />';
+		}
+		
+		if($this->nav_buttons==1){$nav_style="sides";} else {$nav_style="";}
+		
+		echo '<p class="EC_nav_links'.$nav_style.'">';
+		
+		if($this->nav_parent){
+			$pl=common::GetLabelIndex($indexofparent);
+			$pt=common::IndexToTitle($indexofparent);
+			echo '<a class="EC_home" href="'.common::GetUrl($pt).'">'.$pl.'</a>';
+			echo '&nbsp;';
+		}
 			if($this->PrevUrl){
-			echo '<a class="blog_newer" href="'.$this->PrevUrl.'">Следующая</a>';	
+			echo '<a class="EC_newer" href="'.$this->PrevUrl.'">'.$back.'</a>';	
 			echo '&nbsp;';	
 			}
 			if($this->NextUrl){
-			echo '<a class="blog_older" href="'.$this->NextUrl.'">Предыдущая</a>';		
+			echo '<a class="EC_older" href="'.$this->NextUrl.'">'.$next.'</a>';		
 			}
 				
 		echo '</p>';

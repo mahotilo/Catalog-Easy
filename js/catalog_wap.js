@@ -1,7 +1,8 @@
-/*Author: a2exfr
+/*
+Catalog Easy Plugin
+Author: a2exfr
 http://my-sitelab.com/
-Date: 2015-11-07
-Version 1.7*/
+Version 1.8*/
 
 $(document).ready(function() {
 	
@@ -28,14 +29,21 @@ $(".container .column2").EHt();
 $(".column h3").EHt();	
 
 
-$(".my-grid").WMGridfolio({	
-			thumbnail : {	columns : ECPColumns,		},
-			details : {	minHeight : ECPMinHeight,		},
-			  			 
-			});
+$(".my-grid").each(function(){
+	 var pg = $(this).attr("data-column");	
+	 var tes = Number($(this).attr("data-mheight"));	
+	$(this).WMGridfolio({	
+				thumbnail : {	columns : pg,		},
+				details : {	minHeight : tes,		},
+				config : {     keepOpen      : false,          },
+							 
+				});
+
+				
+   })	
 		
 $(function(){
-  $("#EC_portfolio").mixitup({
+  $(".EC_portfolio").mixitup({
     targetSelector: ".item",
     transitionSpeed: 450
   });

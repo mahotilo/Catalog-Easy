@@ -3,7 +3,7 @@
 Author: a2exfr
 http://my-sitelab.com/
 Date: 2015-11-07
-Version 1.7
+Version 1.8
 
 */
 $(document).ready(function() {
@@ -50,11 +50,7 @@ $('.EC_doc').click(function () {
 
  // page manager
 
-	var max_catpage = $('#max_catpage').val();
-	
-	if (typeof gpE_menus !== 'undefined') {
-	  // ..
-	} else {var gpE_menus = JSON.parse('{}');}
+var max_catpage = $('#max_catpage').val();
 	
  $(".add_cat_page").click(function(e){ 
         e.preventDefault();
@@ -120,19 +116,8 @@ $('.EC_doc').click(function () {
     })
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- //
-//$("#netpage").autocomplete({ source : gpE_availablelabels });
-//$("#anotherpage").autocomplete({ source : gpE_availablelabels });
-$(".cp").autocomplete({ source : gpE_availablelabels });
 
+$(".cp").autocomplete({ source : gpE_availablelabels });
 
 
 
@@ -171,9 +156,6 @@ $(".cp").autocomplete({ source : gpE_availablelabels });
 																		 
 										});
 			
-	
-	
-
 
 $(".row1").EHt();
 $(".row2").EHt();
@@ -184,8 +166,7 @@ $(".row2").EHt();
 
  $(document).on("change",".source",function(e){
   
-  //alert( $(this).val());
- // $(this).next('input').show();
+
  if($(this).val() == 1) {
    $(this).next('select').addClass('hidei');
  $(this).nextAll('input').eq(0).removeClass('hidei');

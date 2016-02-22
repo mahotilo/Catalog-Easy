@@ -3,130 +3,37 @@
 PHP script for Catalog Easy gpEasy Plugin
 Author: a2exfr
 http://my-sitelab.com/
-Date: 2015-11-07
-Version 1.7
+Version 1.8
 */
 defined('is_running') or die('Not an entry point...');
 includeFile('tool/SectionContent.php');
+
 session_start();
 
 
 class Catalog_Easy
 {
+   
+	public  $flag_section;
+   	public  $sect_options;	
+
     
-    public $catalog_layout;
-    public $ShowImage;
-    public $ImagesizeW;
-    public $ImagesizeH;
-    public $ImageCircle;
-    public $LinesPages;
-    public $column3Pages;
-    public $column2Pages;
-    public $PGPages;
-    public $CarPages;
-    public $ECrow;
-    public $ECheight;
-    public $item_per_page;
-    public $item_per_pageL;
-    public $item_per_page2c;
-    public $item_per_page3c;
-    public $datafilter;
-    public $imagelinked;
-    public $Showtitle;
-    public $ItemW;
-    public $ECthumb;
-    
-    public function __construct()
+    public function __construct($flag_section="no",$sect_options="")
     {
-        
-        
-        global $addonRelativeCode, $addonPathData, $ECPColumns, $ECPMinHeight;
+         //for section settings
+		$this->is_sect=$flag_section;
+		if($this->is_sect=="yes"){
+			$this->sect_options=$sect_options;
+			
+		} else {
+		$this->sect_options="";	
+		}
+				 
+        global $addonRelativeCode, $addonPathData;
         
 		$this->getConfig();
-
-	//   $configFile = $addonPathData . '/config.php';
-    //    if (!file_exists($configFile)) {
-    //        $this->getDefaultConfig();
-    //    }
-    //    
-    //    if (file_exists($configFile)) {
-    //        include $configFile;
-    //    }
-    //    
-    //    if (!isset($config)) {
-    //        $this->getDefaultConfig();
-    //        
-    //    } else {
-    //        
-    //        //$this->item_per_page		= $config['item_per_page'];
-    //        $this->catalog_layout = $config['catalog_layout'];
-    //        //$this->ShowImage			= $config['ShowImage'];
-    //        //$this->ShowSorting		= $config['ShowSorting'];
-    //        $this->ImagesizeW     = $config['ImagesizeW'];
-    //        $this->ImagesizeH     = $config['ImagesizeH'];
-    //        //$this->ImageCircle		= $config['ImageCircle'];
-    //        $this->LinesPages     = $config['LinesPages'];
-    //        $this->column3Pages   = $config['column3Pages'];
-    //        $this->column2Pages   = $config['column2Pages'];
-    //        $this->PGPages        = $config['PGPages'];
-    //        $ECPColumns           = $config['ECPColumns'];
-    //        $ECPMinHeight         = $config['ECPMinHeight'];
-    //        $this->ECrow          = $config['ECrow'];
-    //        $this->ECheight       = $config['ECheight'];
-	//		$this->ShortInfo 	  = $config['ShortInfo'];	
-	//		$this->AbbrevL 		  = $config['AbbrevL'];
-    //        
-    //        //list 		
-    //        $this->item_per_pageL = $config['item_per_pageL'];
-    //        $this->ImagesizeWL    = $config['ImagesizeWL'];
-    //        $this->ImagesizeHL    = $config['ImagesizeHL'];
-    //        $this->ImageCircleL   = $config['ImageCircleL'];
-    //        $this->ShowImageL     = $config['ShowImageL'];
-    //        $this->ShowSortingL   = $config['ShowSortingL'];
-    //        
-    //        //3c 
-    //        $this->item_per_page3c = $config['item_per_page3c'];
-    //        $this->ImagesizeW3c    = $config['ImagesizeW3c'];
-    //        $this->ImagesizeH3c    = $config['ImagesizeH3c'];
-    //        $this->ImageCircle3c   = $config['ImageCircle3c'];
-    //        $this->ShowImage3c     = $config['ShowImage3c'];
-    //        $this->ShowSorting3c   = $config['ShowSorting3c'];
-    //        
-    //        //2c 
-    //        $this->item_per_page2c = $config['item_per_page2c'];
-    //        $this->ImagesizeW2c    = $config['ImagesizeW2c'];
-    //        $this->ImagesizeH2c    = $config['ImagesizeH2c'];
-    //        $this->ImageCircle2c   = $config['ImageCircle2c'];
-    //        $this->ShowImage2c     = $config['ShowImage2c'];
-    //        $this->ShowSorting2c   = $config['ShowSorting2c'];
-    //        
-    //        //carousel
-    //        $this->ImagesizeWcar  = $config['ImagesizeWcar'];
-    //        $this->ImagesizeHcar  = $config['ImagesizeHcar'];
-    //        $this->ImageCirclecar = $config['ImageCirclecar'];
-    //        $this->ShowImagecar   = $config['ShowImagecar'];
-    //        $this->CarPages       = $config['CarPages'];
-    //        $this->ShowTitlecar	  = $config['ShowTitlecar'];
-	//		
-    //        
-    //        $this->datafilter  = $config['datafilter'];
-    //        $this->imagelinked = $config['imagelinked'];
-    //        $this->Showtitle   = $config['Showtitle'];
-    //        $this->ItemW       = $config['ItemW'];
-    //        
-    //        //spec
-    //        $this->anotherpage = $config['anotherpage'];
-    //        $this->netpage     = $config['netpage'];
-    //        $this->ECthumb     = $config['ECthumb'];
-	//		$this->ECthumbH	   = $config['ECthumbH'];
-	//		$this->ECthumbW	   = $config['ECthumbW'];
-	//		$this->wap	  	   = $config['wap'];
-	//		
-	//		$this->catpages	  = $config['catpages'];
-    //        
-    //    }
-        
-        
+		
+		
         global $page;
 			
 		
@@ -150,7 +57,7 @@ class Catalog_Easy
         $this->Check_layout();
         $this->Check_options();
         $title = $this->HowtoTake($title); 
-       
+
 		$pages_count = count($title);
 		
         if (isset($_REQUEST["sort"])) {
@@ -211,7 +118,7 @@ class Catalog_Easy
             $this->ShowCatalog($items);
             
             echo '<div id="clicker" align="center">';
-            if ($this->wap){
+            if ($this->wap and $this->wap<>""){
 			echo $this->paginate_function_wa($this->item_per_page, $page_number, $pages_count, $total_pages);
 			} else {
 			echo $this->paginate_function($this->item_per_page, $page_number, $pages_count, $total_pages);	
@@ -374,7 +281,7 @@ class Catalog_Easy
             $items[$label]['link']     = common::Link($title, $label);
             $items[$label]['label']    = $label;
 			$items[$label]['url']	   = common::GetUrl($title);
-            $readmore                  = '<img src="' . $addonRelativeCode . '/more.png' . '" border="0" />';
+            $readmore                  = '<img src="' . $addonRelativeCode . '/img/more.png' . '" border="0" />';
             $items[$label]['readmore'] = common::Link($title, $readmore);
             list($items[$label]['image'], $items[$label]['short_info'], $items[$label]['datafilter']) = $this->getImageandInfo($title);
             
@@ -497,14 +404,18 @@ class Catalog_Easy
         }
        
 	  
-	  if($this->catalog_layout == 1 ){
+		if($this->catalog_layout == 1 or $this->catalog_layout == 4 or $this->catalog_layout == 2){
 		  
-		$style = 'max-height:' . $this->ImagesizeH . 'px!important;';  
-		
-	  } else{
+			$style = 'max-height:' . $this->ImagesizeH . 'px!important;';  
+
+		} elseif($this->catalog_layout == 0){
+			$style = 'max-width:' . $this->ImagesizeW . 'px!important; '; 
+		} elseif($this->catalog_layout == 3 or $this->catalog_layout == 5){
+			$style = ""; 
+		}else{
 		  
-		$style = 'width:' . $this->ImagesizeW . 'px!important; height:' . $this->ImagesizeH . 'px!important;';  
-	  }
+			$style = 'width:' . $this->ImagesizeW . 'px!important; height:' . $this->ImagesizeH . 'px!important;';  
+		}
 	  
 	  
 	   
@@ -546,22 +457,22 @@ class Catalog_Easy
 	   
 	   
 	   
+	   $label = common::GetLabel($title);
 	   
 	   if ($this->ShowImage) {
             if ($this->catalog_layout == 5 and $this->imagelinked == 1) {
                
-			   $show  = '<img class="img-responsive thumbnail ' . $a . '" style="' . $style . '" src="' . $src . '"/>';
+			   $show  = '<img class="img-responsive thumbnail ' . $a . '" style="' . $style . '" alt="'.$label.'" src="' . $src . '"/>';
                 
 				if ($this->ECthumb) {$src = $image_real;}
 				
-				$label = common::GetLabel($title);
-               //$show = common::Link($src,$show,'','name="gallery" rel="nofollow" title="'.$label.'"');
-               // $show  = common::Link($src, $show, '', 'class="EC_img" title="' . $label . '"');
-                $show = '<a name="gallery" rel="EC_pf" title="'.$label.'" href="'.$src.'">'.$show.'</a>';
+				          
+				$show = '<a name="gallery" rel="EC_pf" title="'.$label.'" href="'.$src.'">'.$show.'</a>';
 
 				
             } else {
-                $show = '<img class="img-responsive thumbnail ' . $a . '" style="' . $style . '" src="' . $src . '"/>';
+				
+                $show = '<img class="img-responsive thumbnail ' . $a . '" style="' . $style . '" alt="'.$label.'" src="' . $src . '"/>';
                 $show = common::Link($title, $show);
             }
             
@@ -684,14 +595,15 @@ class Catalog_Easy
             mkdir($dir);
         }
         
-        $test = $this->jpegImgCrop($dataDir . $file);
-        
-        return $test;
+       $test = $this->jpegImgCrop($dataDir . $file);
+            
+       
+	   return $test;
         
         
     }
-    
-    
+    	
+
     
     function jpegImgCrop($target_url)
     {
@@ -723,8 +635,16 @@ class Catalog_Easy
         
         
 		//$target_url = urldecode($target_url);
-        $image      = imagecreatefromjpeg($target_url);
+        if($type=="png"){
+		$image      = imagecreatefrompng($target_url);
+		} elseif($type=="gif"){
+		$image      = imagecreatefromgif($target_url);
+		} elseif($type=="bmp"){
+		$image      = imagecreatefromwbmp($target_url);	
+		} else{
+		$image      = imagecreatefromjpeg($target_url);}
 
+		
         $filename   = $target_url;
         $width      = imagesx($image);
         $height     = imagesy($image);
@@ -756,7 +676,7 @@ class Catalog_Easy
             0 - ($new_height - $thumb_height) / 2, // Center the image vertically
             0, 0, $new_width, $new_height, $width, $height);
         // imagejpeg($thumb, $filename, 80);
-        imagejpeg($thumb, 'data/_uploaded/image/thumbnails/easy_catalog/' . $newname, 80);
+        imagejpeg($thumb, 'data/_uploaded/image/thumbnails/easy_catalog/' . $newname, 90);
         
         $thumb_scr = '/data/_uploaded/image/thumbnails/easy_catalog/' . $newname;
         return $thumb_scr;
@@ -875,7 +795,7 @@ class Catalog_Easy
     function ShowLayoutPortfolioGallery($items)
     {
         
-        echo '<div class="wmg-container my-grid" style="width:100%;">';
+        echo '<div class="wmg-container my-grid" style="width:100%;" data-column="'.$this->ECPColumns.'" data-mheight="'.$this->ECPMinHeight.'">';
         foreach ($items as $item) {
             
             
@@ -952,12 +872,18 @@ class Catalog_Easy
                 $this->ECrow = 4;
         }
         
+		
+		if($this->is_sect=="yes"){ 
+			$car_id = $this->sect_options['EC_id'];
+		} else {
+			$car_id ="";}
         
         echo '<div class="container" style="width:100%;">';
         echo '<div class="row">';
         echo '<div class="col-md-12">';
-        echo '<div id="EC_Carousel" class="carousel slide" data-ride="carousel">';
-        echo '<div class="carousel-inner" style="height:' . $this->ECheight . 'px">';
+        echo '<div id="EC_Carousel'.$car_id.'" class="carousel slide" data-ride="carousel">';
+		if ($this->ECheight<>"") {$style = 'style="height:' . $this->ECheight . 'px"';} else {$style = "";}
+		echo '<div class="carousel-inner" '.$style.'">';
         
         $flag = "active";
         
@@ -998,8 +924,8 @@ class Catalog_Easy
         
         echo '</div>';
         
-        echo '<a role="button" data-slide="prev" href="#EC_Carousel" class="left EC_carousel-control"><img src="' . $addonRelativeCode . '/img/left.png' . '" border="0" /></a>';
-        echo '<a role="button" data-slide="next" href="#EC_Carousel" class="right EC_carousel-control"><img src="' . $addonRelativeCode . '/img/right.png' . '" border="0" /></a>';
+        echo '<a role="button" data-slide="prev" href="#EC_Carousel'.$car_id.'" class="left EC_carousel-control"><img src="' . $addonRelativeCode . '/img/left.png' . '" border="0" /></a>';
+        echo '<a role="button" data-slide="next" href="#EC_Carousel'.$car_id.'" class="right EC_carousel-control"><img src="' . $addonRelativeCode . '/img/right.png' . '" border="0" /></a>';
         echo '</div>';
         echo '</div>';
         echo '</div>';
@@ -1023,7 +949,7 @@ class Catalog_Easy
         echo '</ul>';
         
         echo '<div class="container" style="width:100%;">';
-        echo '<ul id="EC_portfolio">';
+        echo '<div class="EC_portfolio">';
         foreach ($items as $item) {
             
             echo '<div class="item ' . $item['datafilter'] . '" style="width: ' . $this->ItemW . '%;">';
@@ -1037,7 +963,7 @@ class Catalog_Easy
             echo '</div>';
             
         }
-        echo '</ul>';
+        echo '</div>';
         echo '</div>';
         
         
@@ -1162,6 +1088,22 @@ class Catalog_Easy
 	function CheckSource(){
 		global $page;
 		
+		//sect check - more priority
+		if($this->is_sect=="yes"){
+			
+			if ($this->sect_options['source']== 0){
+				return $this->getChildpages();
+				}
+			if ($this->sect_options['source']== 1 and $this->sect_options['sourcepages']<>""){
+				return $this->getChildpagefromLabel($this->sect_options['sourcepages']);
+				}
+			if ($this->sect_options['source']== 2 and $this->sect_options['sourcepages']<>"" and $this->sect_options['cat_menu']<>""){
+				return $this->getChildpagesfromAnotherMenu($this->sect_options['cat_menu'],$this->sect_options['sourcepages']);
+				}
+						
+		}
+		
+		//gadget check
 		if(isset($this->catpages) and $this->catpages<>""){
 		
 			foreach ($this->catpages as $catpage ){
@@ -1223,6 +1165,65 @@ class Catalog_Easy
 	function HowtoTake($pages){
 		global $page;
 		
+		//sect check - more priority
+		if($this->is_sect=="yes"){
+			
+			if ($this->sect_options['beh']== 0){
+					if($this->sect_options['crop']<>"" and $this->sect_options['crop'] > 0 ){
+					$this->item_per_page = $this->sect_options['crop'];
+					}
+					return $pages;
+			}
+			if ($this->sect_options['beh']== 1){
+				
+					if($this->sect_options['crop']<>"" and $this->sect_options['crop'] > 0 ){
+							
+							if(count($pages) > 0) {
+							$pages = array_slice($pages,0, $this->sect_options['crop']); 
+							}
+							
+							$this->item_per_page = $this->sect_options['crop'];
+							
+							return $pages;
+					}
+				
+			}
+			if ($this->sect_options['beh']== 2){
+				
+					if($this->sect_options['crop']<>"" and $this->sect_options['crop'] > 0 ){
+							
+							if(count($pages) > 0) {
+							$pages = array_slice($pages, -$this->sect_options['crop']);
+							}
+							
+							$this->item_per_page = $this->sect_options['crop'];
+							
+							return $pages;
+					}
+				
+			}
+			if ($this->sect_options['beh']== 3){
+				
+					if($this->sect_options['crop']<>"" and $this->sect_options['crop'] > 0 ){
+							
+							shuffle($pages);
+							
+							if(count($pages) > 0) {
+							$pages = array_slice($pages,0,$this->sect_options['crop']); 
+							}
+							
+							$this->item_per_page = $this->sect_options['crop'];
+							
+							return $pages;
+					}
+				
+			}
+		
+		
+		}
+		
+		
+		//gadget check
 		if(isset($this->catpages) and $this->catpages<>""){
 		
 			foreach ($this->catpages as $catpage ){
@@ -1244,9 +1245,10 @@ class Catalog_Easy
 					if($catpage['beh']== 1 ) {
 						
 						if($catpage['crop']<>"" and $catpage['crop'] > 0 ){
-						
-							$pages = array_slice($pages,0, $catpage['crop']); 
 							
+							if(count($pages) > 0) {
+							$pages = array_slice($pages,0, $catpage['crop']); 
+							}
 							return $pages;
 						}
 											
@@ -1255,8 +1257,10 @@ class Catalog_Easy
 					if($catpage['beh']== 2) {
 						
 						if($catpage['crop']<>"" and $catpage['crop'] > 0 ){
-						
+							
+							if(count($pages) > 0) {
 							$pages = array_slice($pages, -$catpage['crop']); 
+							}
 							
 							return $pages;
 						}
@@ -1267,7 +1271,10 @@ class Catalog_Easy
 						if($catpage['crop']<>"" and $catpage['crop'] > 0 ){
 						
 							shuffle($pages);
+							
+							if(count($pages) > 0) {
 							$pages = array_slice($pages,0,$catpage['crop']); 
+							}
 							
 							return $pages;
 						}
@@ -1382,6 +1389,11 @@ class Catalog_Easy
 			}
 		}
         
+		//for section
+		if($this->is_sect=="yes"){
+		$this->catalog_layout=$this->sect_options['catalog_layout'];
+		 }
+		
         return;
         
         
@@ -1526,21 +1538,127 @@ class Catalog_Easy
                 
             }
             
+        }       
+
+		if ($this->catalog_layout == 3) {
+            
+           
+            if (isset($this->ImagesizeWpg) and $this->ImagesizeWpg <> "") {
+                
+                $this->ImagesizeW = $this->ImagesizeWpg;
+                
+            }
+            if (isset($this->ImagesizeHpg) and $this->ImagesizeHpg <> "") {
+                
+                $this->ImagesizeH = $this->ImagesizeHpg;
+                
+            }
+           
+            
+        }		
+		
+		if ($this->catalog_layout == 5) {
+            
+           
+            if (isset($this->ImagesizeWsp) and $this->ImagesizeWsp <> "") {
+                
+                $this->ImagesizeW = $this->ImagesizeWsp;
+                
+            }
+            if (isset($this->ImagesizeHsp) and $this->ImagesizeHsp <> "") {
+                
+                $this->ImagesizeH = $this->ImagesizeHsp;
+                
+            }
+           
+            
         }
         
+
+		
         
         if ($this->ImagesizeH == "") {
             $this->ImagesizeH = 200;
         }
         if ($this->ImagesizeW == "") {
-            $this->ImagesizeH = 200;
+            $this->ImagesizeW = 200;
         }
         
         if (!isset($this->ShowSorting)) {
             $this->ShowSorting = false;
         }
+       
+	   if (!isset($this->ImageCircle)) {
+            $this->ImageCircle = false;
+        }
         
-        
+		//temp, make thumb size from layout image size settings(gadget)
+		$this->ECthumbH=$this->ImagesizeH;
+		$this->ECthumbW=$this->ImagesizeW;
+		
+		//for section
+		if($this->is_sect=="yes"){
+		
+			if($this->sect_options['height']<>""){
+			$this->ImagesizeH=$this->sect_options['height'];
+			}
+			if($this->sect_options['width']<>""){
+			$this->ImagesizeW=$this->sect_options['width'];
+			}
+			
+			if($this->sect_options['EC_thumb']=="yes"){
+				if($this->sect_options['height']<>"" and $this->sect_options['width']<>""){
+					$this->ECthumbH=$this->sect_options['height'];
+					$this->ECthumbW=$this->sect_options['width'];
+					$this->ECthumb="yes";
+				}		
+			}else {
+				$this->ECthumb="";
+			}
+			
+		if($this->sect_options['showimage']=="yes"){
+			$this->ShowImage = true;
+			
+		} else {
+			$this->ShowImage = false;
+		}
+		
+		if($this->sect_options['shortinfo']==1 and $this->sect_options['abr']<>""){
+			$this->ShortInfo = "abrev";
+			$this->AbbrevL = $this->sect_options['abr'];
+			
+		} else {
+			$this->ShortInfo = "sect";
+		}
+		
+		if($this->sect_options['catalog_layout'] == 4){
+		
+				if ($this->sect_options['ECrow']<>""){
+					$this->ECrow=$this->sect_options['ECrow'];
+				}
+				if ($this->sect_options['ECheight']<>""){
+					$this->ECheight=$this->sect_options['ECheight'];
+				}
+				if ($this->sect_options['ShowTitlecar']=="yes"){
+					$this->ShowTitlecar=true;
+				} else {$this->ShowTitlecar=false;}
+		
+		}
+		
+		//$this->ECPColumns 
+		if($this->sect_options['catalog_layout'] == 3){
+				if ($this->sect_options['ECPColumns']<>""){
+					$this->ECPColumns=$this->sect_options['ECPColumns'];
+				}
+				if ($this->sect_options['ECPMinHeight']<>""){
+					$this->ECPMinHeight=$this->sect_options['ECPMinHeight'];
+				}
+			
+		}
+		
+		}//end section opt check
+		
+		
         return;
         
     }
@@ -1548,7 +1666,7 @@ class Catalog_Easy
     
     function getConfig(){
 		
-		global $addonRelativeCode, $addonPathData, $ECPColumns, $ECPMinHeight;
+		global $addonRelativeCode, $addonPathData;
         $configFile = $addonPathData . '/config.php';
         if (!file_exists($configFile)) {
             $this->getDefaultConfig();
@@ -1571,8 +1689,8 @@ class Catalog_Easy
             $this->ImagesizeH     = $config['ImagesizeH'];
             //$this->ImageCircle		= $config['ImageCircle'];
             
-            $ECPColumns           = $config['ECPColumns'];
-            $ECPMinHeight         = $config['ECPMinHeight'];
+            $this->ECPColumns     = $config['ECPColumns'];
+            $this->ECPMinHeight   = $config['ECPMinHeight'];
             $this->ECrow          = $config['ECrow'];
             $this->ECheight       = $config['ECheight'];
 			$this->ShortInfo 	  = $config['ShortInfo'];	
@@ -1622,6 +1740,16 @@ class Catalog_Easy
 			$this->wap	  	   = $config['wap'];
 			
 			$this->catpages	  = $config['catpages'];
+			//nav
+			$this->nav_parent	 = $config['nav_parent'];
+			$this->nav_style	 = $config['nav_style'];
+			$this->nav_buttons	 = $config['nav_buttons'];
+			
+			$this->ImagesizeWpg		= $config['ImagesizeWpg'];
+			$this->ImagesizeHpg		= $config['ImagesizeHpg'];	
+			$this->ImagesizeWsp		= $config['ImagesizeWsp'];
+			$this->ImagesizeHsp		= $config['ImagesizeHsp'];
+			
 		
 			//deprecated options
 			$opts = array('LinesPages','column3Pages','column2Pages','PGPages',
@@ -1656,10 +1784,10 @@ class Catalog_Easy
         $this->column3Pages   = "";
         $this->PGPages        = "";
         $this->CarPages       = "";
-        $ECPColumns           = 5;
-        $ECPMinHeight         = 400;
+        $this->ECPColumns     = 5;
+        $this->ECPMinHeight   = 400;
         $ECrow                = 4;
-        $ECheight             = 400;
+        $this->ECheight       = "";
 		$this->ShortInfo 	  = "sect";	
 		$this->AbbrevL 		  = 100;
 		
@@ -1703,6 +1831,25 @@ class Catalog_Easy
 		$this->wap    	 	= false;
 		
 		$this->catpages	    = "";
+		//nav
+		$this->nav_parent	= true;
+		$this->nav_style	=0;
+		$this->nav_buttons	=0;
+		
+		$this->ImagesizeWpg		=200;
+		$this->ImagesizeHpg		=200;	
+		$this->ImagesizeWsp		=200;
+		$this->ImagesizeHsp		=200;
+		
+		//deprecated options
+		$opts = array('LinesPages','column3Pages','column2Pages','PGPages',
+			'CarPages', 'anotherpage','netpage'
+			
+			);
+			
+		foreach($opts as $opt) { $this->$opt    = "";	}
+		
+	
 		
 	   return;
     }
@@ -1717,5 +1864,215 @@ class Catalog_Easy
         
     }
     
-    
+ 
+
+	//FOR SECTION PART
+	
+ function SectionTypes($section_types) {
+    $section_types['Catalog_easy_section'] = array();
+    $section_types['Catalog_easy_section']['label'] = 'Catalog easy';
+    return $section_types;
+  }
+
+
+  function SectionToContent($section_data) {
+    if( $section_data['type'] != 'Catalog_easy_section' ) {
+      return $section_data;
+    }
+	global $addonRelativeCode;		
+	
+	$catalog_layout = $section_data['catalog_layout'];
+	$source = $section_data['source'];
+	$cat_menu = $section_data['cat_menu'];
+	$sourcepages = $section_data['sourcepages'];
+	$beh = $section_data['beh'];
+	$crop = $section_data['crop'];
+	$width = $section_data['width'];
+	$height = $section_data['height'];
+	$EC_thumb = $section_data['EC_thumb'];
+	$EC_id = $section_data['EC_id'];
+	$showimage = $section_data['showimage'];
+	$shortinfo = $section_data['shortinfo'];
+	$abr = $section_data['abr'];
+	$ECrow = $section_data['ECrow'];
+	$ECheight = $section_data['ECheight'];
+	$ShowTitlecar = $section_data['ShowTitlecar'];
+	$ECPColumns = $section_data['ECPColumns'];
+	$ECPMinHeight = $section_data['ECPMinHeight'];
+	
+	ob_start();
+
+	
+	
+	
+		
+	$sect_options= array('catalog_layout'=>$catalog_layout,'source'=>$source,'cat_menu'=>$cat_menu,
+							'sourcepages'=>$sourcepages,'beh'=>$beh,'crop'=>$crop,'width'=>$width,'height'=>$height,
+							'EC_thumb'=>$EC_thumb,'EC_id'=>$EC_id,'showimage'=>$showimage,
+							'shortinfo'=>$shortinfo,'abr'=>$abr,'ECrow'=>$ECrow,'ECheight'=>$ECheight,'ShowTitlecar'=>$ShowTitlecar,
+							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight
+							);
+	//var_dump($sect_options);
+							
+	new Catalog_Easy("yes",$sect_options);
+		
+   
+	$section_data['content'] = ob_get_clean();
+	if ($section_data['content'] == ""){
+		$section_data['content'] = '<img class="img-responsive" src="'.$addonRelativeCode . '/img/сatalog_sect.png" alt="Catalog easy section" style="float:left;">
+									<p>Catalog easy section.</p>
+									<p>Edit it to show something.</p>';
+	} 
+	
+    return $section_data;
+   
+ }
+
+  function NewSections($links){
+
+    global $addonRelativeCode;
+
+    // add Section Manager "Add" Images for Section Types
+    foreach ($links as $key => $link) {
+      $match = is_array($link[0]) ? implode('-',$link[0]) : $link[0] ;
+      // find matchstring in $section_labels array, replace it existent
+      // replace section images with new ones
+      if ($match == 'Catalog_easy_section') { $links[$key][1] = $addonRelativeCode . '/img/сatalog_sect.png'; }
+
+    }
+
+      return $links;
+  }
+ 
+ 
+ 
+  function DefaultContent($default_content,$type) {
+    if( $type != 'Catalog_easy_section' ) {
+      return $default_content;
+    }
+    $section = array();
+    $section['content'] = '<p>Catalog easy section</p>';
+    $section['catalog_layout'] = 0;
+    $section['source'] = 0;
+    $section['cat_menu'] = "";
+    $section['sourcepages'] = "";
+    $section['beh'] = 1;
+    $section['crop'] = 6;
+    $section['width'] = 200;
+    $section['height'] = 200;
+	$section['EC_thumb'] = "no";
+	$section['showimage'] = "yes";
+	$section['shortinfo'] = 0;
+	$section['abr'] = 100;
+	$section['ECrow'] = 4;
+	$section['ECheight'] = "";
+	$section['ShowTitlecar'] = "yes";
+	$section['ECPColumns'] = 5;
+	$section['ECPMinHeight'] = 400;
+    		
+    $section['EC_id'] = "EC" . crc32(uniqid("",true));
+    return $section;
+  }
+
+
+  function SaveSection($return,$section,$type) {
+    if( $type != 'Catalog_easy_section' ) {
+      return $return;
+    }
+    global $page;
+    $page->file_sections[$section]['catalog_layout'] = & $_POST['catalog_layout'];
+	$page->file_sections[$section]['source'] = & $_POST['source'];
+	$page->file_sections[$section]['cat_menu'] = & $_POST['cat_menu'];
+	$page->file_sections[$section]['sourcepages'] = & $_POST['sourcepages'];
+	$page->file_sections[$section]['beh'] = & $_POST['beh'];
+	$page->file_sections[$section]['crop'] = & $_POST['crop'];
+	$page->file_sections[$section]['width'] = & $_POST['width'];
+	$page->file_sections[$section]['height'] = & $_POST['height'];
+	$page->file_sections[$section]['EC_thumb'] = & $_POST['EC_thumb'];
+	$page->file_sections[$section]['showimage'] = & $_POST['showimage'];
+	$page->file_sections[$section]['shortinfo'] = & $_POST['shortinfo'];
+	$page->file_sections[$section]['abr'] = & $_POST['abr'];
+	$page->file_sections[$section]['ECrow'] = & $_POST['ECrow'];
+	$page->file_sections[$section]['ECheight'] = & $_POST['ECheight'];
+	$page->file_sections[$section]['ShowTitlecar'] = & $_POST['ShowTitlecar'];
+	$page->file_sections[$section]['ECPColumns'] = & $_POST['ECPColumns'];
+	$page->file_sections[$section]['ECPMinHeight'] = & $_POST['ECPMinHeight'];
+	
+    return true;
+  }
+
+
+  static function InlineEdit_Scripts($scripts,$type) {
+    if( $type !== 'Catalog_easy_section' ) {
+      return $scripts;
+    }
+	global 	$addonRelativeCode;
+    $scripts[] = $addonRelativeCode.'/js/edit_cat_sect.js';
+
+	return $scripts;
+  }
+ 
+
+ 
+  function PageRunScript($cmd) {
+    global $page, $addonRelativeCode; 
+
+    // check the cmd querystring
+    if ( $cmd == 'refresh_section' ) {
+      $page->ajaxReplace = array();
+
+      // do  awesome)
+  	$catalog_layout = & $_REQUEST['catalog_layout'];
+	$source = & $_REQUEST['source'];
+	$cat_menu = & $_REQUEST['cat_menu'];
+	$sourcepages = & $_REQUEST['sourcepages'];
+	$beh = & $_REQUEST['beh'];
+	$crop = & $_REQUEST['crop'];
+	$width = & $_REQUEST['width'];
+	$height = & $_REQUEST['height'];
+	$EC_thumb = & $_REQUEST['EC_thumb'];
+	$showimage = & $_REQUEST['showimage'];
+	$shortinfo = & $_REQUEST['shortinfo'];
+	$abr = & $_REQUEST['abr'];
+	$ECrow = & $_REQUEST['ECrow'];
+	$ECheight = & $_REQUEST['ECheight'];
+	$ShowTitlecar = & $_REQUEST['ShowTitlecar'];
+	$EC_id = & $_REQUEST['EC_id'];
+	$ECPColumns = & $_REQUEST['ECPColumns'];
+	$ECPMinHeight = & $_REQUEST['ECPMinHeight'];
+	  
+	 ob_start();
+		
+	$sect_options= array('catalog_layout'=>$catalog_layout,'source'=>$source,'cat_menu'=>$cat_menu,
+							'sourcepages'=>$sourcepages,'beh'=>$beh,'crop'=>$crop,'width'=>$width,'height'=>$height,
+							'EC_thumb'=>$EC_thumb,'EC_id'=>$EC_id,
+							'showimage'=>$showimage,
+							'shortinfo'=>$shortinfo,'abr'=>$abr,'ECrow'=>$ECrow,'ECheight'=>$ECheight,'ShowTitlecar'=>$ShowTitlecar,
+							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight
+							);
+								
+	new Catalog_Easy("yes",$sect_options);
+		
+   
+	$arg_value = ob_get_clean();
+	if ($arg_value == ""){
+		$arg_value = '<img class="img-responsive" src="'.$addonRelativeCode . '/img/сatalog_sect.png" alt="Catalog easy section" style="float:left;">
+									<p>Catalog easy section.</p>
+									<p>Edit it to show something.</p>';
+	} 
+   
+   // define the AJAX callback
+      
+      $page->ajaxReplace[] = array('refresh_replayFn', 'arg', $arg_value);
+      return 'return';
+    }
+
+    return $cmd;
+  } /* endof PageRunScript hook */	
+	
+	
+	
+	
+	
+	
 }
