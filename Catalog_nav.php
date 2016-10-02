@@ -7,7 +7,7 @@ Version 1.8*/
 
 
 defined('is_running') or die('Not an entry point...');
-
+include_once('Catalog_Easy.php' );
 
 class Catalog_nav extends Catalog_Easy{
 

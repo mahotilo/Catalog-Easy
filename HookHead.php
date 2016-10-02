@@ -16,21 +16,31 @@ global $addonRelativeCode, $page, $addonPathData,$gp_index;
 	$page->head_js[] =  $addonRelativeCode . '/js/jquery.wm-gridfolio-1.0.min.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/carousel.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/jquery.mixitup.min.js';
+	$page->head_js[] =  $addonRelativeCode . '/js/imagesloaded.pkgd.min.js';
 	
 	$page->head_script .= "\nvar catbase = '" . $addonRelativeCode . "';\n";
+	$page->head_script.= 'gpE_added_js = [];';
 	
 	$configFile = $addonPathData . '/config.php';
 	 if (file_exists($configFile)) {
             include $configFile;
         } else { $config['wap'] = false; }
 		
+	if(!array_key_exists ( 'wap', $config) ) { $config['wap'] = false; }
+	if(!array_key_exists ( 'datafilter', $config) ) { $config['datafilter'] = ""; }
+	
 	if ($config['wap']) {
 		$page->head_js[] =  $addonRelativeCode . '/js/catalog_wap.js';
 				} else {
 		$page->head_js[] =  $addonRelativeCode . '/js/catalog.js';	
 		}
 	
+	
 	if( common::LoggedIn() ){ 
+	
+	$page->head .= "\n" . '<script type="text/javascript">gpFinder_url = "' . common::GetUrl('Admin_Browser') . '";</script>' . "\n";
+	$page->head_js[] =   $addonRelativeCode . '/js/catalog_menu.js';
+	
 	
 		$pageIndexJS = 'var gpE_availablelabels = [';
 		  $i = 0;
@@ -57,6 +67,32 @@ global $addonRelativeCode, $page, $addonPathData,$gp_index;
 		$menus .= '};';
 		$page->head_script .= "\n" . $menus . "\n";	
 		}
+	
+		if(array_key_exists ( "datafilter", $config) and $config['datafilter']<>"" ){
+		
+		$datafilterJS = 'var gpE_datafilter = [';
+		  $i = 0;
+		  $pieces = explode(",", $config['datafilter']);
+		  
+		  foreach ($pieces as $value) {
+			$i++;
+			$datafilterJS .= '"' . $value . '"' . ($i == count($pieces) ? '' : ', ');
+		  }
+		  $datafilterJS .= '];';
+		  $page->head_script .= "\n" . $datafilterJS . "\n";
+	
+		} else {
+		$datafilterJS = 'var gpE_datafilter = {';
+		$datafilterJS .= '};';
+		$page->head_script .= "\n" . $datafilterJS . "\n";	
+			
+		}
+		
+		$layoutsJS = 'var gpE_added_layouts = {';
+		$layoutsJS .= '};';
+		$page->head_script .= "\n" . $layoutsJS . "\n";	
+	
+		$page->head_script.= 'gpE_add_opts = "";';
 	
 	
 	}

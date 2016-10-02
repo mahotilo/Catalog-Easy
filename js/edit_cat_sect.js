@@ -33,36 +33,51 @@ function gp_init_inline_edit(area_id, section_object) {
 
             gp_saveData: function() {
 
-                var catalog_layout = $('#gp_my_options').find('#catalog_layout select').val();
-                var source = $('#gp_my_options').find('#source select').val();
-                var cat_menu = $('#gp_my_options').find('#cat_menu select').val();
-                var sourcepages = $('#gp_my_options').find('#sourcepages input').val();
-                var beh = $('#gp_my_options').find('#beh select').val();
-
-
-                var crop = $('#gp_my_options').find('#crop input').val();
-                var width = $('#gp_my_options').find('#width input').val();
-                var height = $('#gp_my_options').find('#height input').val();
-                var EC_thumb = $('#gp_my_options').find('#EC_thumb select').val();
-                var showimage = $('#gp_my_options').find('#showimage select').val();
-                var shortinfo = $('#gp_my_options').find('#shortinfo select').val();
-                var abr = $('#gp_my_options').find('#abr input').val();
-                
-				var ECrow = $('#gp_my_options').find('#ECrow input').val();
-                var ECheight = $('#gp_my_options').find('#ECheight input').val();
-                var ShowTitlecar = $('#gp_my_options').find('#ShowTitlecar select').val();
+            //    var catalog_layout = $('#gp_my_options').find('#catalog_layout select').val();
+            //    var source = $('#gp_my_options').find('#source select').val();
+            //    var cat_menu = $('#gp_my_options').find('#cat_menu select').val();
+            //    var sourcepages = $('#gp_my_options').find('#sourcepages input').val();
+            //    var beh = $('#gp_my_options').find('#beh select').val();
+            //
+            //
+            //    var crop = $('#gp_my_options').find('#crop input').val();
+            //    var width = $('#gp_my_options').find('#width input').val();
+            //    var height = $('#gp_my_options').find('#height input').val();
+            //    var EC_thumb = $('#gp_my_options').find('#EC_thumb select').val();
+            //    var showimage = $('#gp_my_options').find('#showimage select').val();
+            //    var shortinfo = $('#gp_my_options').find('#shortinfo select').val();
+            //    var abr = $('#gp_my_options').find('#abr input').val();
+            //    
+			//	var ECrow = $('#gp_my_options').find('#ECrow input').val();
+            //    var ECheight = $('#gp_my_options').find('#ECheight input').val();
+            //    var ShowTitlecar = $('#gp_my_options').find('#ShowTitlecar select').val();
+			//	
+			//	var ECPColumns = $('#gp_my_options').find('#ECPColumns input').val();
+            //    var ECPMinHeight = $('#gp_my_options').find('#ECPMinHeight input').val();
+			//	
 				
-				var ECPColumns = $('#gp_my_options').find('#ECPColumns input').val();
-                var ECPMinHeight = $('#gp_my_options').find('#ECPMinHeight input').val();
+				var datafilter = new Array();
 				
-                return '&catalog_layout=' + catalog_layout + '&source=' + source + '&sourcepages=' + sourcepages + '&beh=' + beh +
-                    '&crop=' + crop + '&width=' + width + '&height=' + height + '&EC_thumb=' + EC_thumb + '&showimage=' + showimage +
-                    '&cat_menu=' + cat_menu + '&shortinfo=' + shortinfo + '&abr=' + abr + '&ECheight=' + ECheight + '&ECrow=' + ECrow +
-					'&ShowTitlecar=' + ShowTitlecar +
-					'&ECPColumns=' + ECPColumns + '&ECPMinHeight=' + ECPMinHeight;
+				
+				$.each($("input[name='datafilter[]']:checked"), function() {
+				  datafilter.push($(this).val());
+				  
+				});
+						
+								
+				var options_my = $('#gp_my_options').find('input,select').serialize();
+			  //	console.log(options_my)	;		
+				return '&'+options_my+'&datafilter=' + datafilter	;
+				
+            //    return '&catalog_layout=' + catalog_layout + '&source=' + source + '&sourcepages=' + sourcepages + '&beh=' + beh +
+            //        '&crop=' + crop + '&width=' + width + '&height=' + height + '&EC_thumb=' + EC_thumb + '&showimage=' + showimage +
+            //        '&cat_menu=' + cat_menu + '&shortinfo=' + shortinfo + '&abr=' + abr + '&ECheight=' + ECheight + '&ECrow=' + ECrow +
+			//		'&ShowTitlecar=' + ShowTitlecar +
+			//		'&ECPColumns=' + ECPColumns + '&ECPMinHeight=' + ECPMinHeight +
+			//		'&datafilter=' + datafilter	;
             },
             intervalSpeed: function() {},
-
+			updateElement : function() {},
 
 
             updatesect: function() {}
@@ -73,13 +88,11 @@ function gp_init_inline_edit(area_id, section_object) {
 
         var href = jPrep(window.location.href) + '&cmd=refresh_section' + '&my_value=' + gp_editor.gp_saveData() + '&EC_id=' + section_object.EC_id;
         $.getJSON(href, ajaxResponse);
-        //console.log(gp_editor.gp_saveData());
-    }
+     }
 
 
 
     $gp.response.refresh_replayFn = function(arg) {
-        //alert('my callback fn says: "' + arg.CONTENT + '"');
         var div_data = arg.CONTENT;
         edit_div.html(div_data);
 
@@ -100,14 +113,26 @@ function gp_init_inline_edit(area_id, section_object) {
 	   })	
 
         $(function() {
-            $(".EC_portfolio").mixitup({
+            $("#EC_portfolio").mixitup({
                 targetSelector: ".item",
                 transitionSpeed: 450
             });
         });
 
         $(".EC_img").colorbox();
-    }
+    
+	
+		 if (gpE_added_js !=""){	
+			$.each(gpE_added_js, function(index, value) {
+				$.getScript(value, function(){
+						
+				});
+			 
+			});
+	
+		}
+	
+	}//refresh_replayFn
 
 
     var option_area = $('<div id="gp_my_options"/>').prependTo('#ckeditor_controls');
@@ -120,17 +145,34 @@ function gp_init_inline_edit(area_id, section_object) {
 
     });
     ms += '</select>';
+	
+	var dataf=""; 
+	$.each(gpE_datafilter, function(i, item) {
 
+        dataf += ' <input type="checkbox" name="datafilter[]" value=' + item + '>' + item + '<br />'; 
 
+    });
+	
+	var addlay=""; 
+	$.each(gpE_added_layouts, function(i, item) {
+
+        addlay +='<option value="' + i + '">' + item + '</option>';
+
+    });
+	
+	
     var option_messages = $(
             '<div id="option_message">' +
-            ' <div id="catalog_layout"><p>Catalog layout<select class="catalog_layout gpselect" name="catalog_layout">' +
+           
+			'<span class="divider">'+
+		   ' <div id="catalog_layout"><p>Catalog layout<select class="catalog_layout gpselect" name="catalog_layout">' +
             '<option value="0">List</option>' +
             '<option value="1">3 columns</option>' +
             '<option value="2">2 columns</option>' +
             '<option value="3">Portfolio Gallery</option>' +
             '<option value="4">Carousel</option>' +
             '<option value="5">Sortable Portfolio</option>' +
+			addlay +
             '</select></p></div>' +
             '<div id="lay_opt4" class="lay_opt hidei">' +
             '<div id="ShowTitlecar"><p>Show title?<select class="gpselect" name="ShowTitlecar">' +
@@ -144,6 +186,28 @@ function gp_init_inline_edit(area_id, section_object) {
             '<div id="ECPColumns"><p>Number of columns<input type="text" name="ECPColumns" class="gpinput"  /></p></div>' +
             '<div id="ECPMinHeight"><p>Height of expandable info(px)<input type="text" name="ECPMinHeight" class="gpinput"  /></p></div>' +
             '</div>' +
+			'<div id="lay_opt5" class="lay_opt hidei">' +
+             dataf +
+			'<div id="Showtitle"><p>Show title?<select class="gpselect" name="Showtitle">' +
+            '<option value="no">No</option>' +
+            '<option value="yes">Yes</option>' +
+			'</select></p></div>' +
+			'<div id="ItemW"><p>Width of portfoliio item (%)<input type="text" name="ItemW" class="gpinput"  /></p></div>' +
+			'<div id="imagelinked"><p>Image is linked to:<select class="gpselect" name="imagelinked">' +
+            '<option value="0">Page</option>' +
+            '<option value="1">Colorbox</option>' +
+            '</select></p></div>' +
+			
+			'</div>' +
+						
+			gpE_add_opts+
+						
+			'</span>'+
+			
+					
+			
+			
+			'<span class="divider">'+
 			' <div id="source"><p>Source<select class="source gpselect" name="source" style="width: 175px;">' +
             '<option value="0">Direct ChildPages</option>' +
             '<option value="1">ChildPages from another page</option>' +
@@ -151,14 +215,22 @@ function gp_init_inline_edit(area_id, section_object) {
             '</select></p></div>' +
             '<div id="cat_menu" class="hidei"><p> Another menu' + ms + '</p></div>' +
             '<div id="sourcepages"><p>Source page<input type="text" name="sourcepages" class="gpinput"  /></p></div>' +
-            '<div id="beh"><p>How to take<select class="beh gpselect" name="beh">' +
+            '</span>'+
+			
+			
+			'<span class="divider">'+
+			'<div id="beh"><p>How to take<select class="beh gpselect" name="beh">' +
             '<option value="0">All, items per page=</option>' +
             '<option value="1">First number =</option>' +
             '<option value="2">Last number =</option>' +
             '<option value="3">Random number =</option>' +
             '</select></p></div>' +
             '<div id="crop"><p>Number to take <input type="text" name="crop" class="gpinput"  /></p></div>' +
-            '<div id="showimage"><p>Show image?<select class="gpselect" name="showimage">' +
+			'</span>'+
+
+			
+			'<span class="divider">'+
+			'<div id="showimage"><p>Show image?<select class="gpselect" name="showimage">' +
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
             '</select></p></div>' +
@@ -168,12 +240,18 @@ function gp_init_inline_edit(area_id, section_object) {
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
             '</select></p></div>' +
-            '<div id="shortinfo"><p>Short info:<select class="gpselect" name="shortinfo" style="width: 175px;">' +
+            '</span>'+
+			
+			'<span class="divider">'+
+			'<div id="shortinfo"><p>Short info:<select class="gpselect" name="shortinfo" style="width: 175px;">' +
             '<option value="0">From section with short_info class</option>' +
             '<option value="1">From content</option>' +
+            '<option value="2">No short info</option>' +
             '</select></p></div>' +
-            '<div id="abr" class="hidei"><p>Abbreviation Length=<input type="text" name="sourcepages" class="gpinput"  /></p></div>' +
-            '</div>'
+            '<div id="abr" class="hidei"><p>Abbreviation Length=<input type="text" name="abr" class="gpinput"  /></p></div>' +
+            '</span>'+
+			
+		   '</div>'
         ).appendTo(option_area)
         .find('#catalog_layout select')
         .val(section_object.catalog_layout);
@@ -184,8 +262,8 @@ function gp_init_inline_edit(area_id, section_object) {
             $(this).autocomplete('widget').zIndex(120000);
 
         },
-        appendTo: '#gp_admin_html',
-        select: function(event, ui) {
+          appendTo: '#gp_admin_html',
+		  select: function(event, ui) {
             gp_editor.updatesect();
         }
     });
@@ -206,9 +284,45 @@ function gp_init_inline_edit(area_id, section_object) {
     $('#gp_my_options').find('#ECrow input').val(section_object.ECrow);
     $('#gp_my_options').find('#ECheight input').val(section_object.ECheight);
     $('#gp_my_options').find('#ShowTitlecar select').val(section_object.ShowTitlecar);
+    $('#gp_my_options').find('#ShowTitle select').val(section_object.ShowTitle);
+    $('#gp_my_options').find('#imagelinked select').val(section_object.imagelinked);
     $('#gp_my_options').find('#ECPColumns input').val(section_object.ECPColumns);
     $('#gp_my_options').find('#ECPMinHeight input').val(section_object.ECPMinHeight);
-
+    $('#gp_my_options').find('#ItemW input').val(section_object.ItemW);
+	
+	
+		
+	//set vals for added opts
+	$.each(section_object, function(i, item) {
+		 if (i!="attributes"){
+				if(item !== null && typeof item === 'object'){
+					var add_name= i;
+						$.each(item, function(key, val) {
+							var n ='[name="'+add_name+'['+key+']"]';
+							$('#gp_my_options').find(n).val(val);
+						})
+					
+								
+				}
+				
+		 }
+	 });
+	 
+	
+	if(typeof section_object.datafilter !== "undefined")
+	{
+		var temp=section_object.datafilter.split(',');
+		$.each(temp, function(i, item) {
+			
+			$.each($("input[name='datafilter[]']"), function() {
+					  if($(this).val() == item){
+						  $(this).prop('checked', true);
+					  }
+					  
+					});
+				
+	   });
+	} 
 
     if (section_object.source == 2) {
         $('#cat_menu').removeClass('hidei');
@@ -254,6 +368,12 @@ function gp_init_inline_edit(area_id, section_object) {
 
         gp_editor.updatesect();
     });
+	
+	//checkbox change
+	$('#gp_my_options').find('input[type="checkbox"]').on('change', function() { 
+
+			 gp_editor.updatesect();
+	});
 
 	//trigger inputs change
     $('#gp_my_options').find('input').not('#sourcepages').each(function() {

@@ -261,3 +261,12 @@ margin-left: -32px;
     bottom: 20px;
   }
 }
+.shortinfoCar{
+text-align:left;	
+}
+.carblock {
+text-align:center;	
+}
+.carblock a{
+display:inline-block;	
+}

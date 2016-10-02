@@ -2,7 +2,6 @@
 
 Author: a2exfr
 http://my-sitelab.com/
-Date: 2015-11-07
 Version 1.8
 
 */
@@ -91,7 +90,7 @@ var max_catpage = $('#max_catpage').val();
 				line +='</select>';
 
 												
-				line +='<input class="gpinput crop" type="text"  name="catpages['+max_catpage+'][crop]"  />';
+				line +='<input class="gpinput crop" type="number" step="1" min="1" name="catpages['+max_catpage+'][crop]"  />';
 				
 				line +='<select class="source cat_lay gpselect" name="catpages['+max_catpage+'][source]" id="catpages['+max_catpage+'][source]">';
 				line +='<option selected="selected" value="0">Direct ChildPages</option>';

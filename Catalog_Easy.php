@@ -28,7 +28,7 @@ class Catalog_Easy
 		} else {
 		$this->sect_options="";	
 		}
-				 
+		 
         global $addonRelativeCode, $addonPathData;
         
 		$this->getConfig();
@@ -102,7 +102,8 @@ class Catalog_Easy
         
             $items = $this->getContent($whatweshow);
             
-            
+            if ($this->is_sect<>"no_display"){
+				
             echo '<div class="loading-div"><img src="' . $addonRelativeCode . '/ajax-loader.gif" ></div>';
             echo '<div id="results">';
             
@@ -113,8 +114,7 @@ class Catalog_Easy
                 
                 
             }
-            
-            
+                        			
             $this->ShowCatalog($items);
             
             echo '<div id="clicker" align="center">';
@@ -125,6 +125,7 @@ class Catalog_Easy
 			}
 			echo '</div>';
             echo '</div>';
+			}
         }
         
     }
@@ -275,12 +276,19 @@ class Catalog_Easy
     
     function getContent($titles)
     {
-        global $addonRelativeCode;
+        global $page, $addonRelativeCode;
         foreach ($titles as $title) {
+			
+			//exlude current page(when display on child and show same level)
+			if ($page->title == $title) {
+               continue;
+           }
+						
             $label                     = common::GetLabel($title);
             $items[$label]['link']     = common::Link($title, $label);
             $items[$label]['label']    = $label;
 			$items[$label]['url']	   = common::GetUrl($title);
+			$items[$label]['title']	   =	$title;
             $readmore                  = '<img src="' . $addonRelativeCode . '/img/more.png' . '" border="0" />';
             $items[$label]['readmore'] = common::Link($title, $readmore);
             list($items[$label]['image'], $items[$label]['short_info'], $items[$label]['datafilter']) = $this->getImageandInfo($title);
@@ -314,9 +322,16 @@ class Catalog_Easy
         
         //avoid error- maximum function nesting level of '250' reached
         foreach ($file_sections as $key => $val) {
-            if ($val['type'] == 'include')
+            if ($val['type'] == 'include' or $val['type'] == 'Catalog_easy_section'){
                 unset($file_sections[$key]);
-        }
+        
+		//dummy section instead of include
+			$file_sections[$key] =   array (
+			'type' => 'text',
+			'content' => '<div><p>Lorem ipsum </p></div>',
+			'attributes' => array (), );
+		}
+	}
         
         
         if (!$file_sections) {
@@ -324,9 +339,12 @@ class Catalog_Easy
         }
         
         $file_sections = array_values($file_sections);
-        
+				        
         //get short info and datafilter
         
+		//new data-filter 1.8.1 from menu settt
+		$datafilter=$this->getNewdatafilter($title);	
+		
         foreach ($file_sections as $sect) {
             
             
@@ -349,8 +367,10 @@ class Catalog_Easy
             }
             
             
-        }
+        }//end section foreach
         
+		
+		
         if (!isset($datafilter)) {
             $datafilter = "";
         }
@@ -360,28 +380,40 @@ class Catalog_Easy
         
         
         
-        //get the image + check abrev
-        $content = section_content::Render($file_sections, $title, $file_stats);
+        //get the image + check abrev + check for custom page image
+        $custom_image= $this->getCustomPageImage($title);
+		
+		$content = section_content::Render($file_sections, $title, $file_stats);
 		   
 		   if ($this->ShortInfo == "abrev") {
 				
 				$short_info = $this->GetAbrev($content,$title,$this->AbbrevL);
 				
+			}elseif($this->ShortInfo == "no") {
+			
+				$short_info="";
 			}
-
+		
+		$img_flag=true;
 	   $img_pos = strpos($content, '<img');
         if ($img_pos === false) {
-             return array('',$short_info,$datafilter);
-        }
+			$img_flag=false;
+         //   return array('',$short_info,$datafilter);
+       
+	   }
         $src_pos = strpos($content, 'src=', $img_pos);
         if ($src_pos === false) {
-            return array('',$short_info,$datafilter);
-        }
+			$img_flag=false;
+           // return array('',$short_info,$datafilter);
+       
+	   }
         $src   = substr($content, $src_pos + 4);
         $quote = $src[0];
         if ($quote != '"' && $quote != "'") {
-            return array('',$short_info,$datafilter);
-        }
+			$img_flag=false;
+           // return array('',$short_info,$datafilter);
+        
+		}
         $src_pos = strpos($src, $quote, 1);
         $src     = substr($src, 1, $src_pos - 1);
         
@@ -390,10 +422,17 @@ class Catalog_Easy
         $img_pos2 = strpos($content, '>', $img_pos);
         $img      = substr($content, $img_pos, $img_pos2 - $img_pos + 1);
         
-	    
-		
-		
-		 
+	    //no img on page+custom exist
+		if(!$img_flag and $custom_image<>""){
+		$src=$custom_image;	
+		}elseif(!$img_flag ){
+		return array('',$short_info,$datafilter);	
+		}
+			
+		if($custom_image<>""){
+			$src=$custom_image;
+		}
+			 
 
 
 		 
@@ -470,9 +509,15 @@ class Catalog_Easy
 				$show = '<a name="gallery" rel="EC_pf" title="'.$label.'" href="'.$src.'">'.$show.'</a>';
 
 				
-            } else {
+            } elseif($this->catalog_layout >5 ){ 
 				
-                $show = '<img class="img-responsive thumbnail ' . $a . '" style="' . $style . '" alt="'.$label.'" src="' . $src . '"/>';
+				$style=$this->addLayImgStyle();
+				$show = '<img  '. $style .'  alt="'.$label.'" src="' . $src . '"/>';
+				
+			
+			}else {
+				
+                $show = '<img class="img-responsive ' . $a . '" style="' . $style . '" alt="'.$label.'" src="' . $src . '"/>';
                 $show = common::Link($title, $show);
             }
             
@@ -488,6 +533,37 @@ class Catalog_Easy
         
     }
     
+	function getNewdatafilter($title){
+		//$temp= $this->loadData(); $this->pagedata
+		if(array_key_exists($title,$this->pagedata)){
+			return  str_replace(",", " ", $this->pagedata[$title]['datafilter']);
+		}
+		return;		
+	}
+	
+	
+	function getCustomPageImage($title){
+		
+		if(array_key_exists($title,$this->pagedata)){
+			if(array_key_exists('image_url',$this->pagedata[$title])){
+			return  urldecode($this->pagedata[$title]['image_url']);
+			}
+		}
+		return '';		
+	}
+	
+	//Check options for page from added layout
+	function getAddedPageOpt($title,$addon_name){
+		if(array_key_exists($title,$this->pagedata)){
+		
+		if(array_key_exists($addon_name,$this->pagedata[$title])){
+		 return $this->pagedata[$title][$addon_name];
+		}
+		
+	}
+	return '';	
+	}
+	
 	
     function GetAbrev($content, $title, $abrv = 100 ) {
 		
@@ -540,8 +616,7 @@ class Catalog_Easy
             
             $srec_new = substr($srec_new, 4);
             
-           // $srec_new = str_replace('%2F', '/', $srec_new);
-		   $srec_new = urldecode($srec_new); 
+            $srec_new = urldecode($srec_new); 
             
             $srec_new = $dir_part_main . $srec_new;
            		   
@@ -588,17 +663,17 @@ class Catalog_Easy
     function MakeCatalogThumbhail($file)
     {
         
-        global $dataDir;
-        
+        global $dataDir,$dirPrefix;
+     
         $dir = 'data/_uploaded/image/thumbnails/easy_catalog';
         if (!file_exists($dir) && !is_dir($dir)) {
             mkdir($dir);
-        }
-        
-       $test = $this->jpegImgCrop($dataDir . $file);
-            
+        } 
+		//when  TS installed in dir
+		$test = strstr($file, '/data/_uploaded/image/');
+        $test = $this->jpegImgCrop($dataDir . $test);
        
-	   return $test;
+	   return $dirPrefix.$test;
         
         
     }
@@ -607,10 +682,9 @@ class Catalog_Easy
     
     function jpegImgCrop($target_url)
     {
-        			
-		
+        	
         global $dataDir;
-        $img_name = str_replace($dataDir . "/data/_uploaded/image/", "", $target_url);
+		$img_name = str_replace($dataDir . "/data/_uploaded/image/", "", $target_url);
 		
         $parts    = explode("/", $img_name);
         $img_name = array_pop($parts);
@@ -679,7 +753,8 @@ class Catalog_Easy
         imagejpeg($thumb, 'data/_uploaded/image/thumbnails/easy_catalog/' . $newname, 90);
         
         $thumb_scr = '/data/_uploaded/image/thumbnails/easy_catalog/' . $newname;
-        return $thumb_scr;
+     
+	  return $thumb_scr;
         
     }
     
@@ -703,8 +778,11 @@ class Catalog_Easy
     
     function ShowCatalog($items)
     {
-        
-        if ($this->catalog_layout == 1) {
+        if ($this->catalog_layout > 5) {
+			
+			$this->ShowLayoutAdd($items);
+			
+		}elseif ($this->catalog_layout == 1) {
             
             $this->ShowLayout3Column($items);
             
@@ -747,8 +825,62 @@ class Catalog_Easy
         
     }
     
+	function ShowLayoutAdd($items){
+		
+	global $config,$dataDir,$dirPrefix;
+		if($this->addlay_folder<>""){
+			foreach($this->addlay_folder as $folder){
+				
+				$template =	$dataDir.$folder ."/tmpls/". $this->catalog_layout . "_tmpl.php";
+				
+				 if (file_exists($template)) {
+					include $template;
+				}
+				
+			}
+		}
+		 
+	}
+	function addLayImgStyle(){
+		global $dataDir;
+		$style="";
+		if($this->addlay_folder<>""){
+		
+			foreach($this->addlay_folder as $folder){
+				
+				$template =	$dataDir.$folder ."/tmpls_options/ec_image_style.php";	
+				
+				 if (file_exists($template)) {
+					include $template;
+				}
+				
+			}
+			
+		
+		}
+	return  $style;
+	}
     
-    
+    function Check_Addon(){
+	global $config;
+		$addlay_folder  = "";
+		$addon_name  = "";
+		foreach ($config['addons'] as $addon_key => $addon_info) {
+		//  if ($addon_info['name'] == 'Catalog Easy Layouts') {
+		  if (strpos($addon_info['name'], 'Catalog Easy Layout') !== false)  {
+			$addlay_folder[] = $addon_info['code_folder_part'];
+			$addon_name[] = $addon_info['name'];	  
+		  }
+		}	
+		
+		if	($addlay_folder==""){
+			$this->catalog_layout = 0;
+			return $addlay_folder;
+		}
+	 $this->addon_name=$addon_name;
+	 return $addlay_folder;
+	}
+	
     function ShowLayout3Column($items)
     {
         
@@ -901,14 +1033,14 @@ class Catalog_Easy
             } else {
                 $item = next($items);
             }
-            echo '<div class="col-md-' . $numcol . '">';
+            echo '<div class="col-md-' . $numcol . ' carblock">';
 			
 			if($this->ShowTitlecar){ 
 				echo '<h3>' . $item['link'] . '</h3>';
 				}
           
 			echo $item['image'];
-            echo '<div class="shortinfo">' . $item['short_info'] . '</div>';
+            echo '<div class="shortinfo shortinfoCar">' . $item['short_info'] . '</div>';
             //echo '<div class="readmore_EC">'.$item['readmore'].'</div>'; 
             echo '</div>';
             
@@ -935,7 +1067,17 @@ class Catalog_Easy
     
     function ShowLayoutSortablePF($items)
     {
-        
+       
+	   //for section
+		if($this->is_sect=="yes"){
+		
+			if(isset($this->sect_options['datafilter']) and $this->sect_options['datafilter']<>"" ){
+			$this->datafilter=$this->sect_options['datafilter'];
+			}
+		}
+		
+		
+		
         echo '<ul id="filter-list" class="clearfix">';
      
         echo '<li class="filter" data-filter="all">'.gpOutput::GetAddonText('All').'</li>';
@@ -949,7 +1091,7 @@ class Catalog_Easy
         echo '</ul>';
         
         echo '<div class="container" style="width:100%;">';
-        echo '<div class="EC_portfolio">';
+        echo '<div id="EC_portfolio">';
         foreach ($items as $item) {
             
             echo '<div class="item ' . $item['datafilter'] . '" style="width: ' . $this->ItemW . '%;">';
@@ -957,8 +1099,11 @@ class Catalog_Easy
                 echo '<h3>' . $item['link'] . '</h3>';
             }
             echo $item['image'];
-            echo '<div class="shortinfo" >' . $item['short_info'] . '</div>';
-            //echo '<div class="readmore_EC">'.$item['readmore'].'</div>'; 
+			
+			if ($this->ShortInfo <> "no"){
+			echo '<div class="shortinfo" >' . $item['short_info'] . '</div>';
+            }
+			//echo '<div class="readmore_EC">'.$item['readmore'].'</div>'; 
             
             echo '</div>';
             
@@ -969,8 +1114,7 @@ class Catalog_Easy
         
     }
     
-    
-    
+   
     
     
     
@@ -1627,6 +1771,8 @@ class Catalog_Easy
 			$this->ShortInfo = "abrev";
 			$this->AbbrevL = $this->sect_options['abr'];
 			
+		} elseif($this->sect_options['shortinfo']==2){
+			$this->ShortInfo = "no";
 		} else {
 			$this->ShortInfo = "sect";
 		}
@@ -1656,6 +1802,24 @@ class Catalog_Easy
 			
 		}
 		
+		//sp 
+		if($this->sect_options['catalog_layout'] == 5){
+				if ($this->sect_options['Showtitle']=="yes"){
+					$this->Showtitle=true;
+				} else {$this->Showtitle=false;}
+				if($this->sect_options['ItemW']<>""){
+						$this->ItemW=$this->sect_options['ItemW'];
+				}
+				
+				if($this->sect_options['imagelinked']==0){
+					$this->imagelinked = 0;
+				} elseif($this->sect_options['imagelinked']==1) {
+				$this->imagelinked = 1;
+				}
+			
+		}
+		
+		
 		}//end section opt check
 		
 		
@@ -1665,6 +1829,9 @@ class Catalog_Easy
     
     
     function getConfig(){
+		
+		$this->pagedata= $this->loadData();
+		$this->addlay_folder = $this->Check_Addon();
 		
 		global $addonRelativeCode, $addonPathData;
         $configFile = $addonPathData . '/config.php';
@@ -1681,6 +1848,20 @@ class Catalog_Easy
             
         } else {
             
+			// options and config exist, hide notice
+			$opts = array('ShortInfo','AbbrevL','ShowTitlecar','ECthumb','ECthumbH','ECthumbW',
+			'wap','catpages','nav_parent','nav_style','nav_buttons',
+			'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp'
+			);
+			foreach($opts as $opt) {
+				if(!array_key_exists ( $opt, $config) ) {
+					$this->$opt    = "";
+				} else {
+					$this->$opt     = $config[$opt];
+				}
+			}
+			
+			
             //$this->item_per_page		= $config['item_per_page'];
             $this->catalog_layout = $config['catalog_layout'];
             //$this->ShowImage			= $config['ShowImage'];
@@ -1693,8 +1874,8 @@ class Catalog_Easy
             $this->ECPMinHeight   = $config['ECPMinHeight'];
             $this->ECrow          = $config['ECrow'];
             $this->ECheight       = $config['ECheight'];
-			$this->ShortInfo 	  = $config['ShortInfo'];	
-			$this->AbbrevL 		  = $config['AbbrevL'];
+		//	$this->ShortInfo 	  = $config['ShortInfo'];	
+		//	$this->AbbrevL 		  = $config['AbbrevL'];
             
             //list 		
             $this->item_per_pageL = $config['item_per_pageL'];
@@ -1725,7 +1906,7 @@ class Catalog_Easy
             $this->ImagesizeHcar  = $config['ImagesizeHcar'];
             $this->ImageCirclecar = $config['ImageCirclecar'];
             $this->ShowImagecar   = $config['ShowImagecar'];
-            $this->ShowTitlecar	  = $config['ShowTitlecar'];
+        //  $this->ShowTitlecar	  = $config['ShowTitlecar'];
 			
             
             $this->datafilter  = $config['datafilter'];
@@ -1734,21 +1915,22 @@ class Catalog_Easy
             $this->ItemW       = $config['ItemW'];
             
             //spec
-            $this->ECthumb     = $config['ECthumb'];
-			$this->ECthumbH	   = $config['ECthumbH'];
-			$this->ECthumbW	   = $config['ECthumbW'];
-			$this->wap	  	   = $config['wap'];
+        //  $this->ECthumb     = $config['ECthumb'];
+		//	$this->ECthumbH	   = $config['ECthumbH'];
+		//	$this->ECthumbW	   = $config['ECthumbW'];
+		//	$this->wap	  	   = $config['wap'];
 			
-			$this->catpages	  = $config['catpages'];
+		//	$this->catpages	  = $config['catpages'];
+			
 			//nav
-			$this->nav_parent	 = $config['nav_parent'];
-			$this->nav_style	 = $config['nav_style'];
-			$this->nav_buttons	 = $config['nav_buttons'];
+		//	$this->nav_parent	 = $config['nav_parent'];
+		//	$this->nav_style	 = $config['nav_style'];
+		//	$this->nav_buttons	 = $config['nav_buttons'];
 			
-			$this->ImagesizeWpg		= $config['ImagesizeWpg'];
-			$this->ImagesizeHpg		= $config['ImagesizeHpg'];	
-			$this->ImagesizeWsp		= $config['ImagesizeWsp'];
-			$this->ImagesizeHsp		= $config['ImagesizeHsp'];
+		//	$this->ImagesizeWpg		= $config['ImagesizeWpg'];
+		//	$this->ImagesizeHpg		= $config['ImagesizeHpg'];	
+		//	$this->ImagesizeWsp		= $config['ImagesizeWsp'];
+		//	$this->ImagesizeHsp		= $config['ImagesizeHsp'];
 			
 		
 			//deprecated options
@@ -1821,7 +2003,7 @@ class Catalog_Easy
         $this->imagelinked = 0;
         $this->Showtitle   = false;
         $this->ItemW       = 30;
-        $this->datafilter  = array();
+        $this->datafilter  = "";
         
         $this->anotherpage 	= null;
         $this->netpage     	= null;
@@ -1881,6 +2063,7 @@ class Catalog_Easy
     }
 	global $addonRelativeCode;		
 	
+		
 	$catalog_layout = $section_data['catalog_layout'];
 	$source = $section_data['source'];
 	$cat_menu = $section_data['cat_menu'];
@@ -1899,27 +2082,64 @@ class Catalog_Easy
 	$ShowTitlecar = $section_data['ShowTitlecar'];
 	$ECPColumns = $section_data['ECPColumns'];
 	$ECPMinHeight = $section_data['ECPMinHeight'];
-	
-	ob_start();
-
-	
-	
-	
+		
+	//new options check
+	if(array_key_exists('datafilter',$section_data)){
+		$datafilter = $section_data['datafilter'];
+	} else {
+		$datafilter ="";
+	}
+	if(array_key_exists('Showtitle',$section_data)){
+		$Showtitle = $section_data['Showtitle'];
+	} else {
+		$Showtitle ="no";
+	}
+	if(array_key_exists('ItemW',$section_data)){
+		$ItemW = $section_data['ItemW'];
+	} else {
+		$ItemW =30;
+	}
+	if(array_key_exists('imagelinked',$section_data)){
+		$imagelinked = $section_data['imagelinked'];
+	} else {
+		$imagelinked =0;
+	}
+			
 		
 	$sect_options= array('catalog_layout'=>$catalog_layout,'source'=>$source,'cat_menu'=>$cat_menu,
 							'sourcepages'=>$sourcepages,'beh'=>$beh,'crop'=>$crop,'width'=>$width,'height'=>$height,
 							'EC_thumb'=>$EC_thumb,'EC_id'=>$EC_id,'showimage'=>$showimage,
 							'shortinfo'=>$shortinfo,'abr'=>$abr,'ECrow'=>$ECrow,'ECheight'=>$ECheight,'ShowTitlecar'=>$ShowTitlecar,
-							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight
+							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight,'datafilter'=>$datafilter,'Showtitle'=>$Showtitle,
+							'ItemW'=>$ItemW, 'imagelinked'=>$imagelinked
 							);
-	//var_dump($sect_options);
-							
-	new Catalog_Easy("yes",$sect_options);
+	
+//	get added section opts
+	$temp = new Catalog_Easy("no_display","");
+	$temp->getConfig();
+	$add_options = array();
+	if(isset($temp->addon_name) and $temp->addon_name<>""){
+		foreach($temp->addon_name as $name){
+				$name = str_replace(' ', '_', $name);
+				if(array_key_exists($name,$section_data)){
+					$add_options[$name] = $section_data[$name];
+				}
+			}
+	}
 		
-   
+	$sect_options['add_options'] = $add_options;	
+		
+	
+	
+							
+	ob_start();
+								
+	new Catalog_Easy("yes",$sect_options);
+	   
 	$section_data['content'] = ob_get_clean();
+	
 	if ($section_data['content'] == ""){
-		$section_data['content'] = '<img class="img-responsive" src="'.$addonRelativeCode . '/img/сatalog_sect.png" alt="Catalog easy section" style="float:left;">
+		$section_data['content'] = '<img class="img-responsive" src="'.$addonRelativeCode . '/img/catalog_sect.png" alt="Catalog easy section" style="float:left;">
 									<p>Catalog easy section.</p>
 									<p>Edit it to show something.</p>';
 	} 
@@ -1932,18 +2152,16 @@ class Catalog_Easy
 
     global $addonRelativeCode;
 
-    // add Section Manager "Add" Images for Section Types
-    foreach ($links as $key => $link) {
-      $match = is_array($link[0]) ? implode('-',$link[0]) : $link[0] ;
-      // find matchstring in $section_labels array, replace it existent
-      // replace section images with new ones
-      if ($match == 'Catalog_easy_section') { $links[$key][1] = $addonRelativeCode . '/img/сatalog_sect.png'; }
-
-    }
-
+	 foreach ($links as $key => $section_type_arr) {
+		  if ( $section_type_arr[0] == 'Catalog_easy_section' ) {
+			$links[$key] = array('Catalog_easy_section', $addonRelativeCode . '/img/catalog_sect.png');
+		  }
+	   
+		}
+		
       return $links;
   }
- 
+
  
  
   function DefaultContent($default_content,$type) {
@@ -1967,8 +2185,12 @@ class Catalog_Easy
 	$section['ECrow'] = 4;
 	$section['ECheight'] = "";
 	$section['ShowTitlecar'] = "yes";
+	$section['Showtitle'] = "no";
 	$section['ECPColumns'] = 5;
 	$section['ECPMinHeight'] = 400;
+	$section['datafilter'] = "";
+	$section['ItemW'] = 30;
+	$section['imagelinked'] = 0;
     		
     $section['EC_id'] = "EC" . crc32(uniqid("",true));
     return $section;
@@ -1995,8 +2217,28 @@ class Catalog_Easy
 	$page->file_sections[$section]['ECrow'] = & $_POST['ECrow'];
 	$page->file_sections[$section]['ECheight'] = & $_POST['ECheight'];
 	$page->file_sections[$section]['ShowTitlecar'] = & $_POST['ShowTitlecar'];
+	$page->file_sections[$section]['Showtitle'] = & $_POST['Showtitle'];
 	$page->file_sections[$section]['ECPColumns'] = & $_POST['ECPColumns'];
 	$page->file_sections[$section]['ECPMinHeight'] = & $_POST['ECPMinHeight'];
+	$page->file_sections[$section]['datafilter'] = & $_POST['datafilter'];
+	$page->file_sections[$section]['ItemW'] = & $_POST['ItemW'];
+	$page->file_sections[$section]['imagelinked'] = & $_POST['imagelinked'];
+	
+	
+	//save added section opts
+	$temp = new Catalog_Easy();
+	$temp->getConfig();
+	
+	if(isset($temp->addon_name) and $temp->addon_name<>""){
+		foreach($temp->addon_name as $name){
+				$name = str_replace(' ', '_', $name);
+				if(array_key_exists($name,$_POST)){
+					$page->file_sections[$section][$name] = & $_POST[$name];
+				}
+			}
+	}
+	
+	
 	
     return true;
   }
@@ -2017,12 +2259,10 @@ class Catalog_Easy
   function PageRunScript($cmd) {
     global $page, $addonRelativeCode; 
 
-    // check the cmd querystring
     if ( $cmd == 'refresh_section' ) {
       $page->ajaxReplace = array();
 
-      // do  awesome)
-  	$catalog_layout = & $_REQUEST['catalog_layout'];
+    $catalog_layout = & $_REQUEST['catalog_layout'];
 	$source = & $_REQUEST['source'];
 	$cat_menu = & $_REQUEST['cat_menu'];
 	$sourcepages = & $_REQUEST['sourcepages'];
@@ -2037,20 +2277,44 @@ class Catalog_Easy
 	$ECrow = & $_REQUEST['ECrow'];
 	$ECheight = & $_REQUEST['ECheight'];
 	$ShowTitlecar = & $_REQUEST['ShowTitlecar'];
+	$Showtitle = & $_REQUEST['Showtitle'];
 	$EC_id = & $_REQUEST['EC_id'];
 	$ECPColumns = & $_REQUEST['ECPColumns'];
 	$ECPMinHeight = & $_REQUEST['ECPMinHeight'];
+	$datafilter = & $_REQUEST['datafilter'];
+	$ItemW = & $_REQUEST['ItemW'];
+	$imagelinked = & $_REQUEST['imagelinked'];
 	  
-	 ob_start();
+	
 		
 	$sect_options= array('catalog_layout'=>$catalog_layout,'source'=>$source,'cat_menu'=>$cat_menu,
 							'sourcepages'=>$sourcepages,'beh'=>$beh,'crop'=>$crop,'width'=>$width,'height'=>$height,
 							'EC_thumb'=>$EC_thumb,'EC_id'=>$EC_id,
 							'showimage'=>$showimage,
 							'shortinfo'=>$shortinfo,'abr'=>$abr,'ECrow'=>$ECrow,'ECheight'=>$ECheight,'ShowTitlecar'=>$ShowTitlecar,
-							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight
+							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight,'datafilter'=>$datafilter,'Showtitle'=>$Showtitle,
+							'ItemW'=>$ItemW, 'imagelinked'=>$imagelinked
 							);
-								
+	
+	//for added section opts
+	$temp = new Catalog_Easy();
+	$temp->getConfig();
+	$add_options = array();
+	if(isset($temp->addon_name) and $temp->addon_name<>""){
+		foreach($temp->addon_name as $name){
+				$name = str_replace(' ', '_', $name);
+				if(array_key_exists($name,$_REQUEST)){
+					$add_options[$name] = & $_REQUEST[$name];
+				}
+			}
+	}
+		
+	$sect_options['add_options'] = $add_options;
+	
+	
+	
+	ob_start();	
+	
 	new Catalog_Easy("yes",$sect_options);
 		
    
@@ -2060,18 +2324,229 @@ class Catalog_Easy
 									<p>Catalog easy section.</p>
 									<p>Edit it to show something.</p>';
 	} 
-   
-   // define the AJAX callback
-      
+           
       $page->ajaxReplace[] = array('refresh_replayFn', 'arg', $arg_value);
       return 'return';
     }
 
     return $cmd;
-  } /* endof PageRunScript hook */	
+  } 	
+	
+	
+ function MenuPageOptions($title, $title_index, $level_arr=false, $layout_info) {
+   
+    $langmessage = 'Catalog Easy';
+    $level = $level_arr && isset($level_arr['level']) ? $level_arr['level'] : 'false';
+    $img = '<span class="menu_icon"><i class="fa fa-plug"></i></span>';
+    echo common::Link('Admin_Menu',$img . $langmessage, 'cmd=menu_ec&index=' . urlencode($title), array('title'=>$langmessage, 'data-cmd'=>'gpabox'));
+  } 
+	
+ 
+ function MenuCommand($cmd) {
+    global $addonPathData;
+   
+    if ( ($cmd != 'menu_ec' && $cmd != 'menu_ec_save') || !isset($_REQUEST['index']) ) {
+      return $cmd;
+    }
+
+    if ( $cmd == 'menu_ec' ) {
+      self::ShowOptions();
+    }
+
+    if ( $cmd == 'menu_ec_save' ) {
+      msg(self::SaveData());
+     
+    }
+
+  } 
+	
+	
+  function ShowOptions() {
+  
+	//$pagedata=self::LoadData();
+	
+    global $page, $config, $langmessage, $addonRelativeCode, $dirPrefix, $dataDir;
+    if (!isset($_REQUEST['index'])) {
+      msg($langmessage['OOPS'] . ' - no index passed!');
+    }
+
+    $index = $_REQUEST['index'];
+	   
+	echo '<div class="inline_box">';
+    echo '<form id="menu_appearance_form" action="' . common::GetUrl('Admin_Menu') . '" method="post">';
+
+    echo '<input type="hidden" name="cmd" value="menu_ec_save" />';
+    echo '<input type="hidden" name="index" value="' . $index . '" />';
+
+	$temp = new Catalog_Easy();
+	$temp->getConfig();
+	
+
+	//omg lazy to change
+	if(array_key_exists($index,$temp->pagedata)){
+		if (array_key_exists('image_url',$temp->pagedata[$index])){
+			if ($temp->pagedata[$index]['image_url']<>""){
+			$image_url=urldecode($temp->pagedata[$index]['image_url']);
+			} else {
+			$image_url= $addonRelativeCode . '/img/default_thumb.jpg';	
+			}
+		} else {
+			$image_url= $addonRelativeCode . '/img/default_thumb.jpg';
+		}
+	} else {
+		$image_url=$addonRelativeCode . '/img/default_thumb.jpg';
+	}
+	
+    echo '<h3>'; 
+    echo  'Catalog Easy';
+    echo '</h3>';
+
+	//img
+	echo '<p>Image for page to display in Easy Catalog <br>(if not set, first image from page content will be used)</p>';
+	
+	
+	echo '<div id="img_container">';
+     echo '<img style="width:100px;" src="' . $image_url . '"/>';
+    echo '<img id="del_img_EC" style="cursor:pointer;" src="'.$addonRelativeCode.'/img/delete.png'.'" />'	;
+	echo '</div>';
+	
+		echo '<p>';
+		echo ' <button class="EC_browse_files gpbutton">' . $langmessage['Select Image'] . '</button>';
+		echo '</p>';
+	
+	if ($image_url==$addonRelativeCode . '/img/default_thumb.jpg' ){$image_url="";}
+	echo '<input id="EC_custom_img" name="custom_img" type="hidden" value="' . $image_url . '" />';
 	
 	
 	
+	echo '<h5>';
+	echo 'Define Sortable portfolio categories for this page';
+	echo '</h5>';
+	
+	 if (isset($temp->datafilter) and $temp->datafilter<>"" ) {
+				   $pieces = explode(",", $temp->datafilter);
+				   foreach ($pieces as $piece) {
+						
+							if (isset($temp->pagedata[$index]) and $temp->pagedata[$index]<>"" ){
+							
+								$pieces2 = explode(",", $temp->pagedata[$index]['datafilter']);
+								$echo=false;	
+									foreach($pieces2 as $flag) {
+										 if ($flag == $piece){
+											echo ' <input type="checkbox" name="datafilter[]" value=' . $piece . ' checked>' . $piece . '<br />'; 
+											$echo = true;
+										 }	
+										
+										}
+							if(!$echo ){ echo ' <input type="checkbox" name="datafilter[]" value=' . $piece . '>' . $piece . '<br />';	}
+						} else {
+								echo ' <input type="checkbox" name="datafilter[]" value=' . $piece . '>' . $piece . '<br />'; 
+						}
+				}
+       } else {
+		 echo 'You need to enter some categoties on '.common::Link('Admin_Catalog_Easy','Plugin Catalog Easy Admin page');   
+	   }
+	
+	//added opts for future extensions
+	if($temp->addlay_folder<>""){
+		foreach($temp->addlay_folder as $folder){
+				$template =	$dataDir.$folder ."/tmpls_options/ec_options.php";
+				if (file_exists($template)) {
+					include $template;
+				}
+			}
+	}
+	
+				
+	
+	
+	
+	
+    echo '<p style="clear:both">';
+    echo '<input type="submit" name="aa" value="'.htmlspecialchars($langmessage['save']).'" class="gpsubmit" data-cmd="gppost" />';
+    echo ' <input type="submit" value="'.htmlspecialchars($langmessage['cancel']).'" class="admin_box_close gpcancel" /> ';
+    echo '</p>';
+
+    echo '</form>';
+    echo '</div>';
+
+
+
+  } 
+
+ function SaveData() {
+    global $langmessage,$addonPathData;
+    if (!isset($_REQUEST['index'])) {
+      return $langmessage['OOPS'] . ' - nothing to save!';
+    }
+    $index = $_REQUEST['index'];
+		
+    $configFile = $addonPathData . '/ec_pagedata.php';
+	$pagedata =self::LoadData();
+ 	
+	if($_REQUEST){
+	if(array_key_exists("datafilter",$_REQUEST)){	
+		$_REQUEST["datafilter"] = array_diff($_REQUEST["datafilter"], array(''));
+		$pagedata[$index]['datafilter'] = implode(",", $_REQUEST["datafilter"]);
+	} else {
+		$pagedata[$index]['datafilter'] = "";
+	}
+		
+		}
+    $pagedata[$index]['image_url'] = urlencode($_REQUEST['custom_img']);
+	
+	//save added opts
+	
+	$temp = new Catalog_Easy();
+	$temp->getConfig();
+	
+	if(isset($temp->addon_name) and $temp->addon_name<>""){
+		foreach($temp->addon_name as $name){
+				$name = str_replace(' ', '_', $name);
+				if(array_key_exists($name,$_REQUEST)){
+				$pagedata[$index][$name] = $_REQUEST[$name];
+				}
+			}
+	}
+	
+	
+    if (gpFiles::SaveArray($configFile,'pagedata', $pagedata)) { 
+     return $langmessage['SAVED'];
+    } else {
+     return $langmessage['OOPS'];
+    }
+  } 
+	
+	
+  function LoadData() {
+    global $addonPathCode,$addonPathData;
+	 $configFile = $addonPathData . '/ec_pagedata.php';
+    if (file_exists($configFile)) {
+      include($configFile);
+    } else {
+      $pagedata = array();
+    }
+    return $pagedata;
+    
+  } 
+  
+  function Select($name,$options,$current,$class){
+		$a =  '<select id="'.$name.'" name="'.$name.'" class="'.$class.'" >';
+		 if (is_array ( $options)){
+				foreach($options as $key=>$value) {
+				
+					$selected = '';
+					if( $current == $key){
+						$selected = ' selected="selected"';
+					}
+					$a .='<option value="'.$key.'"'.$selected.'>'.$value.'</option>';
+				
+				}
+				
+		 } 
+			$a .='</select>';
+		return $a;
+	}	
 	
 	
 	

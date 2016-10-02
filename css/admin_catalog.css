@@ -2,8 +2,7 @@
 CSS AdminStylesheet for Catalog Easy gpEasy Plugin
 Author: a2exfr
 http://my-sitelab.com/
-Date: 2015-11-07
-Version 1.7
+Version 1.8
 
 */
 .EC_panel{
@@ -144,3 +143,10 @@ float:left;
 width:25px!important;	
 }
 
+.don{
+    font-size: 2em!important;
+    height: 35px!important;
+    text-align: center;
+    width: 80px;
+
+}
