@@ -30,10 +30,7 @@ $(document).ready(function() {
 			});
 
 			$(".column h3").EHt();			
-			//$(".container .column").EHt();
-			//$(".container .list").EHt();
-			//$(".container .column2").EHt();
-			
+						
 			if (gpE_added_js !=""){	
 				 $.each(gpE_added_js, function(index, value) {
 					$.getScript(value, function(){
@@ -88,11 +85,6 @@ $('.filetype-include').each(function (i, value) {
 });
 
 $(".column h3").EHt();
-
-//$(".container .column").EHt();
-//$(".container .list").EHt();
-//$(".container .column2").EHt();
-
 		
 $(".my-grid").each(function(){
 	 var pg = $(this).attr("data-column");	
@@ -135,17 +127,14 @@ $(window).bind('resize', function(event) {
 			 $(value).find(".container .column2").EHt();
 		});
 
-
-//$(".container .column").EHt();
-//$(".container .list").EHt();
-//$(".container .column2").EHt();
 $(".column h3").EHt();
 
 });
 
 
 	
-});//dom ready end
+});
+
 
 (function($) { 
 $.fn.EHt = function(){ 

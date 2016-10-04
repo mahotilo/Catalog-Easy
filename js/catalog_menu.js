@@ -3,10 +3,6 @@ Catalog Easy Plugin
 Author: a2exfr
 http://my-sitelab.com/
 Version 1.8.2*/
-
-
-
-
 					
  $(document).on("click","button.EC_browse_files",function(e){
 	e.preventDefault();
@@ -14,22 +10,18 @@ Version 1.8.2*/
  });
  
  $(document).on("click","#del_img_EC",function(e){
-var container = $("#img_container");
-
- container.find("img").first().attr("src", catbase +"/img/default_thumb.jpg");
-  $("#EC_custom_img").val('');
+	var container = $("#img_container");
+	container.find("img").first().attr("src", catbase +"/img/default_thumb.jpg");
+	$("#EC_custom_img").val('');
  
  });
-
-
  
 
 var EC_menu = {
-  getImageFromFinder  : function() {},
-  setImage            : function() {}
+	getImageFromFinder  : function() {},
+	setImage            : function() {}
 
 }
-
 
 EC_menu.getImagefromFinder = function(imgIdx) {
   window.CKEDITOR = {
@@ -68,7 +60,3 @@ EC_menu.setImage = function(imgIdx, fileUrl) {
  
 
   }
-
-
-
-

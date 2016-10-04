@@ -33,48 +33,18 @@ function gp_init_inline_edit(area_id, section_object) {
 
             gp_saveData: function() {
 
-            //    var catalog_layout = $('#gp_my_options').find('#catalog_layout select').val();
-            //    var source = $('#gp_my_options').find('#source select').val();
-            //    var cat_menu = $('#gp_my_options').find('#cat_menu select').val();
-            //    var sourcepages = $('#gp_my_options').find('#sourcepages input').val();
-            //    var beh = $('#gp_my_options').find('#beh select').val();
-            //
-            //
-            //    var crop = $('#gp_my_options').find('#crop input').val();
-            //    var width = $('#gp_my_options').find('#width input').val();
-            //    var height = $('#gp_my_options').find('#height input').val();
-            //    var EC_thumb = $('#gp_my_options').find('#EC_thumb select').val();
-            //    var showimage = $('#gp_my_options').find('#showimage select').val();
-            //    var shortinfo = $('#gp_my_options').find('#shortinfo select').val();
-            //    var abr = $('#gp_my_options').find('#abr input').val();
-            //    
-			//	var ECrow = $('#gp_my_options').find('#ECrow input').val();
-            //    var ECheight = $('#gp_my_options').find('#ECheight input').val();
-            //    var ShowTitlecar = $('#gp_my_options').find('#ShowTitlecar select').val();
-			//	
-			//	var ECPColumns = $('#gp_my_options').find('#ECPColumns input').val();
-            //    var ECPMinHeight = $('#gp_my_options').find('#ECPMinHeight input').val();
-			//	
 				
 				var datafilter = new Array();
-				
-				
+								
 				$.each($("input[name='datafilter[]']:checked"), function() {
 				  datafilter.push($(this).val());
 				  
 				});
-						
-								
+												
 				var options_my = $('#gp_my_options').find('input,select').serialize();
-			  //	console.log(options_my)	;		
+			 	
 				return '&'+options_my+'&datafilter=' + datafilter	;
-				
-            //    return '&catalog_layout=' + catalog_layout + '&source=' + source + '&sourcepages=' + sourcepages + '&beh=' + beh +
-            //        '&crop=' + crop + '&width=' + width + '&height=' + height + '&EC_thumb=' + EC_thumb + '&showimage=' + showimage +
-            //        '&cat_menu=' + cat_menu + '&shortinfo=' + shortinfo + '&abr=' + abr + '&ECheight=' + ECheight + '&ECrow=' + ECrow +
-			//		'&ShowTitlecar=' + ShowTitlecar +
-			//		'&ECPColumns=' + ECPColumns + '&ECPMinHeight=' + ECPMinHeight +
-			//		'&datafilter=' + datafilter	;
+
             },
             intervalSpeed: function() {},
 			updateElement : function() {},
@@ -84,15 +54,14 @@ function gp_init_inline_edit(area_id, section_object) {
         } // gpeditor --end
 
 
-    gp_editor.updatesect = function() {
-
-        var href = jPrep(window.location.href) + '&cmd=refresh_section' + '&my_value=' + gp_editor.gp_saveData() + '&EC_id=' + section_object.EC_id;
-        $.getJSON(href, ajaxResponse);
-     }
-
+gp_editor.updatesect = function() {
+	var href = jPrep(window.location.href) + '&cmd=refresh_section' + '&my_value=' + gp_editor.gp_saveData() + '&EC_id=' + section_object.EC_id;
+	$.getJSON(href, ajaxResponse);
+ }
 
 
-    $gp.response.refresh_replayFn = function(arg) {
+
+$gp.response.refresh_replayFn = function(arg) {
         var div_data = arg.CONTENT;
         edit_div.html(div_data);
 
@@ -132,7 +101,7 @@ function gp_init_inline_edit(area_id, section_object) {
 	
 		}
 	
-	}//refresh_replayFn
+}//refresh_replayFn
 
 
     var option_area = $('<div id="gp_my_options"/>').prependTo('#ckeditor_controls');
@@ -203,9 +172,7 @@ function gp_init_inline_edit(area_id, section_object) {
 			gpE_add_opts+
 						
 			'</span>'+
-			
-					
-			
+							
 			
 			'<span class="divider">'+
 			' <div id="source"><p>Source<select class="source gpselect" name="source" style="width: 175px;">' +
@@ -269,7 +236,6 @@ function gp_init_inline_edit(area_id, section_object) {
     });
 
 
-
     $('#gp_my_options').find('#source select').val(section_object.source);
     $('#gp_my_options').find('#cat_menu select').val(section_object.cat_menu);
     $('#gp_my_options').find('#sourcepages input').val(section_object.sourcepages);
@@ -289,9 +255,7 @@ function gp_init_inline_edit(area_id, section_object) {
     $('#gp_my_options').find('#ECPColumns input').val(section_object.ECPColumns);
     $('#gp_my_options').find('#ECPMinHeight input').val(section_object.ECPMinHeight);
     $('#gp_my_options').find('#ItemW input').val(section_object.ItemW);
-	
-	
-		
+			
 	//set vals for added opts
 	$.each(section_object, function(i, item) {
 		 if (i!="attributes"){
@@ -354,24 +318,20 @@ function gp_init_inline_edit(area_id, section_object) {
 	$("#lay_opt"+section_object.catalog_layout).removeClass('hidei');
 	
 	$('#gp_my_options').find('#catalog_layout select').change(function() {
-       var ids = $(this).val();
-	$('.lay_opt').addClass('hidei');
-	$("#lay_opt"+ids).removeClass('hidei');
-		
-		
-    });
+		var ids = $(this).val();
+		$('.lay_opt').addClass('hidei');
+		$("#lay_opt"+ids).removeClass('hidei');
+	  });
 	
 	
 
 	//trigger selects change
     $('#gp_my_options').find('select').change(function() {
-
         gp_editor.updatesect();
     });
 	
 	//checkbox change
 	$('#gp_my_options').find('input[type="checkbox"]').on('change', function() { 
-
 			 gp_editor.updatesect();
 	});
 

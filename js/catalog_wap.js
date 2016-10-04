@@ -40,9 +40,6 @@ $('.filetype-include').each(function (i, value) {
 });
 
 
-//$(".container .column").EHt();
-//$(".container .list").EHt();
-//$(".container .column2").EHt();
 $(".column h3").EHt();	
 
 
@@ -88,9 +85,6 @@ $(window).bind('resize', function(event) {
 	});
 
 
-//$(".container .column").EHt();
-//$(".container .list").EHt();
-//$(".container .column2").EHt();
 $(".column h3").EHt();
 
 });
