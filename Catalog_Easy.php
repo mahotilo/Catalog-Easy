@@ -104,7 +104,7 @@ class Catalog_Easy
             
             if ($this->is_sect<>"no_display"){
 				
-            echo '<div class="loading-div"><img src="' . $addonRelativeCode . '/ajax-loader.gif" ></div>';
+            echo '<div class="loading-div"><img src="' . $addonRelativeCode . '/img/ajax-loader.gif" ></div>';
             echo '<div id="results">';
             
             
