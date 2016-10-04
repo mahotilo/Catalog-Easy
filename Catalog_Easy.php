@@ -8,7 +8,17 @@ Version 1.8
 defined('is_running') or die('Not an entry point...');
 includeFile('tool/SectionContent.php');
 
-session_start();
+if (version_compare(phpversion(), '5.4.0', '<')) {
+     if(session_id() == '') {
+        session_start();
+     }
+ }
+ else
+ {
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+ }
 
 
 class Catalog_Easy
