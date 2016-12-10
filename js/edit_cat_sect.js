@@ -128,8 +128,15 @@ $gp.response.refresh_replayFn = function(arg) {
         addlay +='<option value="' + i + '">' + item + '</option>';
 
     });
-	
-	
+
+	if(section_object.templates){
+		$.each(section_object.templates, function(i, item) {
+
+			addlay +='<option value="' + item + '">' + item + '</option>';
+
+		});
+	}
+		
     var option_messages = $(
             '<div id="option_message">' +
            

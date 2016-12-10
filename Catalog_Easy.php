@@ -798,9 +798,16 @@ class Catalog_Easy
     
     
     function ShowCatalog($items){
-	//	if(class_exists('MyView') and $this->is_sect=="yes" ){
-	//		var_dump('MyView exists');
-	//	}
+		//render template
+		if(class_exists('MyView') and $this->is_sect=="yes" ){
+			if(!is_numeric($this->catalog_layout)){
+				$t= new MyView();
+				$t->items= $items;
+				$t->render($this->catalog_layout.'.phtml');
+				return;
+			}
+		}
+		//render added layout from plugin
         if ($this->catalog_layout > 5) {
 			
 			$this->ShowLayoutAdd($items);
@@ -2216,6 +2223,9 @@ class Catalog_Easy
 	$section['imagelinked'] = 0;
     		
     $section['EC_id'] = "EC" . crc32(uniqid("",true));
+	if(class_exists('MyView')){
+		$section['templates'] = self::Get_Templates();
+	}
     return $section;
   }
 
@@ -2261,11 +2271,25 @@ class Catalog_Easy
 			}
 	}
 	
+	if(class_exists('MyView')){
+		$page->file_sections[$section]['templates'] = self::Get_Templates();
+	}
 	
 	
     return true;
   }
 
+  function Get_Templates(){
+		global $addonPathCode;	
+		$layouts_dir = gpFiles::ReadDir($addonPathCode.'/templates/',"phtml");
+			//$layouts[0]="default";
+			foreach ($layouts_dir as $item ){
+					if($item=="default"){continue;}
+					$layouts[]=$item;
+					
+			}
+		return $layouts;
+	}
 
   static function InlineEdit_Scripts($scripts,$type) {
     if( $type !== 'Catalog_easy_section' ) {
