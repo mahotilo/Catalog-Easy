@@ -48,7 +48,7 @@ class Catalog_Easy
 			
 		
 		$title = $this->CheckSource();
-			
+		$title = $this->RemoveHiddenPages($title);	
         
         if (isset($_REQUEST["pag"])) {
             
@@ -261,6 +261,17 @@ class Catalog_Easy
         
     }
     
+	function RemoveHiddenPages($titles){
+		global $gp_index,$gp_titles;
+		foreach ($titles as $key=>$title){
+			$index = $gp_index[$title];
+			if($gp_titles[$index]['vis'] == "private"){
+				unset ($titles[$key]);
+			}
+		}
+		return $titles;
+	}
+	
     function array_find_deep($array, $search, $keys = array())
     {
         foreach ($array as $key => $value) {
@@ -786,8 +797,10 @@ class Catalog_Easy
     
     
     
-    function ShowCatalog($items)
-    {
+    function ShowCatalog($items){
+	//	if(class_exists('MyView') and $this->is_sect=="yes" ){
+	//		var_dump('MyView exists');
+	//	}
         if ($this->catalog_layout > 5) {
 			
 			$this->ShowLayoutAdd($items);
