@@ -69,7 +69,7 @@ class Admin_Catalog_Easy{
 	var $ImagesizeHsp		=200;
 	
   
-  function Admin_Catalog_Easy()
+  function __construct()
   {
 	  	$this->var_names= array (
 				'item_per_page',  'catalog_layout',  'ImagesizeW' ,   'ImagesizeH' ,

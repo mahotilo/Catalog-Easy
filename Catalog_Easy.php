@@ -539,7 +539,7 @@ class Catalog_Easy
 			}else {
 				
                 $show = '<img class="img-responsive ' . $a . '" style="' . $style . '" alt="'.$label.'" src="' . $src . '"/>';
-                $show = common::Link($title, $show);
+               $show = common::Link($title, $show);
             }
             
         } else {
@@ -803,6 +803,7 @@ class Catalog_Easy
 			if(!is_numeric($this->catalog_layout)){
 				$t= new MyView();
 				$t->items= $items;
+				$t->datafilter= $this->datafilter;
 				$t->render($this->catalog_layout.'.phtml');
 				return;
 			}
@@ -1114,7 +1115,8 @@ class Catalog_Easy
         if (isset($this->datafilter)) {
             $pieces = explode(",", $this->datafilter);
             foreach ($pieces as $piece) {
-                echo ' <li class="filter" data-filter="' . $piece . '">' . $piece . '</li>';
+				$piece_front = str_replace('_', ' ', $piece);
+                echo ' <li class="filter" data-filter="' . $piece . '">' . $piece_front . '</li>';
             }
         }
         
