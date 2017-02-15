@@ -261,13 +261,19 @@ class Catalog_Easy
         
     }
     
-	function RemoveHiddenPages($titles){
+    function RemoveHiddenPages($titles){
 		global $gp_index,$gp_titles;
+		if(!is_array($titles)) { return $titles;}
 		foreach ($titles as $key=>$title){
 			$index = $gp_index[$title];
-			if($gp_titles[$index]['vis'] == "private"){
-				unset ($titles[$key]);
+			if(!array_key_exists('vis',$gp_titles[$index])) {
+				continue;
+			} else {
+				if($gp_titles[$index]['vis'] == "private"){
+					unset ($titles[$key]);
+				}
 			}
+		
 		}
 		return $titles;
 	}
