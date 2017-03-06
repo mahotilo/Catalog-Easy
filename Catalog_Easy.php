@@ -328,8 +328,8 @@ class Catalog_Easy
     
     
     
-    function getImageandInfo($title)
-    {
+    function getImageandInfo($title) {
+		
         global $dirPrefix;
         $file = gpFiles::PageFile($title);
         
@@ -352,13 +352,24 @@ class Catalog_Easy
             if ($val['type'] == 'include' or $val['type'] == 'Catalog_easy_section'){
                 unset($file_sections[$key]);
         
-		//dummy section instead of include
-			$file_sections[$key] =   array (
-			'type' => 'text',
-			'content' => '<div><p>Lorem ipsum </p></div>',
-			'attributes' => array (), );
+			//dummy section instead of include
+				$file_sections[$key] =   array (
+				'type' => 'text',
+				'content' => '',
+				'attributes' => array (), );
+			}
+			
+			//grab img only from text
+			if($this->sect_options['img_text']=="yes") {
+				if($val['type']<>"text"){
+					 unset($file_sections[$key]);
+					 $file_sections[$key] =   array ('type' => 'text','content' => '','attributes' => array (), );
+					}	
+			}
+			
 		}
-	}
+		
+	
         
         
         if (!$file_sections) {
@@ -552,10 +563,7 @@ class Catalog_Easy
             $show = "";
         }
         
-		
-        
-        
-        
+		        
         return array($show,$short_info,$datafilter);
         
     }
@@ -2120,6 +2128,7 @@ class Catalog_Easy
 	$ShowTitlecar = $section_data['ShowTitlecar'];
 	$ECPColumns = $section_data['ECPColumns'];
 	$ECPMinHeight = $section_data['ECPMinHeight'];
+	$img_text = $section_data['img_text'];
 		
 	//new options check
 	if(array_key_exists('datafilter',$section_data)){
@@ -2149,7 +2158,7 @@ class Catalog_Easy
 							'EC_thumb'=>$EC_thumb,'EC_id'=>$EC_id,'showimage'=>$showimage,
 							'shortinfo'=>$shortinfo,'abr'=>$abr,'ECrow'=>$ECrow,'ECheight'=>$ECheight,'ShowTitlecar'=>$ShowTitlecar,
 							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight,'datafilter'=>$datafilter,'Showtitle'=>$Showtitle,
-							'ItemW'=>$ItemW, 'imagelinked'=>$imagelinked
+							'ItemW'=>$ItemW, 'imagelinked'=>$imagelinked, 'img_text'=>$img_text
 							);
 	
 //	get added section opts
@@ -2229,6 +2238,7 @@ class Catalog_Easy
 	$section['datafilter'] = "";
 	$section['ItemW'] = 30;
 	$section['imagelinked'] = 0;
+	$section['img_text'] = "no";
     		
     $section['EC_id'] = "EC" . crc32(uniqid("",true));
 	if(class_exists('MyView')){
@@ -2264,6 +2274,7 @@ class Catalog_Easy
 	$page->file_sections[$section]['datafilter'] = & $_POST['datafilter'];
 	$page->file_sections[$section]['ItemW'] = & $_POST['ItemW'];
 	$page->file_sections[$section]['imagelinked'] = & $_POST['imagelinked'];
+	$page->file_sections[$section]['img_text'] = & $_POST['img_text'];
 	
 	
 	//save added section opts
@@ -2291,6 +2302,7 @@ class Catalog_Easy
 		global $addonPathCode;	
 		$layouts_dir = gpFiles::ReadDir($addonPathCode.'/templates/',"phtml");
 			//$layouts[0]="default";
+			$layouts=array();
 			foreach ($layouts_dir as $item ){
 					if($item=="default"){continue;}
 					$layouts[]=$item;
@@ -2339,6 +2351,7 @@ class Catalog_Easy
 	$datafilter = & $_REQUEST['datafilter'];
 	$ItemW = & $_REQUEST['ItemW'];
 	$imagelinked = & $_REQUEST['imagelinked'];
+	$img_text = & $_REQUEST['img_text'];
 	  
 	
 		
@@ -2348,7 +2361,7 @@ class Catalog_Easy
 							'showimage'=>$showimage,
 							'shortinfo'=>$shortinfo,'abr'=>$abr,'ECrow'=>$ECrow,'ECheight'=>$ECheight,'ShowTitlecar'=>$ShowTitlecar,
 							'ECPColumns'=>$ECPColumns,'ECPMinHeight'=>$ECPMinHeight,'datafilter'=>$datafilter,'Showtitle'=>$Showtitle,
-							'ItemW'=>$ItemW, 'imagelinked'=>$imagelinked
+							'ItemW'=>$ItemW, 'imagelinked'=>$imagelinked, 'img_text'=>$img_text
 							);
 	
 	//for added section opts
@@ -2606,3 +2619,5 @@ class Catalog_Easy
 	
 	
 }
+
+

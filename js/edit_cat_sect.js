@@ -140,9 +140,9 @@ $gp.response.refresh_replayFn = function(arg) {
     var option_messages = $(
             '<div id="option_message">' +
            
-			'<span class="divider">'+
-		   ' <div id="catalog_layout"><p>Catalog layout<select class="catalog_layout gpselect" name="catalog_layout">' +
-            '<option value="0">List</option>' +
+			'<div class="a_box">'+
+		   ' <div id="catalog_layout" class="catalog_select"><p>Catalog layout<select class="catalog_layout gpselect" name="catalog_layout">' +
+		   '<option value="0">List</option>' +
             '<option value="1">3 columns</option>' +
             '<option value="2">2 columns</option>' +
             '<option value="3">Portfolio Gallery</option>' +
@@ -155,12 +155,12 @@ $gp.response.refresh_replayFn = function(arg) {
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
             '</select></p></div>' +
-            '<div id="ECrow"><p>Number of items in row<input type="text" name="ECrow" class="gpinput"  /></p></div>' +
-            '<div id="ECheight"><p>Height of carousel (px)<input type="text" name="ECheight" class="gpinput"  /></p></div>' +
+            '<div id="ECrow"><p>Number of items in row<input type="text" name="ECrow" class="a_inp"  /></p></div>' +
+            '<div id="ECheight"><p>Height of carousel (px)<input type="text" name="ECheight" class="a_inp"  /></p></div>' +
             '</div>' + 
 			'<div id="lay_opt3" class="lay_opt hidei">' +
-            '<div id="ECPColumns"><p>Number of columns<input type="text" name="ECPColumns" class="gpinput"  /></p></div>' +
-            '<div id="ECPMinHeight"><p>Height of expandable info(px)<input type="text" name="ECPMinHeight" class="gpinput"  /></p></div>' +
+            '<div id="ECPColumns"><p>Number of columns<input type="text" name="ECPColumns" class="a_inp"  /></p></div>' +
+            '<div id="ECPMinHeight"><p>Height of expandable info(px)<input type="text" name="ECPMinHeight" class="a_inp"  /></p></div>' +
             '</div>' +
 			'<div id="lay_opt5" class="lay_opt hidei">' +
              dataf +
@@ -168,7 +168,7 @@ $gp.response.refresh_replayFn = function(arg) {
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
 			'</select></p></div>' +
-			'<div id="ItemW"><p>Width of portfoliio item (%)<input type="text" name="ItemW" class="gpinput"  /></p></div>' +
+			'<div id="ItemW"><p>Width of portfoliio item (%)<input type="text" name="ItemW" class="a_inp"  /></p></div>' +
 			'<div id="imagelinked"><p>Image is linked to:<select class="gpselect" name="imagelinked">' +
             '<option value="0">Page</option>' +
             '<option value="1">Colorbox</option>' +
@@ -178,52 +178,57 @@ $gp.response.refresh_replayFn = function(arg) {
 						
 			gpE_add_opts+
 						
-			'</span>'+
+			'</div>'+
 							
 			
-			'<span class="divider">'+
+			'<div class="a_box">'+
 			' <div id="source"><p>Source<select class="source gpselect" name="source" style="width: 175px;">' +
             '<option value="0">Direct ChildPages</option>' +
             '<option value="1">ChildPages from another page</option>' +
             '<option value="2">From page in another menu</option>' +
             '</select></p></div>' +
             '<div id="cat_menu" class="hidei"><p> Another menu' + ms + '</p></div>' +
-            '<div id="sourcepages"><p>Source page<input type="text" name="sourcepages" class="gpinput"  /></p></div>' +
-            '</span>'+
+            '<div id="sourcepages"><p>Source page<input type="text" name="sourcepages" class="a_inp"  /></p></div>' +
+            '</div>'+
 			
 			
-			'<span class="divider">'+
+			'<div class="a_box">'+
 			'<div id="beh"><p>How to take<select class="beh gpselect" name="beh">' +
             '<option value="0">All, items per page=</option>' +
             '<option value="1">First number =</option>' +
             '<option value="2">Last number =</option>' +
             '<option value="3">Random number =</option>' +
             '</select></p></div>' +
-            '<div id="crop"><p>Number to take <input type="text" name="crop" class="gpinput"  /></p></div>' +
-			'</span>'+
+            '<div id="crop"><p>Number to take <input type="text" name="crop" class="a_inp"  /></p></div>' +
+			'</div>'+
 
 			
-			'<span class="divider">'+
+			'<div class="a_box">'+
 			'<div id="showimage"><p>Show image?<select class="gpselect" name="showimage">' +
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
             '</select></p></div>' +
-            '<div id="width"><p>Image width(px)<input type="text" name="width" class="gpinput"  /></p></div>' +
-            '<div id="height"><p>Image height(px)<input type="text" name="height" class="gpinput"  /></p></div>' +
+            '<div id="width"><p>Image width(px)<input type="text" name="width" class="a_inp"  /></p></div>' +
+            '<div id="height"><p>Image height(px)<input type="text" name="height" class="a_inp"  /></p></div>' +
             '<div id="EC_thumb"><p>Use EasyCatalog generated thumbnails?<select class="EC_thumb gpselect" name="EC_thumb">' +
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
             '</select></p></div>' +
-            '</span>'+
+            '<div id="img_text"><p>Take image only from text sections?<select class="img_text gpselect" name="img_text">' +
+            '<option value="no">No</option>' +
+            '<option value="yes">Yes</option>' +
+            '</select></p></div>' +
+
+		   '</div>'+
 			
-			'<span class="divider">'+
+			'<div class="a_box">'+
 			'<div id="shortinfo"><p>Short info:<select class="gpselect" name="shortinfo" style="width: 175px;">' +
             '<option value="0">From section with short_info class</option>' +
             '<option value="1">From content</option>' +
             '<option value="2">No short info</option>' +
             '</select></p></div>' +
-            '<div id="abr" class="hidei"><p>Abbreviation Length=<input type="text" name="abr" class="gpinput"  /></p></div>' +
-            '</span>'+
+            '<div id="abr" class="hidei"><p>Abbreviation Length=<input type="text" name="abr" class="a_inp"  /></p></div>' +
+            '</div>'+
 			
 		   '</div>'
         ).appendTo(option_area)
@@ -262,6 +267,7 @@ $gp.response.refresh_replayFn = function(arg) {
     $('#gp_my_options').find('#ECPColumns input').val(section_object.ECPColumns);
     $('#gp_my_options').find('#ECPMinHeight input').val(section_object.ECPMinHeight);
     $('#gp_my_options').find('#ItemW input').val(section_object.ItemW);
+    $('#gp_my_options').find('#img_text select').val(section_object.img_text);
 			
 	//set vals for added opts
 	$.each(section_object, function(i, item) {
