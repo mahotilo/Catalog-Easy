@@ -50,7 +50,7 @@ Version 1.7
     position: absolute;
     bottom: 0;
     right: 10px;
-    width: 32px;
+   /* width: 32px;*/
 }
 .shortinfo {
     margin-top: 15px;
@@ -268,7 +268,7 @@ Version 1.7
     position: absolute;
     bottom: 20px;
     right: 10px;
-    width: 32px;
+    /*width: 32px;*/
 }
 .wmg-container {
     background: #eeeeee;
@@ -486,4 +486,10 @@ margin-bottom: 5px!important;
   text-shadow: -1px 1px #193047;
   height:16px;
   
+}
+#image_opts:focus {
+    outline: none;
+  }
+.image_opts_container{
+	 display: none;
 }

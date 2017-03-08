@@ -159,6 +159,19 @@ $(".cp").autocomplete({ source : gpE_availablelabels });
 $(".row1").EHt();
 $(".row2").EHt();
 
+
+if($('#readmore_link').val() == 0){
+	$('#readmore_text').hide();
+}
+$('#readmore_link').change(function(){
+	if($(this).val() == 1 ){
+		$('#readmore_text').show();
+	} else {
+		$('#readmore_text').hide();
+	}
+})
+
+
 });
 
 

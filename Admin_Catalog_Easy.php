@@ -68,6 +68,9 @@ class Admin_Catalog_Easy{
 	var $ImagesizeWsp		=200;
 	var $ImagesizeHsp		=200;
 	
+	var $readmore_link		=0;
+	var $readmore_text		="";
+	
   
   function __construct()
   {
@@ -82,7 +85,7 @@ class Admin_Catalog_Easy{
 				'Showtitle' ,'datafilter' ,'imagelinked','ItemW',
 				'ECthumb','ECthumbH','ECthumbW', 'wap',
 				'catpages','nav_parent','nav_style','nav_buttons',
-				'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp'				
+				'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp','readmore_link', 'readmore_text'				
 			);
 	  
  	$this->loadConfig();
@@ -555,7 +558,18 @@ echo '<div id="EC_panel8" class="EC_panel ">';
 	
 	
 	echo '<div class="EC_panel1 row1">';
-	$this->Panel_title('');
+	$this->Panel_title('Read more link');
+	echo '<p>Readmore type:';
+	$select_readmore=array(0=>'Icon',1=>'Text link');
+	if( $this->readmore_link ){
+	echo self::Select('readmore_link',$select_readmore, $this->readmore_link,'gpselect');	
+	} else {
+	echo self::Select('readmore_link',$select_readmore, 0,'gpselect');
+	}
+	echo'</p>';
+	echo '<p id="readmore_text" >Read more text: ';
+	echo '<input  type="text" name="readmore_text" value="'.$this->readmore_text .'" class="gpinput" style="width:150px" />';
+	echo '</p>';
 	echo '</div>';
 
 	
@@ -751,7 +765,7 @@ echo '</div>';	//end about
 				'imagelinked','ItemW',
 				'ECthumbH','ECthumbW',
 				'nav_style','nav_buttons',
-				'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp'	
+				'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp', 'readmore_link', 'readmore_text'	
 				);
 				
 	 foreach ($opts as $opt) {

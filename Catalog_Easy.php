@@ -316,8 +316,7 @@ class Catalog_Easy
             $items[$label]['label']    = $label;
 			$items[$label]['url']	   = common::GetUrl($title);
 			$items[$label]['title']	   =	$title;
-            $readmore                  = '<img src="' . $addonRelativeCode . '/img/more.png' . '" border="0" />';
-            $items[$label]['readmore'] = common::Link($title, $readmore);
+            $items[$label]['readmore'] = $this->SetReadmore($title);
             list($items[$label]['image'], $items[$label]['short_info'], $items[$label]['datafilter']) = $this->getImageandInfo($title);
             
         }
@@ -326,8 +325,17 @@ class Catalog_Easy
         
     }
     
+    function SetReadmore($title){
+		global $addonRelativeCode;
+		if ($this->readmore_link == 1 and $this->readmore_text<>"" ) {	
+			 $readmore = htmlentities(strip_tags($this->readmore_text));
+		} else{
+			 $readmore =  '<img src="' . $addonRelativeCode . '/img/more.png' . '" border="0" />';
+		}	
+		return common::Link($title, $readmore);
+	}
     
-    
+	
     function getImageandInfo($title) {
 		
         global $dirPrefix;
@@ -1897,7 +1905,7 @@ class Catalog_Easy
 			// options and config exist, hide notice
 			$opts = array('ShortInfo','AbbrevL','ShowTitlecar','ECthumb','ECthumbH','ECthumbW',
 			'wap','catpages','nav_parent','nav_style','nav_buttons',
-			'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp'
+			'ImagesizeWpg','ImagesizeHpg','ImagesizeWsp','ImagesizeHsp','readmore_link', 'readmore_text'
 			);
 			foreach($opts as $opt) {
 				if(!array_key_exists ( $opt, $config) ) {
@@ -1959,6 +1967,9 @@ class Catalog_Easy
             $this->imagelinked = $config['imagelinked'];
             $this->Showtitle   = $config['Showtitle'];
             $this->ItemW       = $config['ItemW'];
+          
+			$this->readmore_link       = $config['readmore_link'];
+            $this->readmore_text       = $config['readmore_text'];
             
             //spec
         //  $this->ECthumb     = $config['ECthumb'];
@@ -2068,6 +2079,9 @@ class Catalog_Easy
 		$this->ImagesizeHpg		=200;	
 		$this->ImagesizeWsp		=200;
 		$this->ImagesizeHsp		=200;
+				
+		$this->readmore_link		=0;
+		$this->readmore_text		="";
 		
 		//deprecated options
 		$opts = array('LinesPages','column3Pages','column2Pages','PGPages',

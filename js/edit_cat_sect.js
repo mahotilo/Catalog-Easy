@@ -141,7 +141,7 @@ $gp.response.refresh_replayFn = function(arg) {
             '<div id="option_message">' +
            
 			'<div class="a_box">'+
-		   ' <div id="catalog_layout" class="catalog_select"><p>Catalog layout<select class="catalog_layout gpselect" name="catalog_layout">' +
+		   ' <div id="catalog_layout" class="catalog_select"><p><i class="fa fa-list"></i> Catalog layout<select class="catalog_layout gpselect" name="catalog_layout">' +
 		   '<option value="0">List</option>' +
             '<option value="1">3 columns</option>' +
             '<option value="2">2 columns</option>' +
@@ -182,7 +182,7 @@ $gp.response.refresh_replayFn = function(arg) {
 							
 			
 			'<div class="a_box">'+
-			' <div id="source"><p>Source<select class="source gpselect" name="source" style="width: 175px;">' +
+			' <div id="source"><p><i class="fa fa-link"></i> Source<select class="source gpselect" name="source" style="width: 175px;">' +
             '<option value="0">Direct ChildPages</option>' +
             '<option value="1">ChildPages from another page</option>' +
             '<option value="2">From page in another menu</option>' +
@@ -193,7 +193,7 @@ $gp.response.refresh_replayFn = function(arg) {
 			
 			
 			'<div class="a_box">'+
-			'<div id="beh"><p>How to take<select class="beh gpselect" name="beh">' +
+			'<div id="beh"><p><i class="fa fa-random"></i> How to take<select class="beh gpselect" name="beh">' +
             '<option value="0">All, items per page=</option>' +
             '<option value="1">First number =</option>' +
             '<option value="2">Last number =</option>' +
@@ -204,6 +204,8 @@ $gp.response.refresh_replayFn = function(arg) {
 
 			
 			'<div class="a_box">'+
+			'<a id="image_opts" class="gpbutton" style="width:100%;" href="javascript:void(0)"><i class="fa fa-picture-o"></i> Image Options</a>'+
+			'<div class="image_opts_container">'+
 			'<div id="showimage"><p>Show image?<select class="gpselect" name="showimage">' +
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
@@ -218,11 +220,12 @@ $gp.response.refresh_replayFn = function(arg) {
             '<option value="no">No</option>' +
             '<option value="yes">Yes</option>' +
             '</select></p></div>' +
-
+			'</div>'+
+			
 		   '</div>'+
 			
 			'<div class="a_box">'+
-			'<div id="shortinfo"><p>Short info:<select class="gpselect" name="shortinfo" style="width: 175px;">' +
+			'<div id="shortinfo"><p><i class="fa fa-align-left"></i> Short info:<select class="gpselect" name="shortinfo" style="width: 175px;">' +
             '<option value="0">From section with short_info class</option>' +
             '<option value="1">From content</option>' +
             '<option value="2">No short info</option>' +
@@ -335,6 +338,9 @@ $gp.response.refresh_replayFn = function(arg) {
 		$('.lay_opt').addClass('hidei');
 		$("#lay_opt"+ids).removeClass('hidei');
 	  });
+	$('#gp_my_options').find('#image_opts').on('click', function() { 
+			$('#gp_my_options').find('.image_opts_container').toggle('slow');
+	});
 	
 	
 
