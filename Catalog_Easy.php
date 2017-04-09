@@ -36,7 +36,7 @@ class Catalog_Easy
 			$this->sect_options=$sect_options;
 			
 		} else {
-		$this->sect_options="";	
+		$this->sect_options=null;	
 		}
 		 
         global $addonRelativeCode, $addonPathData;
@@ -368,13 +368,12 @@ class Catalog_Easy
 			}
 			
 			//grab img only from text
-			if($this->sect_options['img_text']=="yes") {
-				if($val['type']<>"text"){
-					 unset($file_sections[$key]);
-					 $file_sections[$key] =   array ('type' => 'text','content' => '','attributes' => array (), );
+				if($this->sect_options['img_text']=="yes") {
+					if($val['type']<>"text"){
+						 unset($file_sections[$key]);
+						 $file_sections[$key] =   array ('type' => 'text','content' => '','attributes' => array (), );
 					}	
-			}
-			
+				}
 		}
 		
 	

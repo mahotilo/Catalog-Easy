@@ -39,7 +39,7 @@ EC_menu.getImagefromFinder = function(imgIdx) {
 }
 
 EC_menu.setImage = function(imgIdx, fileUrl) {
-  var filetype = fileUrl.substr(fileUrl.lastIndexOf('.') + 1).toLowerCase();
+  var filetype = fileUrl.toString().substr(fileUrl.lastIndexOf('.') + 1).toLowerCase();
   if (!filetype.match(/jpg|jpeg|png|gif|svg|svgz|mng|apng|webp|bmp|ico/)) {
     window.setTimeout(
       function() {
