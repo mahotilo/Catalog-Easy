@@ -265,15 +265,15 @@ class Catalog_Easy
 		global $gp_index,$gp_titles;
 		if(!is_array($titles)) { return $titles;}
 		foreach ($titles as $key=>$title){
-			$index = $gp_index[$title];
-			if(!array_key_exists('vis',$gp_titles[$index])) {
-				continue;
-			} else {
-				if($gp_titles[$index]['vis'] == "private"){
-					unset ($titles[$key]);
+			if(!$title) continue; 
+				$index = $gp_index[$title];
+				if(!array_key_exists('vis',$gp_titles[$index])) {
+					continue;
+				} else {
+					if($gp_titles[$index]['vis'] == "private"){
+						unset ($titles[$key]);
+					}
 				}
-			}
-		
 		}
 		return $titles;
 	}
