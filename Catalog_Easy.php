@@ -368,7 +368,7 @@ class Catalog_Easy
 			}
 			
 			//grab img only from text
-				if($this->sect_options['img_text']=="yes") {
+				if(is_array($this->sect_options) && $this->sect_options['img_text']=="yes") {
 					if($val['type']<>"text"){
 						 unset($file_sections[$key]);
 						 $file_sections[$key] =   array ('type' => 'text','content' => '','attributes' => array (), );
