@@ -100,7 +100,7 @@ $(".my-grid").each(function(){
    })		
 
    
-var hash = window.location.hash;
+var hash = decodeURI(window.location.hash);
 var noHash=hash.replace("#","");
 	if(hash){
 		mix_init_cat(noHash);
