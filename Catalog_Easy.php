@@ -2112,14 +2112,14 @@ class Catalog_Easy
 
 	//FOR SECTION PART
 	
- function SectionTypes($section_types) {
+ static function SectionTypes($section_types) {
     $section_types['Catalog_easy_section'] = array();
     $section_types['Catalog_easy_section']['label'] = 'Catalog easy';
     return $section_types;
   }
 
 
-  function SectionToContent($section_data) {
+  static function SectionToContent($section_data) {
     if( $section_data['type'] != 'Catalog_easy_section' ) {
       return $section_data;
     }
@@ -2211,7 +2211,7 @@ class Catalog_Easy
    
  }
 
-  function NewSections($links){
+  static function NewSections($links){
 
     global $addonRelativeCode;
 
@@ -2227,7 +2227,7 @@ class Catalog_Easy
 
  
  
-  function DefaultContent($default_content,$type) {
+  static function DefaultContent($default_content,$type) {
     if( $type != 'Catalog_easy_section' ) {
       return $default_content;
     }
@@ -2264,7 +2264,7 @@ class Catalog_Easy
   }
 
 
-  function SaveSection($return,$section,$type) {
+  static function SaveSection($return,$section,$type) {
     if( $type != 'Catalog_easy_section' ) {
       return $return;
     }
@@ -2339,7 +2339,7 @@ class Catalog_Easy
  
 
  
-  function PageRunScript($cmd) {
+  static function PageRunScript($cmd) {
     global $page, $addonRelativeCode; 
 
     if ( $cmd == 'refresh_section' ) {
@@ -2417,7 +2417,7 @@ class Catalog_Easy
   } 	
 	
 	
- function MenuPageOptions($title, $title_index, $level_arr=false, $layout_info) {
+ static function MenuPageOptions($title, $title_index, $level_arr=false, $layout_info) {
    
     $langmessage = 'Catalog Easy';
     $level = $level_arr && isset($level_arr['level']) ? $level_arr['level'] : 'false';
@@ -2426,7 +2426,7 @@ class Catalog_Easy
   } 
 	
  
- function MenuCommand($cmd) {
+ static function MenuCommand($cmd) {
     global $addonPathData;
    
     if ( ($cmd != 'menu_ec' && $cmd != 'menu_ec_save') || !isset($_REQUEST['index']) ) {
