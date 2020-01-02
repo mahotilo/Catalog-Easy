@@ -4,7 +4,7 @@ You can use different layouts, to organize your pages, and create some kind of c
 Demo and docs can be found here
 http://ts-addons.my-sitelab.com/Catalog_Easy
 
-Features:
+## Features:
 -six layouts (list, 2 columns, 3 columns, portfolio gallery responsive,carousel,sortable portfolio);
 -posibility to specify layout for every page;
 -gadget and admin page for options;
@@ -13,7 +13,7 @@ Features:
 -sorting by category;
 -build in navigation for pages.
 
-Usage:
+## Usage:
 - possible to use section or gadget;
 - include catalog section on page, edit it.
 - gadget suppozed to work in File Include Section(add new section type file include withg gadget Catalog Easy);
@@ -21,7 +21,7 @@ Usage:
 - add class short_info to any section on child page to specify short info that appears in layout or set to take it from content;
 - for sortable portfolio you need to add attribute data-filter with value name of category( or names separeted by space) to one section on your Child page.
 
-Bugs, issues, suggestions for improvements are welcome.
+**Bugs, issues, suggestions for improvements are welcome.**
 Support Forum http://gpeasy.com/Forum?show=f1287
 
 
@@ -33,7 +33,7 @@ Support Forum http://gpeasy.com/Forum?show=f1287
 - version 1.7.1 - support resized images, for Catalog generated image thumbnails
 - version 1.7 - added possibility to use Catalog generated image thumbnails(look in Special options); fix colorbox in sortable portfolio .
 - version 1.6.1b - fatal error with special page fix.
-version 1.6 - bugs and notices fix, added possibility to use gadget on page that don't have direct child pages(
+- version 1.6 - bugs and notices fix, added possibility to use gadget on page that don't have direct child pages(
 Class not must be exactly short_info. Now can use short_info as a part of class, example "col-lg-6 short_info"
 - version 1.5 - added Sortable Portfolio Layout with possibility to sort item by category.
 - version 1.4 - added Carousel Layout, admin side change,individual options for every layout, image now linked to childpage.
