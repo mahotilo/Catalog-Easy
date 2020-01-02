@@ -24,7 +24,7 @@ http://ts-addons.my-sitelab.com/Catalog_Easy
 **Bugs, issues, suggestions for improvements are welcome.**
 Support Forum http://gpeasy.com/Forum?show=f1287
 
-# Changelog
+## Changelog
 - version 1.8.3 fix images overlap
 - version 1.8.2 - added possibility to set image for every page, image don't need to be on page to display in catalog(look in menu options), added more options in section for Sortable Portfolio, short info - do not show option.
 - version 1.8.1 - categories for Sortable Portfolio can be set for page in Typesetter Page Manager. Also categories for sortable portfolio now present in section edit.
