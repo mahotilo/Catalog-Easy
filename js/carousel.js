@@ -1,7 +1,52 @@
-+function(b){var d=function(a,f){this.$element=b(a);this.$indicators=this.$element.find(".carousel-indicators");this.options=f;this.paused=this.sliding=this.interval=this.$active=this.$items=null;"hover"==this.options.pause&&this.$element.on("mouseenter",b.proxy(this.pause,this)).on("mouseleave",b.proxy(this.cycle,this))};d.DEFAULTS={interval:5E3,pause:"hover",wrap:!0};d.prototype.cycle=function(a){a||(this.paused=!1);this.interval&&clearInterval(this.interval);this.options.interval&&!this.paused&&
-(this.interval=setInterval(b.proxy(this.next,this),this.options.interval));return this};d.prototype.getActiveIndex=function(){this.$active=this.$element.find(".item.active");this.$items=this.$active.parent().children();return this.$items.index(this.$active)};d.prototype.to=function(a){var f=this,c=this.getActiveIndex();if(!(a>this.$items.length-1||0>a))return this.sliding?this.$element.one("slid.bs.carousel",function(){f.to(a)}):c==a?this.pause().cycle():this.slide(a>c?"next":"prev",b(this.$items[a]))};
-d.prototype.pause=function(a){a||(this.paused=!0);this.$element.find(".next, .prev").length&&b.support.transition.end&&(this.$element.trigger(b.support.transition.end),this.cycle(!0));this.interval=clearInterval(this.interval);return this};d.prototype.next=function(){if(!this.sliding)return this.slide("next")};d.prototype.prev=function(){if(!this.sliding)return this.slide("prev")};d.prototype.slide=function(a,f){var c=this.$element.find(".item.active"),e=f||c[a](),d=this.interval,h="next"==a?"left":
-"right",g="next"==a?"first":"last",k=this;if(!e.length){if(!this.options.wrap)return;e=this.$element.find(".item")[g]()}this.sliding=!0;d&&this.pause();g=b.Event("slide.bs.carousel",{relatedTarget:e[0],direction:h});if(!e.hasClass("active")){this.$indicators.length&&(this.$indicators.find(".active").removeClass("active"),this.$element.one("slid.bs.carousel",function(){var a=b(k.$indicators.children()[k.getActiveIndex()]);a&&a.addClass("active")}));if(b.support.transition&&this.$element.hasClass("slide")){this.$element.trigger(g);
-if(g.isDefaultPrevented())return;e.addClass(a);e[0].offsetWidth;c.addClass(h);e.addClass(h);c.one(b.support.transition.end,function(){e.removeClass([a,h].join(" ")).addClass("active");c.removeClass(["active",h].join(" "));k.sliding=!1;setTimeout(function(){k.$element.trigger("slid.bs.carousel")},0)}).emulateTransitionEnd(600)}else{this.$element.trigger(g);if(g.isDefaultPrevented())return;c.removeClass("active");e.addClass("active");this.sliding=!1;this.$element.trigger("slid.bs.carousel")}d&&this.cycle();
-return this}};var m=b.fn.carousel;b.fn.carousel=function(a){return this.each(function(){var f=b(this),c=f.data("bs.carousel"),e=b.extend({},d.DEFAULTS,f.data(),"object"==typeof a&&a),l="string"==typeof a?a:e.slide;c||f.data("bs.carousel",c=new d(this,e));if("number"==typeof a)c.to(a);else if(l)c[l]();else e.interval&&c.pause().cycle()})};b.fn.carousel.Constructor=d;b.fn.carousel.noConflict=function(){b.fn.carousel=m;return this};b(document).on("click.bs.carousel.data-api","[data-slide], [data-slide-to]",
-function(a){var f=b(this),c,e=b(f.attr("data-target")||(c=f.attr("href"))&&c.replace(/.*(?=#[^\s]+$)/,""));c=b.extend({},e.data(),f.data());var d=f.attr("data-slide-to");d&&(c.interval=!1);e.carousel(c);(d=f.attr("data-slide-to"))&&e.data("bs.carousel").to(d);a.preventDefault()});b(window).on("load",function(){b('[data-ride="carousel"]').each(function(){var a=b(this);a.carousel(a.data())})})}(jQuery);
+/* swipe support from http://wowmotty.blogspot.com/2011/10/adding-swipe-support.html */
+var maxTime = 1000, // allow movement if < 1000 ms (1 sec)
+	maxDistance = 30,  // swipe movement of 50 pixels triggers the swipe
+	startX = 0,
+	startTime = 0,
+	touch = "ontouchend" in document,
+	startEvent = (touch) ? 'touchstart' : 'mousedown',
+	moveEvent = (touch) ? 'touchmove' : 'mousemove',
+	endEvent = (touch) ? 'touchend' : 'mouseup';
+
+$(function(){
+	$('.EC_Carousel').each(function(){
+		var $carousel = $(this);
+		var speed = $carousel.data('speed') || 5000;
+
+  		$carousel
+			.carousel({interval:speed})
+
+			.bind(startEvent, function(e){
+				// prevent image drag (Firefox)
+				e.preventDefault();
+				startTime = e.timeStamp;
+				startX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+			})
+			.bind(endEvent, function(e){
+				startTime = 0;
+				startX = 0;
+			})
+			.bind(moveEvent, function(e){
+				e.preventDefault();
+				var currentX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX,
+					currentDistance = (startX === 0) ? 0 : Math.abs(currentX - startX),
+					currentTime = e.timeStamp;
+				if (startTime !== 0 && currentTime - startTime < maxTime && currentDistance > maxDistance) {
+					if (currentX < startX) {
+						$carousel.carousel('next');
+					}
+					if (currentX > startX) {
+						$carousel.carousel('prev');
+					}
+					startTime = 0;
+					startX = 0;
+				}
+			})
+						
+			.filter('.start_paused')
+			.carousel('pause');
+		if ( $carousel.find(".item, .carousel-item").length < 2 ){
+      		$carousel.find(".carousel-indicators, .carousel-control").hide();
+    	}
+	});
+});

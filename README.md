@@ -42,3 +42,8 @@ version 1.2 - added Portfolio Gallery responsive Layout.
 version 1.0a - fix some erors and notices.
 
 
+#Fork's changelog
+- Catalog_Easy.php is PHP 7.x warnings friendly
+- Tabs folding when switching in the gallery 'portfolio' turned off
+- Bootstrap 3 and 4 support
+- Support swipe for the carousel
