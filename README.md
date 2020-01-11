@@ -47,3 +47,4 @@ Class not must be exactly short_info. Now can use short_info as a part of class,
 - Tabs folding when switching in the gallery 'portfolio' turned off
 - Bootstrap 3 and 4 support
 - Support swipe for the carousel
+- Ignore non-page elements in menu
