@@ -24,7 +24,6 @@ if(!function_exists("IsBootstrap")){
 	}
 }
 
-
 global $addonRelativeCode, $page, $addonPathData,$gp_index;
 /*	$page->css_user[] = $addonRelativeCode . '/css/bootstrap.css'; //only grid)
 */
@@ -35,12 +34,14 @@ global $addonRelativeCode, $page, $addonPathData,$gp_index;
 	$page->head_js[] =  $addonRelativeCode . '/js/jquery.wm-gridfolio-1.0.min.js';
 	
 	$BSVer = IsBootstrap();
-	if ( $BSVer == 2 ) {
-		common::LoadComponents( 'bootstrap-carousel' );
-	} elseif ( $BSVer == 3 ) {
-		common::LoadComponents( 'bootstrap3-carousel' );
-	} else {
-		common::LoadComponents( 'bootstrap4-carousel' );
+	if ($BSVer) {
+		if ( $BSVer == 2 ) {
+			common::LoadComponents( 'bootstrap-carousel' );
+		} elseif ( $BSVer == 3 ) {
+			common::LoadComponents( 'bootstrap3-carousel' );
+		} else {
+			common::LoadComponents( 'bootstrap4-carousel' );
+		}
 	}
 	
 	$page->head_js[] =  $addonRelativeCode . '/js/carousel.js';
@@ -129,4 +130,3 @@ global $addonRelativeCode, $page, $addonPathData,$gp_index;
 
 
 	common::LoadComponents('colorbox');
-

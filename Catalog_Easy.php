@@ -278,6 +278,10 @@ class Catalog_Easy
 		global $gp_index,$gp_titles;
 		if(!is_array($titles)) { return $titles;}
 		foreach ($titles as $key=>$title){
+			if ( $title=='' ){
+				unset ($titles[$key]);
+				continue;
+			}
 			$index = $gp_index[$title];
 			if(!array_key_exists('vis',$gp_titles[$index])) {
 				continue;
@@ -286,7 +290,6 @@ class Catalog_Easy
 					unset ($titles[$key]);
 				}
 			}
-
 		}
 		return $titles;
 	}
@@ -1121,7 +1124,7 @@ class Catalog_Easy
             //echo '<div class="readmore_EC">'.$item['readmore'].'</div>';
             echo '</div>';
 
-            if (($i + 1) % $this->ECrow == 0 || count($items) == $i + 1) {
+            if (($i + 1) % $this->ECrow == 0 || count($items) == ($i + 1)) {
 
                 echo '</div>';
                 echo '</div>';
