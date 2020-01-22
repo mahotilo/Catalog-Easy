@@ -2,7 +2,7 @@
 You can use different layouts, to organize your pages, and create some kind of catalog or portfolio with pagination and sorting.
 
 Demo and docs can be found here
-http://ts-addons.my-sitelab.com/Catalog_Easy
+`http://ts-addons.my-sitelab.com/Catalog_Easy`
 
 ## Features:
 -six layouts (list, 2 columns, 3 columns, portfolio gallery responsive,carousel,sortable portfolio);
