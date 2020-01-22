@@ -81,7 +81,7 @@ class Catalog_Easy
         $this->Check_options();
         $title = $this->HowtoTake($title);
 
-		$pages_count = count($title);
+		$pages_count = isset($title) ? count($title) : 0;
 
         if (isset($_REQUEST["sort"])) {
 
@@ -198,6 +198,9 @@ class Catalog_Easy
 
 		$menu = gpOutput::GetMenuArray($menu_id);
 		$index      = $this->array_find_deep($gp_titles, $labelset);
+		if (empty($index)){
+            $index = 0;
+        }
         $page_index = $index[0];
 
 		if (!isset($menu[$page_index])) {
@@ -1386,7 +1389,7 @@ class Catalog_Easy
 		global $page;
 
 		//sect check - more priority
-		if($this->is_sect=="yes"){
+		if($this->is_sect=="yes" and !empty($pages)){
 
 			if ($this->sect_options['beh']== 0){
 					if($this->sect_options['crop']<>"" and $this->sect_options['crop'] > 0 ){
@@ -2132,7 +2135,7 @@ class Catalog_Easy
 
 	//FOR SECTION PART
 
- function SectionTypes($section_types) {
+ static function SectionTypes($section_types) {
     $section_types['Catalog_easy_section'] = array();
     $section_types['Catalog_easy_section']['label'] = 'Catalog easy';
     return $section_types;
@@ -2231,7 +2234,7 @@ class Catalog_Easy
 
  }
 
-  function NewSections($links){
+  static function NewSections($links){
 
     global $addonRelativeCode;
 
@@ -2247,7 +2250,7 @@ class Catalog_Easy
 
 
 
-  function DefaultContent($default_content,$type) {
+  static function DefaultContent($default_content,$type) {
     if( $type != 'Catalog_easy_section' ) {
       return $default_content;
     }
@@ -2359,7 +2362,7 @@ class Catalog_Easy
 
 
 
-  function PageRunScript($cmd) {
+  static function PageRunScript($cmd) {
     global $page, $addonRelativeCode;
 
     if ( $cmd == 'refresh_section' ) {
@@ -2437,7 +2440,7 @@ class Catalog_Easy
   }
 
 
- function MenuPageOptions($title, $title_index, $level_arr=false, $layout_info) {
+ static function MenuPageOptions($title, $title_index, $level_arr=false, $layout_info) {
 
     $langmessage = 'Catalog Easy';
     $level = $level_arr && isset($level_arr['level']) ? $level_arr['level'] : 'false';
@@ -2446,7 +2449,7 @@ class Catalog_Easy
   }
 
 
- function MenuCommand($cmd) {
+ static function MenuCommand($cmd) {
     global $addonPathData;
 
     if ( ($cmd != 'menu_ec' && $cmd != 'menu_ec_save') || !isset($_REQUEST['index']) ) {
