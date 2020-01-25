@@ -44,7 +44,7 @@ Class not must be exactly short_info. Now can use short_info as a part of class,
 
 
 # Fork's changelog
-- Catalog_Easy.php is PHP 7.x warnings friendly
+- Catalog_Easy.php is PHP 7.x warnings and errors friendly
 - Tabs folding when switching in the gallery 'portfolio' turned off
 - Bootstrap 3 and 4 support
 - Support swipe for the carousel
