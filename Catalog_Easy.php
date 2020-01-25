@@ -935,8 +935,8 @@ class Catalog_Easy
 
     function Check_Addon(){
 	global $config;
-		$addlay_folder  = "";
-		$addon_name  = "";
+		$addlay_folder  = [];
+		$addon_name  = [];
 		foreach ($config['addons'] as $addon_key => $addon_info) {
 		//  if ($addon_info['name'] == 'Catalog Easy Layouts') {
 		  if (strpos($addon_info['name'], 'Catalog Easy Layout') !== false)  {
@@ -945,7 +945,7 @@ class Catalog_Easy
 		  }
 		}
 
-		if	($addlay_folder==""){
+		if	($addlay_folder==[]){
 			$this->catalog_layout = 0;
 			return $addlay_folder;
 		}
