@@ -25,8 +25,6 @@ if(!function_exists("IsBootstrap")){
 }
 
 global $addonRelativeCode, $page, $addonPathData,$gp_index;
-/*	$page->css_user[] = $addonRelativeCode . '/css/bootstrap.css'; //only grid)
-*/
 	$page->css_user[] = $addonRelativeCode . '/css/catalog.css';
 	$page->css_user[] = $addonRelativeCode . '/css/carousel.css';
 
@@ -36,6 +34,7 @@ global $addonRelativeCode, $page, $addonPathData,$gp_index;
 	$BSVer = IsBootstrap();
 	if ($BSVer) {
 		if ( $BSVer == 2 ) {
+			$page->css_user[] = $addonRelativeCode . '/css/bootstrap.css'; //only grid)
 			common::LoadComponents( 'bootstrap-carousel' );
 		} elseif ( $BSVer == 3 ) {
 			common::LoadComponents( 'bootstrap3-carousel' );
