@@ -1048,14 +1048,15 @@ class Catalog_Easy
 
     function ShowLayoutCarousel($items)
     {
-        global $addonRelativeCode;
-        if ($this->ECrow <= 0 or $this->ECrow > 6) {
-            $this->ECrow = 4;
-            $numcol      = 3;
+        global $page,$addonRelativeCode;
+        if ($this->ECrow > 6) {
+            $this->ECrow = 6;
+        }
+        if ($this->ECrow <= 0) {
+            $this->ECrow = 0;
         }
 
         switch ($this->ECrow) {
-
             case 1:
                 $numcol = 12;
                 break;
@@ -1068,12 +1069,14 @@ class Catalog_Easy
             case 4:
                 $numcol = 3;
                 break;
+            case 5:
+                $numcol = 2;
+                break;
             case 6:
                 $numcol = 2;
                 break;
             default:
-                $numcol      = 3;
-                $this->ECrow = 4;
+                $numcol = 12;
         }
 
 
@@ -1094,52 +1097,98 @@ class Catalog_Easy
 		} else {
 			$car_id ="";}
 
-        echo '<div class="container" style="width:100%;">';
-        echo '<div class="row">';
-        echo '<div class="col-md-12">';
-        echo '<div id="EC_Carousel'.$car_id.'" class="EC_Carousel carousel slide" data-ride="carousel">';
-		if ($this->ECheight<>"") {$style = 'style="height:' . $this->ECheight . 'px"';} else {$style = "";}
-		echo '<div class="carousel-inner" '.$style.'">';
 
-        $flag = "active";
+		if ( $this->ECrow > 0) {
+			echo '<div class="container" style="width:100%;">';
+			echo '<div class="row">';
+			echo '<div class="col-md-12">';
+			echo '<div id="EC_Carousel'.$car_id.'" class="EC_Carousel carousel slide" data-ride="carousel">';
+			if ($this->ECheight<>"") {$style = 'style="height:' . $this->ECheight . 'px"';} else {$style = "";}
+			echo '<div class="carousel-inner" '.$style.'">';
+
+			$flag = "active";
 
 
-        for ($i = 0; $i < count($items); $i++) {
-            if ($i % $this->ECrow == 0) {
-                echo '<div class="'.$carousel_item_class.' ' . $flag . '">';
-                echo '<div class="row">';
-            }
-
-            if ($flag == "active") {
-                $item = current($items);
-                $flag = "";
-            } else {
-                $item = next($items);
-            }
-            echo '<div class="col-md-' . $numcol . ' carblock">';
-
-			if($this->ShowTitlecar){
-				echo '<h3>' . $item['link'] . '</h3>';
+			for ($i = 0; $i < count($items); $i++) {
+				if ($i % $this->ECrow == 0) {
+					echo '<div class="'.$carousel_item_class.' ' . $flag . '">';
+					echo '<div class="row">';
 				}
 
-			echo $item['image'];
-            echo '<div class="shortinfo shortinfoCar">' . $item['short_info'] . '</div>';
-            //echo '<div class="readmore_EC">'.$item['readmore'].'</div>';
-            echo '</div>';
+				if ($flag == "active") {
+					$item = current($items);
+					$flag = "";
+				} else {
+					$item = next($items);
+				}
+				echo '<div class="col-md-' . $numcol . ' carblock">';
 
-            if (($i + 1) % $this->ECrow == 0 || count($items) == ($i + 1)) {
+				if($this->ShowTitlecar){
+					echo '<h3>' . $item['link'] . '</h3>';
+					}
 
-                echo '</div>';
-                echo '</div>';
-            }
-        }
-        echo '</div>';
-        echo '<a role="button" data-slide="prev" href="#EC_Carousel'.$car_id.'" class="EC_carousel-control '.$carousel_control_prev_class.'"><img src="' . $addonRelativeCode . '/img/left.png' . '" border="0" /></a>';
-        echo '<a role="button" data-slide="next" href="#EC_Carousel'.$car_id.'" class="EC_carousel-control '.$carousel_control_next_class.'"><img src="' . $addonRelativeCode . '/img/right.png' . '" border="0" /></a>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
+				echo $item['image'];
+				echo '<div class="shortinfo shortinfoCar">' . $item['short_info'] . '</div>';
+				//echo '<div class="readmore_EC">'.$item['readmore'].'</div>';
+				echo '</div>';
+
+				if (($i + 1) % $this->ECrow == 0 || count($items) == ($i + 1)) {
+
+					echo '</div>';
+					echo '</div>';
+				}
+			}
+			echo '</div>';
+			echo '<a role="button" data-slide="prev" href="#EC_Carousel'.$car_id.'" class="EC_carousel-control '.$carousel_control_prev_class.'"><img src="' . $addonRelativeCode . '/img/left.png' . '" border="0" /></a>';
+			echo '<a role="button" data-slide="next" href="#EC_Carousel'.$car_id.'" class="EC_carousel-control '.$carousel_control_next_class.'"><img src="' . $addonRelativeCode . '/img/right.png' . '" border="0" /></a>';
+			echo '</div>';
+			echo '</div>';
+			echo '</div>';
+			echo '</div>';
+		} else {
+			echo '<div class="container" style="width:100%;">';
+			echo '<div class="row">';
+			echo '<div class="col-lg-12">';
+			echo '<div id="EC_Carousel'.$car_id.'" class="EC_Carousel owl-carousel owl-theme">';
+			if ($this->ECheight<>"") {$style = 'style="height:' . $this->ECheight . 'px"';} else {$style = "";}
+
+			foreach ($items as $item) {
+				echo '<div class="item">';
+					echo '<div class="col-12 carblock">';
+
+				if($this->ShowTitlecar){
+					echo '<h3>' . $item['link'] . '</h3>';
+					}
+
+				echo $item['image'];
+				echo '<div class="shortinfo shortinfoCar">' . $item['short_info'] . '</div>';
+				echo '</div>';
+				echo '</div>';
+			}
+
+			echo '</div>';
+			echo '</div>';
+			echo '</div>';
+			echo '</div>';
+
+			$page->head_script .= "\n"
+			.'$(document).ready(function(){'."\n"
+			.'	$("#EC_Carousel'.$car_id.'").owlCarousel({'."\n"
+			.'		loop: true,'."\n"
+			.'		nav: true,'."\n"
+			.'		margin: 50,'."\n"
+			.'		autoplay: '.var_export(!\gp\tool::LoggedIn(), true).','."\n"
+			.'		navText: ["<i class=\'fa fa-chevron-left\'></i>", "<i class=\'fa fa-chevron-right\'></i>"],'."\n"
+			.'		responsiveClass: true,'."\n"
+			.'		responsive: {'."\n"
+			.'			0: {items: 1},'."\n"
+			.'			600: {items: 2},'."\n"
+			.'			768: {items: 3},'."\n"
+			.'			1000: {items: 4}'."\n"
+			.'		}'."\n"
+			.'	});'."\n"
+			.'});';
+		}	        
     }
 
 

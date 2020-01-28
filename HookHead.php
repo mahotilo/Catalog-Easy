@@ -27,6 +27,7 @@ if(!function_exists("IsBootstrap")){
 global $addonRelativeCode, $page, $addonPathData,$gp_index;
 	$page->css_user[] = $addonRelativeCode . '/css/catalog.css';
 	$page->css_user[] = $addonRelativeCode . '/css/carousel.css';
+	$page->css_user[] = $addonRelativeCode . '/css/owlcarousel.css';
 
 
 	$page->head_js[] =  $addonRelativeCode . '/js/jquery.wm-gridfolio-1.0.min.js';
@@ -44,12 +45,13 @@ global $addonRelativeCode, $page, $addonPathData,$gp_index;
 	}
 	
 	$page->head_js[] =  $addonRelativeCode . '/js/carousel.js';
+	$page->head_js[] =  $addonRelativeCode . '/js/owlcarousel.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/jquery.mixitup.min.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/imagesloaded.pkgd.min.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/eh.js';
 
 	$page->head_script .= "\nvar catbase = '" . $addonRelativeCode . "';\n";
-	$page->head_script.= 'gpE_added_js = [];';
+	$page->head_script .= 'gpE_added_js = [];';
 
 	$configFile = $addonPathData . '/config.php';
 	 if (file_exists($configFile)) {
