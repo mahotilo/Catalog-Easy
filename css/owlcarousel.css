@@ -222,7 +222,7 @@
 /* Fix for touch errors */
 .owl-carousel 
 {
-	touch-action: manipulation; 
+	touch-action: none; 
 }
 
 
