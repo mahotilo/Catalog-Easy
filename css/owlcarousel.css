@@ -239,12 +239,12 @@
 	display: inline-table;
 	position: absolute;
 	z-index: 10;
-	width: 10vw;
+	min-width: 5vw;
 }
 
 .owl-prev:hover,
 .owl-next:hover{
-	background-color: #9f9f9f66;
+	background-color: #9f9f9f22;
 }
 
 .owl-prev i,
