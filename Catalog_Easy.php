@@ -1049,10 +1049,12 @@ class Catalog_Easy
     function ShowLayoutCarousel($items)
     {
         global $page,$addonRelativeCode;
+
+        $this->ECrow = intval($this->ECrow);
         if ($this->ECrow > 6) {
             $this->ECrow = 6;
         }
-        if ($this->ECrow <= 0) {
+        if ( !$this->ECrow  || $this->ECrow <= 0) {
             $this->ECrow = 0;
         }
 
@@ -1181,10 +1183,11 @@ class Catalog_Easy
 			.'		navText: ["<i class=\'fa fa-chevron-left\'></i>", "<i class=\'fa fa-chevron-right\'></i>"],'."\n"
 			.'		responsiveClass: true,'."\n"
 			.'		responsive: {'."\n"
-			.'			0: {items: 1},'."\n"
-			.'			600: {items: 2},'."\n"
-			.'			768: {items: 3},'."\n"
-			.'			1000: {items: 4}'."\n"
+			.'			0: {items: 2},'."\n"
+			.'			576: {items: 3},'."\n"
+			.'			992: {items: 4},'."\n"
+			.'			1200: {items: 5},'."\n"
+			.'			1800: {items: 6}'."\n"
 			.'		}'."\n"
 			.'	});'."\n"
 			.'});';

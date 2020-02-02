@@ -220,9 +220,9 @@
 }
 
 /* Fix for touch errors */
-.owl-carousel 
+.owl-carousel
 {
-	touch-action: none; 
+	touch-action: manipulation;
 }
 
 
@@ -237,6 +237,9 @@
 	height: 100%;
 	top: 0;
 	display: inline-table;
+	position: absolute;
+	z-index: 10;
+	width: 10vw;
 }
 
 .owl-prev:hover,
@@ -251,14 +254,11 @@
 }
 
 .owl-prev{
-	position: absolute;
-	z-index: 10;
 	left: 0; 
 }
 
 .owl-next{
-	position: absolute; 
-	z-index: 10; 
-	right: 0;  
+	right: 0; 
+	text-align: right;
 }
 
