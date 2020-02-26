@@ -1005,7 +1005,7 @@ class Catalog_Easy
 
             echo '<div class="wmg-item">';
             echo '<div class="wmg-thumbnail">';
-            echo '<div class="wmg-thumbnail-content">';
+            echo '<div class="wmg-thumbnail-content" data-title="'.common::GetLabel($item['title']).'">';
 
             echo $item['image'];
 
@@ -1148,29 +1148,23 @@ class Catalog_Easy
 			echo '</div>';
 			echo '</div>';
 		} else {
-			echo '<div class="container" style="width:100%;">';
-			echo '<div class="row">';
-			echo '<div class="col-lg-12">';
 			echo '<div id="EC_Carousel'.$car_id.'" class="EC_Carousel owl-carousel owl-theme">';
 			if ($this->ECheight<>"") {$style = 'style="height:' . $this->ECheight . 'px"';} else {$style = "";}
 
 			foreach ($items as $item) {
 				echo '<div class="item">';
-					echo '<div class="col-12 carblock">';
+					echo '<div class="carblock">';
 
-				if($this->ShowTitlecar){
-					echo '<h3>' . $item['link'] . '</h3>';
+				if ($this->ShowTitlecar) {
+						echo '<h3>' . $item['link'] . '</h3>';
 					}
 
 				echo $item['image'];
-				echo '<div class="shortinfo shortinfoCar">' . $item['short_info'] . '</div>';
-				echo '</div>';
+						echo '<div class="shortinfo shortinfoCar">' . $item['short_info'] . '</div>';
+					echo '</div>';
 				echo '</div>';
 			}
 
-			echo '</div>';
-			echo '</div>';
-			echo '</div>';
 			echo '</div>';
 
 			$page->head_script .= "\n"

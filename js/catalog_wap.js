@@ -5,24 +5,24 @@ http://my-sitelab.com/
 Version 1.8*/
 
 $(document).ready(function() {
-
+	
 	$("#results").on( "click", ".sort li", function (e){
 		e.preventDefault();
-		$(".loading-div").show();
-		var page = 1;
-		var sort = $(this).attr("data-sort");
-		$("#results").load(" #results",{"pag":page,"sort":sort}, function(){
-			$(".loading-div").hide();
-
+		$(".loading-div").show(); 
+		var page = 1; 
+		var sort = $(this).attr("data-sort"); 
+		$("#results").load(" #results",{"pag":page,"sort":sort}, function(){ 
+			$(".loading-div").hide(); 
+				
 				$(".container .column").EHt();
 				$(".container .list").EHt();
 				$(".container .column2").EHt();
-
-
+			
+					
 		});
-
+		
 	});
-
+	
 $('.filetype-Catalog_easy_section').each(function (i, value) {
  	 $(value).imagesLoaded( function() {
 				$(value).find(".container .column").EHt();
@@ -40,37 +40,38 @@ $('.filetype-include').each(function (i, value) {
 });
 
 
-$(".column h3").EHt();
+$(".column h3").EHt();	
 
 
 $(".my-grid").each(function(){
-	 var pg = $(this).attr("data-column");
-	 var tes = Number($(this).attr("data-mheight"));
-	$(this).WMGridfolio({
+	 var pg = $(this).attr("data-column");	
+	 var tes = Number($(this).attr("data-mheight"));	
+	$(this).WMGridfolio({	
 				thumbnail : {	columns : pg,		},
 				details : {	minHeight : tes,		},
-
+				config : { openToTop: false, keepOpen: true,},
+							 
 				});
 
-
-   })
-
+				
+   })	
+		
 var hash = window.location.hash;
 var noHash=hash.replace("#","");
 	if(hash){
 		mix_init_cat(noHash);
 	} else {
-		mix_init();
+		mix_init();   
 	}
-
-
+	
+      
 $(".EC_img").colorbox();
 
 
-
+	
 });
 
-$(window).on('hashchange',function(){
+$(window).on('hashchange',function(){ 
 		var hash = window.location.hash;
 		var noHash=hash.replace("#","");
 		if(hash){
@@ -85,11 +86,11 @@ function mix_init(){
 				targetSelector: ".item",
 				transitionSpeed: 450
 			  });
-			});
+			});	 
 }
 //start with category
 function mix_init_cat(noHash){
- if ($('.'+noHash).length <=0 )	   {mix_init();return;}
+ if ($('.'+noHash).length <=0 )	   {mix_init();return;} 
 		$(function(){
 			  $("#EC_portfolio").mixitup({
 				targetSelector: ".item",
