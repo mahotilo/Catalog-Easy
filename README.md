@@ -33,7 +33,7 @@ Support Forum http://gpeasy.com/Forum?show=f1287
 - Ignore non-page elements in menu
 - Support OwlCarousel for carousel mode (set number of items in row to 0)
 - Fixed broken arrow in gallery 'Portfolio' when tabs folding is turned off
-+ Add atribute 'data-title' to div.wmg-thumbnail-content
+- Add atribute 'data-title' to div.wmg-thumbnail-content
 
 
 ## Changelog
