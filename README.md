@@ -21,9 +21,6 @@ Demo and docs can be found here
 - add class short_info to any section on child page to specify short info that appears in layout or set to take it from content;
 - for sortable portfolio you need to add attribute data-filter with value name of category( or names separeted by space) to one section on your Child page.
 
-**Bugs, issues, suggestions for improvements are welcome.**
-Support Forum http://gpeasy.com/Forum?show=f1287
-
 
 # Fork's changelog
 - Add atribute 'data-title' to div.wmg-thumbnail-content
