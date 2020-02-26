@@ -5,13 +5,13 @@ Demo and docs can be found here
 `http://ts-addons.my-sitelab.com/Catalog_Easy`
 
 ## Features:
--six layouts (list, 2 columns, 3 columns, portfolio gallery responsive,carousel,sortable portfolio);
--posibility to specify layout for every page;
--gadget and admin page for options;
--ajax and non ajax pagination;
--sorting buttons;
--sorting by category;
--build in navigation for pages.
+- six layouts (list, 2 columns, 3 columns, portfolio gallery responsive,carousel,sortable portfolio);
+- posibility to specify layout for every page;
+- gadget and admin page for options;
+- ajax and non ajax pagination;
+- sorting buttons;
+- sorting by category;
+- build in navigation for pages.
 
 ## Usage:
 - possible to use section or gadget;
