@@ -24,6 +24,18 @@ Demo and docs can be found here
 **Bugs, issues, suggestions for improvements are welcome.**
 Support Forum http://gpeasy.com/Forum?show=f1287
 
+
+# Fork's changelog
+- Catalog_Easy.php is PHP 7.x warnings and errors friendly
+- Tabs folding when switching in the gallery 'Portfolio' is turned off
+- Bootstrap 3 and 4 support
+- Support swipe for the carousel
+- Ignore non-page elements in menu
+- Support OwlCarousel for carousel mode (set number of items in row to 0)
+- Fixed broken arrow in gallery 'Portfolio' when tabs folding is turned off
++ Add atribute 'data-title' to div.wmg-thumbnail-content
+
+
 ## Changelog
 - version 1.8.4 support for private/hidden pages, hash links in sortable portfolio(#category_name), two words data filter support, readmore link options, option - take image only from text areas. editor styles, bug fixes.
 - version 1.8.3 fix images overlap
@@ -41,14 +53,3 @@ Class not must be exactly short_info. Now can use short_info as a part of class,
 - version 1.3 - added possibility to sort items (ascending and descending by title name ), little css fix.
 - version 1.2 - added Portfolio Gallery responsive Layout.
 - version 1.0a - fix some erors and notices.
-
-
-# Fork's changelog
-- Catalog_Easy.php is PHP 7.x warnings and errors friendly
-- Tabs folding when switching in the gallery 'Portfolio' is turned off
-- Bootstrap 3 and 4 support
-- Support swipe for the carousel
-- Ignore non-page elements in menu
-- Support OwlCarousel for carousel mode (set number of items in row to 0)
-- Fixed broken arrow in gallery 'Portfolio' when tabs folding is turned off
-+ Add atribute 'data-title' to div.wmg-thumbnail-content
