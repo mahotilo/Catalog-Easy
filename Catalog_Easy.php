@@ -2333,7 +2333,7 @@ class Catalog_Easy
   }
 
 
-  function SaveSection($return,$section,$type) {
+  static function SaveSection($return,$section,$type) {
     if( $type != 'Catalog_easy_section' ) {
       return $return;
     }

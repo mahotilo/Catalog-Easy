@@ -23,6 +23,7 @@ Demo and docs can be found here
 
 
 # Fork's changelog
+- Fixed tab height calculation in gallery 'Portfolio'
 - Add atribute 'data-title' to div.wmg-thumbnail-content
 - Fixed broken arrow in gallery 'Portfolio' when tabs folding is turned off
 - Support OwlCarousel for carousel mode (set number of items in row to 0)
