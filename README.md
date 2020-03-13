@@ -21,8 +21,10 @@ Demo and docs can be found here
 - add class short_info to any section on child page to specify short info that appears in layout or set to take it from content;
 - for sortable portfolio you need to add attribute data-filter with value name of category( or names separeted by space) to one section on your Child page.
 
-
+- Add class `open` to the 'Portfolio' section to start with open first description.
+ 
 # Fork's changelog
+- Add option to start 'Portfolio' section with open first description.
 - Fixed php error when selecting souse "another page" for gallery 'Portfolio'
 - Fixed tab height calculation in gallery 'Portfolio'
 - Add atribute 'data-title' to div.wmg-thumbnail-content
