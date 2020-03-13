@@ -242,11 +242,12 @@ class Catalog_Easy
 
 
         $index      = $this->array_find_deep($gp_titles, $labelset);
-        $page_index = $index[0];
 
-        if (!isset($gp_menu[$index[0]])) {
+        if (!isset($index[0]) || !isset($gp_menu[$index[0]])) {
             return;
         }
+
+        $page_index = $index[0];
         $titles = common::Descendants($page_index, $gp_menu);
         $level  = $gp_menu[$page_index]['level'];
 
