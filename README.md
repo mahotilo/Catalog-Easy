@@ -23,7 +23,7 @@ Demo and docs can be found here
 
 
 # Fork's changelog
-- Fixed php error on selecting souse "another page" for gallery 'Portfolio'
+- Fixed php error when selecting souse "another page" for gallery 'Portfolio'
 - Fixed tab height calculation in gallery 'Portfolio'
 - Add atribute 'data-title' to div.wmg-thumbnail-content
 - Fixed broken arrow in gallery 'Portfolio' when tabs folding is turned off
