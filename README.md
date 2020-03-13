@@ -20,10 +20,10 @@ Demo and docs can be found here
 - edit aditional options in admin page. If you need diferent layout for another pages for gadget - use page manager in admin part;
 - add class short_info to any section on child page to specify short info that appears in layout or set to take it from content;
 - for sortable portfolio you need to add attribute data-filter with value name of category( or names separeted by space) to one section on your Child page.
-
-- Add class `open` to the 'Portfolio' section to start with open first description.
+- add class `open` to the 'portfolio' section to start with open first description.
  
 # Fork's changelog
+- Allow to include wrapper with class `short_info` and all its sub sections
 - Add option to start 'Portfolio' section with open first description.
 - Fixed php error when selecting souse "another page" for gallery 'Portfolio'
 - Fixed tab height calculation in gallery 'Portfolio'

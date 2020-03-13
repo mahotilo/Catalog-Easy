@@ -324,6 +324,7 @@ class Catalog_Easy
     function getContent($titles)
     {
         global $page, $addonRelativeCode;
+        $items = [];
         foreach ($titles as $title) {
 
 			//exlude current page(when display on child and show same level)
@@ -411,8 +412,11 @@ class Catalog_Easy
 		//new data-filter 1.8.1 from menu settt
 		$datafilter=$this->getNewdatafilter($title);
 
-        foreach ($file_sections as $sect) {
 
+		$short_info_num = -1;
+		$i = 0;
+
+        foreach ($file_sections as $sect) {
 
             if (isset($sect['attributes'])) {
 
@@ -420,7 +424,10 @@ class Catalog_Easy
 
                     //if ($sect['attributes']['class'] == "short_info"){
                     if (strpos($sect['attributes']['class'], 'short_info') !== false) {
-                        $short_info = $sect['content'];
+                    	
+						//$short_info = $sect['content'];
+						$short_info_num = $i;
+
                     }
                 }
 
@@ -432,10 +439,13 @@ class Catalog_Easy
 
             }
 
-
+			$i++;
         }//end section foreach
 
-
+		if ( $short_info_num >= 0 ){
+			$short_info = \gp\tool\Output\Sections::GetSection($file_sections, $short_info_num);
+		}
+		
 
         if (!isset($datafilter)) {
             $datafilter = "";

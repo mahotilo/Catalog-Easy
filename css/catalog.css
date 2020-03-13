@@ -199,7 +199,6 @@ Version 1.7
 }
 .wmg-item {
     display: inline-block;
-    *display: inline;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
