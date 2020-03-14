@@ -2523,7 +2523,7 @@ class Catalog_Easy
   }
 
 
-  function ShowOptions() {
+  static function ShowOptions() {
 
 	//$pagedata=self::LoadData();
 
@@ -2636,7 +2636,7 @@ class Catalog_Easy
 
   }
 
- function SaveData() {
+ static function SaveData() {
     global $langmessage,$addonPathData;
     if (!isset($_REQUEST['index'])) {
       return $langmessage['OOPS'] . ' - nothing to save!';
@@ -2680,7 +2680,7 @@ class Catalog_Easy
   }
 
 
-  function LoadData() {
+  static function LoadData() {
     global $addonPathCode,$addonPathData;
 	 $configFile = $addonPathData . '/ec_pagedata.php';
     if (file_exists($configFile)) {
