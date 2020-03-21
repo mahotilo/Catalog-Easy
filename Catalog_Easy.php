@@ -2484,7 +2484,7 @@ class Catalog_Easy
 
 	$arg_value = ob_get_clean();
 	if ($arg_value == ""){
-		$arg_value = '<img class="img-responsive" src="'.$addonRelativeCode . '/img/сatalog_sect.png" alt="Catalog easy section" style="float:left;">
+		$arg_value = '<img class="img-responsive" src="'.$addonRelativeCode . '/img/catalog_sect.png" alt="Catalog easy section" style="float:left;">
 									<p>Catalog easy section.</p>
 									<p>Edit it to show something.</p>';
 	}
