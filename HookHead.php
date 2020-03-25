@@ -45,7 +45,7 @@ global $addonRelativeCode, $page, $addonPathData,$gp_index;
 	}
 	
 	$page->head_js[] =  $addonRelativeCode . '/js/carousel.js';
-	$page->head_js[] =  $addonRelativeCode . '/js/owlcarousel.js';
+	$page->head_js[] =  $addonRelativeCode . '/js/owl.carousel.min.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/jquery.mixitup.min.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/imagesloaded.pkgd.min.js';
 	$page->head_js[] =  $addonRelativeCode . '/js/eh.js';

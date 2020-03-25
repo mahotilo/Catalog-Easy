@@ -9,7 +9,7 @@ var maxTime = 1000, // allow movement if < 1000 ms (1 sec)
 	endEvent = (touch) ? 'touchend' : 'mouseup';
 
 $(function(){
-	$('.EC_Carousel').each(function(){
+	$('.EC_Carousel:not(.owl-carousel)').each(function(){
 		var $carousel = $(this);
 		var speed = $carousel.data('speed') || 5000;
 
