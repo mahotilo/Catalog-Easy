@@ -1185,6 +1185,7 @@ class Catalog_Easy
 			.'		nav: true,'."\n"
 			.'		margin: 50,'."\n"
 			.'		autoplay: '.var_export(!\gp\tool::LoggedIn(), true).','."\n"
+			.'		autoplayHoverPause: true,'."\n"
 			.'		navText: ["<i class=\'fa fa-chevron-left\'></i>", "<i class=\'fa fa-chevron-right\'></i>"],'."\n"
 			.'		responsiveClass: true,'."\n"
 			.'		responsive: {'."\n"
