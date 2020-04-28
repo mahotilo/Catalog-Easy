@@ -23,6 +23,7 @@ Demo and docs can be found here
 - add class `open` to the 'portfolio' section to start with open first description.
  
 # Fork's changelog
+- Fix error with ElFinderOpen
 - Allow to include wrapper with class `short_info` and all its sub sections
 - Add option to start 'Portfolio' section with open first description.
 - Fixed php error when selecting souse "another page" for gallery 'Portfolio'
