@@ -309,22 +309,13 @@ Version 1.7
     background: #e3e3e3;
 }
 .wmg-container.open .wmg-thumbnail img {
-    -moz-opacity: 0.20;
-    -khtml-opacity: 0.20;
     opacity: 0.20;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha"(Opacity=20);
 }
 .wmg-container.open .wmg-thumbnail:hover img {
-    -moz-opacity: 0.40;
-    -khtml-opacity: 0.40;
     opacity: 0.40;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha"(Opacity=40);
 }
 .wmg-container.open .wmg-thumbnail.open img {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
     opacity: 1;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha"(Opacity=100);
 }
 
 /*sort buttons*/
