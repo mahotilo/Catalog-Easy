@@ -140,7 +140,7 @@ class Catalog_Easy
 
             $this->ShowCatalog($items);
 
-            echo '<div id="clicker" align="center">';
+            echo '<div class="CE_clicker" align="center">';
             if ($this->wap and $this->wap<>""){
 			echo $this->paginate_function_wa($this->item_per_page, $page_number, $pages_count, $total_pages);
 			} else {
@@ -1189,11 +1189,11 @@ class Catalog_Easy
 			.'		navText: ["<i class=\'fa fa-chevron-left\'></i>", "<i class=\'fa fa-chevron-right\'></i>"],'."\n"
 			.'		responsiveClass: true,'."\n"
 			.'		responsive: {'."\n"
-			.'			0: {items: 2},'."\n"
-			.'			576: {items: 3},'."\n"
-			.'			992: {items: 4},'."\n"
-			.'			1200: {items: 5},'."\n"
-			.'			1800: {items: 6}'."\n"
+			.'			0: {items: 1},'."\n"
+			.'			576: {items: 2},'."\n"
+			.'			992: {items: 3},'."\n"
+			.'			1200: {items: 4},'."\n"
+			.'			1800: {items: 5}'."\n"
 			.'		}'."\n"
 			.'	});'."\n"
 			.'});';

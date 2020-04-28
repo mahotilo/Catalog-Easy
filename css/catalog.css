@@ -42,7 +42,7 @@ Version 1.7
 .column2 h3 {
     text-align: center;
 }
-#clicker {
+.CE_clicker {
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -184,15 +184,15 @@ Version 1.7
     filter: alpha(opacity=0);
     /*font-family: empty;*/
     
-    font-size: 0px;
+/*    font-size: 0px;*/
     opacity: 0.0;
     position: relative;
     width: 100%;
     zoom: 1;
 }
 .wmg-container > * {
-    font-family: sans-serif;
-    font-size: 18px;
+/*    font-family: sans-serif;*/
+/*    font-size: 18px;*/
 }
 .wmg-container img {
     max-width: 100%;
