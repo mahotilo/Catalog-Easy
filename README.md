@@ -23,6 +23,7 @@ Demo and docs can be found here
 - add class `open` to the 'portfolio' section to start with open first description.
  
 # Fork's changelog
+- Fix "$section_data['img_text']" error
 - Avoid multiply ID "clicker" error
 - Fix error with ElFinderOpen
 - Allow to include wrapper with class `short_info` and all its sub sections

@@ -2225,9 +2225,13 @@ class Catalog_Easy
 	$ShowTitlecar = $section_data['ShowTitlecar'];
 	$ECPColumns = $section_data['ECPColumns'];
 	$ECPMinHeight = $section_data['ECPMinHeight'];
-	$img_text = $section_data['img_text'];
 
 	//new options check
+	if(array_key_exists('img_text',$section_data)){
+		$img_text = $section_data['img_text'];
+	} else {
+		$img_text ="";
+	}
 	if(array_key_exists('datafilter',$section_data)){
 		$datafilter = $section_data['datafilter'];
 	} else {
