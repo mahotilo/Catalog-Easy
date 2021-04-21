@@ -757,7 +757,8 @@ class Catalog_Easy
     {
 
         global $dataDir;
-		$img_name = str_replace($dataDir . "/data/_uploaded/image/", "", $target_url);
+        $target_url = urldecode($target_url);
+        $img_name = str_replace($dataDir . "/data/_uploaded/image/", "", $target_url);
 
         $parts    = explode("/", $img_name);
         $img_name = array_pop($parts);
@@ -1181,8 +1182,9 @@ class Catalog_Easy
 			$page->head_script .= "\n"
 			.'$(document).ready(function(){'."\n"
 			.'	$("#EC_Carousel'.$car_id.'").owlCarousel({'."\n"
-			.'		loop: true,'."\n"
+			.'		loop: false,'."\n"
 			.'		nav: true,'."\n"
+			.'		dots: false,'."\n"
 			.'		margin: 50,'."\n"
 			.'		autoplay: '.var_export(!\gp\tool::LoggedIn(), true).','."\n"
 			.'		autoplayHoverPause: true,'."\n"
@@ -1191,9 +1193,9 @@ class Catalog_Easy
 			.'		responsive: {'."\n"
 			.'			0: {items: 1},'."\n"
 			.'			576: {items: 2},'."\n"
-			.'			992: {items: 3},'."\n"
-			.'			1200: {items: 4},'."\n"
-			.'			1800: {items: 5}'."\n"
+			.'			992: {items: 2},'."\n"
+			.'			1200: {items: 3},'."\n"
+			.'			1800: {items: 3}'."\n"
 			.'		}'."\n"
 			.'	});'."\n"
 			.'});';
@@ -1271,7 +1273,11 @@ class Catalog_Easy
                 //$previous_link = ($previous==0)?1:$back;
                 $pagination .= '<li class="first"><a href="#" data-page="1" title="First">&laquo;</a></li>';
                 $pagination .= '<li><a href="#" data-page="' . $back . '" title="Previous">&lt;</a></li>';
-                for ($i = ($current_page - 1); $i < $current_page; $i++) {
+                $strt = $current_page - 1;
+                if ($current_page == $total_pages) {
+					$strt = $current_page - 2;
+                }
+                for ($i = $strt; $i < $current_page; $i++) {
                     if ($i > 0) {
                         $pagination .= '<li><a href="#" data-page="' . $i . '" title="Page' . $i . '">' . $i . '</a></li>';
                     }

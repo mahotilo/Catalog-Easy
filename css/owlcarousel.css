@@ -262,3 +262,19 @@
 	text-align: right;
 }
 
+/* Dots */
+.owl-dots{
+	text-align: center;
+}
+
+.owl-dots.disabled .owl-dot.active {
+	background: none;
+}
+
+.owl-dots:not(.disabled) .owl-dot.active {
+	background-color: $primary;
+}
+
+.owl-nav button, .owl-dots button{
+	border: none;    
+}
