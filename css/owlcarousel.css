@@ -272,7 +272,7 @@
 }
 
 .owl-dots:not(.disabled) .owl-dot.active {
-	background-color: $primary;
+	background-color: black;
 }
 
 .owl-nav button, .owl-dots button{
