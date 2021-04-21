@@ -23,7 +23,7 @@ Demo and docs can be found here
 - add class `open` to the 'portfolio' section to start with open first description.
  
 # Fork's changelog
-- Fix owl carousel dots appearence
+- Fix owl carousel dots appearance
 - Always keep 3 page links for paginated carousel
 - Fix CE thumbnails creation for non-latin filenames
 - Fix "$section_data['img_text']" error
